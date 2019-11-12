@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:background="@drawable/gradient">
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="שם משפחה"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="שם פרטי"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editText2" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="דואר אלקטרוני"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="נייד"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editText5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="ישוב"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editText6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText6"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/default_btn"
+        android:ems="10"
+        android:hint="רחוב"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="100dp"
+        android:text="הבא"
+        android:background="@drawable/primary_btn"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
