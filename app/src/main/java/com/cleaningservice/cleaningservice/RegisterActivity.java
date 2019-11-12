@@ -20,12 +20,15 @@ public class RegisterActivity extends AppCompatActivity {
         FirstStep = findViewById(R.id.FirstStep);
         SecondStep = findViewById(R.id.SecondStep);
 
-        FirstStep.setVisibility(View.VISIBLE);
-        SecondStep.setVisibility(View.INVISIBLE);
     }
 
     public void NextStepRegister(View v){
         FirstStep.setVisibility(View.INVISIBLE);
         SecondStep.setVisibility(View.VISIBLE);
+    }
+
+    public void PreviousStepRegister(View v){
+        FirstStep.setVisibility(View.VISIBLE);
+        SecondStep.setVisibility(View.INVISIBLE);
     }
 }

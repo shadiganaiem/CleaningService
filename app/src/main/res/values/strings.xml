@@ -7,9 +7,13 @@
     <string name="LastName">שם משפחה</string>
     <string name="Email">דוא"ל</string>
     <string name="Phone">נייד</string>
+    <string name="Username">שם משתמש</string>
     <string name="Password">סיסמה</string>
     <string name="RePassword">אימות סיסמה</string>
     <string name="City">ישוב</string>
     <string name="Address">רחוב</string>
     <string name="NextBtn">הבא</string>
+    <string name="accountType">הגדר חשבון כעובד</string>
+    <string name="Previous">קודם</string>
+    <string name="End">יצירה</string>
 </resources>
