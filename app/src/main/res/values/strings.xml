@@ -3,4 +3,13 @@
     <string name="התחברות">התחברות</string>
     <string name="הרשמה">הרשמה</string>
     <string name="MainLogo">MainLogo</string>
+    <string name="FirstName">שם פרטי</string>
+    <string name="LastName">שם משפחה</string>
+    <string name="Email">דוא"ל</string>
+    <string name="Phone">נייד</string>
+    <string name="Password">סיסמה</string>
+    <string name="RePassword">אימות סיסמה</string>
+    <string name="City">ישוב</string>
+    <string name="Address">רחוב</string>
+    <string name="NextBtn">הבא</string>
 </resources>
