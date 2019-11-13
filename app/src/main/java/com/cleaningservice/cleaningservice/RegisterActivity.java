@@ -6,11 +6,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import java.sql.Connection;
 
 public class RegisterActivity extends AppCompatActivity {
     private ConstraintLayout FirstStep;
     private ConstraintLayout SecondStep;
-
+    private Connection _context = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,15 @@ public class RegisterActivity extends AppCompatActivity {
         FirstStep = findViewById(R.id.FirstStep);
         SecondStep = findViewById(R.id.SecondStep);
 
+        ApplicationDbContext apdbc = new ApplicationDbContext();
+        _context = apdbc.Connect();
+
+        if(_context == null){
+            Toast.makeText(getApplicationContext(),"חיבור נכשל",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"חיבור הסתיים בהצלחה",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void NextStepRegister(View v){
