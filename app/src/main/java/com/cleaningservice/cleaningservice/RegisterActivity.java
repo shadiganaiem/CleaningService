@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (_context == null) {
             Toast.makeText(getApplicationContext(), "חיבור נכשל", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), "חיבור נכשל", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(), "חיבור הסתיים בהצלחה", Toast.LENGTH_SHORT).show();
         }
