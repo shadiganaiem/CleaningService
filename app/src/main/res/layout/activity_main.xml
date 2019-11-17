@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/SignUpBtn"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/SignInBtn"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
@@ -37,15 +37,17 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="245dp"
-        android:layout_height="202dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="150dp"
         android:contentDescription="@string/MainLogo"
         app:layout_constraintBottom_toTopOf="@+id/SignUpBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

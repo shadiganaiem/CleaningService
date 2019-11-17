@@ -10,14 +10,18 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="60dp"
         android:contentDescription="@string/MainLogo"
         app:layout_constraintBottom_toTopOf="@+id/FirstStep"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
