@@ -24,4 +24,9 @@ public class ApplicationDbContext {
         }
         return connection;
     }
+
+    public void ExecuteQuery(String Query){
+
+
+    }
 }
