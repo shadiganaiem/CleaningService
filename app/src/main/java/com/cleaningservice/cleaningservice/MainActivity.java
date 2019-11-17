@@ -10,7 +10,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     private Button SignUpButton;
     private Button SignInButton;
-
+///////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         SignUpButton= findViewById(R.id.SignUpBtn);
         SignInButton= findViewById(R.id.SignInBtn);
+
     }
 
     public void OpenRegisterActivity(View v){
