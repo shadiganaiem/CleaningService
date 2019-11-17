@@ -10,6 +10,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     private Button SignUpButton;
     private Button SignInButton;
+    private  Button btn;
 ///////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
