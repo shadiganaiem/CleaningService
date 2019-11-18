@@ -23,7 +23,7 @@ import javax.xml.validation.Validator;
 public class RegisterActivity extends AppCompatActivity {
     private ConstraintLayout FirstStep;
     private ConstraintLayout SecondStep;
-    private Connection _context = null;
+    private ApplicationDbContext _context = null;
 
     //Customer Details
     private EditText Firstname;
@@ -56,16 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
         Password = findViewById(R.id.Password);
         RePassword = findViewById(R.id.RePassword);
 
+        _context = new ApplicationDbContext();
 
-        ApplicationDbContext apdbc = new ApplicationDbContext();
-        _context = apdbc.Connect();
-
-        if (_context == null) {
-            Toast.makeText(getApplicationContext(), "חיבור נכשל", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), "חיבור נכשל", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "חיבור הסתיים בהצלחה", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void NextStepRegister(View v) {
@@ -85,9 +77,17 @@ public class RegisterActivity extends AppCompatActivity {
         String lastname = Lastname.getText().toString();
         String email = Email.getText().toString();
         String phone = Phone.getText().toString();
+        String city = City.getText().toString();
+        String address = Address.getText().toString();
         String username= Username.getText().toString();
         String password = Password.getText().toString();
         String repassword = RePassword.getText().toString();
+
+        String query = "INSERT INTO CUSTOMERS(Firstname,Lastname,Email,Phone,City,Address) " +
+                "VALUES('"+ firstName +"','"+lastname+"','"+email+"','"+"','"+phone+"','"+city+"','"+address+"'); " +
+                "INSERT INTO USERS(Username,CustomerId,Password,status) " +
+                "SELECT '"+username+"',MAX(ID),'"+password+"','1' " +
+                "FROM Customers WHERE Customers.Phone = '"+phone+"';";
 
     }
 }
