@@ -6,6 +6,8 @@ import android.os.StrictMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import javax.xml.validation.Validator;
+
 public class ApplicationDbContext {
 
     public Connection Connect(){
@@ -26,7 +28,6 @@ public class ApplicationDbContext {
     }
 
     public void ExecuteQuery(String Query){
-
 
     }
 }
