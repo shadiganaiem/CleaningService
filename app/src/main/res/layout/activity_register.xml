@@ -206,6 +206,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/success_btn"
+            android:onClick="AddUser"
             android:text="@string/End"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

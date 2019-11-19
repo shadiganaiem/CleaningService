@@ -22,7 +22,7 @@ public class ApplicationDbContext {
         String connectionURL = null;
         try{
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            connectionURL = "jdbc:jtds:sqlserver://82.80.211.84;database=CleaningService;user=CleaningService_User;password=CleaningService_User";
+            connectionURL = "jdbc:jtds:sqlserver://82.80.211.84/CleaningService;user=CleaningService_User;password=CleaningService_User";
 
             connection = DriverManager.getConnection(connectionURL);
         }catch (Exception ex){
@@ -30,26 +30,40 @@ public class ApplicationDbContext {
             System.out.println(e);
         }
         _connection = connection;
+
     }
 
+    /**
+     * Get Current Connection Object to Database
+     * @return
+     */
+    public Connection getConnection(){
+        return _connection;
+    }
 
+    /**
+     * Execute an executable Query.
+     * @param query
+     */
     public void ExecuteQuery(String query){
-            this.query  = query;
-            InsertData insert = new InsertData();
-            insert.execute();
+
+        //this.query  = query;
+        try {
+            Statement stmt = _connection.createStatement();
+            stmt.executeUpdate(query);
+            _connection.close();
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+            //InsertData insert = new InsertData();
+            //insert.execute();
     }
 
     private class InsertData extends AsyncTask<String,String,String>{
         @Override
         protected String doInBackground(String... strings){
-            try {
-                Statement stmt = _connection.createStatement();
-                ResultSet result = stmt.executeQuery(query);
-                _connection.close();
 
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
 
             return "";
         }
