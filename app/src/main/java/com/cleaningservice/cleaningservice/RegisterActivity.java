@@ -1,50 +1,34 @@
 package com.cleaningservice.cleaningservice;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.icu.text.Replaceable;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
-import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.util.Arrays;
-import java.util.regex.Pattern;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.validation.Validator;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class RegisterActivity extends AppCompatActivity {
-    private ConstraintLayout FirstStep;
-    private ConstraintLayout SecondStep;
+    private LinearLayout FirstStep;
+    private LinearLayout SecondStep;
     private ApplicationDbContext _context = null;
+    private Validator _validator = null;
 
     //Customer Details
-    private EditText Firstname;
-    private EditText Lastname;
-    private EditText Email;
-    private EditText Phone;
-    private EditText City;
-    private EditText Address;
+    private TextInputEditText Firstname;
+    private TextInputEditText Lastname;
+    private TextInputEditText Email;
+    private TextInputEditText Phone;
+    private TextInputEditText City;
+    private TextInputEditText Address;
 
     //User Details
-    private EditText Username;
-    private EditText Password;
-    private EditText RePassword;
+    private TextInputEditText Username;
+    private TextInputEditText Password;
+    private TextInputEditText RePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         FirstStep = findViewById(R.id.FirstStep);
         SecondStep = findViewById(R.id.SecondStep);
+
+        try{
 
         Firstname = findViewById(R.id.Firstname);
         Lastname = findViewById(R.id.Lastname);
@@ -63,8 +49,12 @@ public class RegisterActivity extends AppCompatActivity {
         Username = findViewById(R.id.Username);
         Password = findViewById(R.id.Password);
         RePassword = findViewById(R.id.RePassword);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
 
         _context = new ApplicationDbContext();
+        _validator = new Validator();
 
     }
 
@@ -75,16 +65,21 @@ public class RegisterActivity extends AppCompatActivity {
         String regex = "^[\\p{L} ]+$";
         boolean status = true;
 
-        if(!InputValidate(Firstname,regex) || !InputValidate(Lastname,regex) || !InputValidate(City,regex) || !InputValidate(Address,regex)){
+        if(!_validator.InputValidate(Firstname,regex))
             status = false;
-        }
-        if(GetInputText(Phone).length() < 10){
+        if(!_validator.InputValidate(Lastname,regex))
+            status = false;
+        if(!_validator.InputValidate(City,regex))
+            status = false;
+        if(!_validator.InputValidate(Address,regex))
+            status = false;
+        if(GetInputText(Phone).length() != 10){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>מספר נייד לא תקין</font>");
             Phone.setError(errorMsg);
             status = false;
         }
         regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        if(!InputValidate(Email,regex) || GetInputText(Email).equals("")){
+        if(!_validator.InputValidate(Email,regex) || GetInputText(Email).equals("")){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>דואר אלקטרוני אינו תקין</font>");
             Email.setError(errorMsg);
             status = false;
@@ -106,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
         boolean status = true;
 
         //if(GetInputText(Username).contains(" ")){
-        if(!InputValidate(Username,regex)){
+        if(!_validator.InputValidate(Username,regex)){
             status = false;
         }
         if(!GetInputText(Password).equals(GetInputText(RePassword)) && !GetInputText(Password).equals("")){
@@ -129,28 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Validate text and get a relevant error message
-     * @param editText : input EditText to validate
-     */
-    public boolean InputValidate(EditText editText,String regularExpression){
-        android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>שדה חובה</font>");
-        Pattern pattern = Pattern.compile(regularExpression);
-
-        String text =GetInputText(editText);
-
-        //Validate Text and get a relevant Error message
-        if(text.equals("")){
-            editText.setError(errorMsg);
-            return false;
-        }
-        else if(!pattern.matcher(text).matches()){
-            errorMsg = Html.fromHtml("<font color='white'>אין להכיל סימנים</font>");
-            editText.setError(errorMsg);
-            return false;
-        }
-        return true;
-    }
 
     /**
      * @param editText
