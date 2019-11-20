@@ -64,10 +64,11 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Login"
-            tools:visibility="visible"
             android:layout_gravity="center"
             android:background="@drawable/success_btn"
-            android:textColor="@color/white" />
+            android:onClick="Login"
+            android:text="@string/Login"
+            android:textColor="@color/white"
+            tools:visibility="visible" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

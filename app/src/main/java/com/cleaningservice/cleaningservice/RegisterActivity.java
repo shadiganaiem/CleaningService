@@ -38,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
         FirstStep = findViewById(R.id.FirstStep);
         SecondStep = findViewById(R.id.SecondStep);
 
-        try{
-
         Firstname = findViewById(R.id.Firstname);
         Lastname = findViewById(R.id.Lastname);
         Email = findViewById(R.id.Email);
@@ -49,13 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         Username = findViewById(R.id.Username);
         Password = findViewById(R.id.Password);
         RePassword = findViewById(R.id.RePassword);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
 
         _context = new ApplicationDbContext();
         _validator = new Validator();
-
     }
 
     //
@@ -117,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                 "INSERT INTO Users(Username,CustomerId,Password,Status) " + "SELECT '"+GetInputText(Username)+"',MAX(ID),'"+GetInputText(Password)+"','1' " +
                 "FROM Customers WHERE Customers.Phone = '"+GetInputText(Phone)+"';";
 
-            _context.ExecuteQuery(query);
+            _context.ExecuteInsertData(query);
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         }
@@ -129,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
      * @param editText
      * @return InputValue
      */
-    public String GetInputText(EditText editText){
+    public String GetInputText(TextInputEditText editText){
         return editText.getText().toString();
     }
 

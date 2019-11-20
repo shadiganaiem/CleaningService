@@ -34,20 +34,11 @@ public class ApplicationDbContext {
     }
 
     /**
-     * Get Current Connection Object to Database
-     * @return
-     */
-    public Connection getConnection(){
-        return _connection;
-    }
-
-    /**
      * Execute an executable Query.
      * @param query
      */
-    public void ExecuteQuery(String query){
+    public void ExecuteInsertData(String query){
 
-        //this.query  = query;
         try {
             Statement stmt = _connection.createStatement();
             stmt.executeUpdate(query);
@@ -56,16 +47,22 @@ public class ApplicationDbContext {
         }catch (Exception ex){
             ex.printStackTrace();
         }
-            //InsertData insert = new InsertData();
-            //insert.execute();
     }
 
-    private class InsertData extends AsyncTask<String,String,String>{
-        @Override
-        protected String doInBackground(String... strings){
+    /**
+     * Execute an executable Query.
+     * @param query
+     */
+    public ResultSet ExecuteSelectQuery(String query){
 
+        try {
+            Statement stmt = _connection.createStatement();
+            ResultSet result = stmt.executeQuery(query);
+            return result;
 
-            return "";
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
     }
 }
