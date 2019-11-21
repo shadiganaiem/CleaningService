@@ -37,15 +37,17 @@ public class ApplicationDbContext {
      * Execute an executable Query.
      * @param query
      */
-    public void ExecuteInsertData(String query){
+    public boolean ExecuteInsertData(String query){
 
         try {
             Statement stmt = _connection.createStatement();
             stmt.executeUpdate(query);
             _connection.close();
+            return true;
 
         }catch (Exception ex){
             ex.printStackTrace();
+            return false;
         }
     }
 

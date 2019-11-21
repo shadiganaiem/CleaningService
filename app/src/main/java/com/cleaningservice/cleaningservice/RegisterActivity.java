@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -112,8 +113,10 @@ public class RegisterActivity extends AppCompatActivity {
                 "FROM Customers WHERE Customers.Phone = '"+GetInputText(Phone)+"';";
 
             _context.ExecuteInsertData(query);
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this,LoginActivity.class);
+            intent.putExtra("flag", true);
             startActivity(intent);
+
         }
     }
 

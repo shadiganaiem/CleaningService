@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -28,6 +29,10 @@ public class LoginActivity extends AppCompatActivity {
 
         _context = new ApplicationDbContext();
         _validator = new Validator();
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("flag", false)){
+            Toast.makeText(getApplicationContext(),"asdasd", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void Login(View v){
@@ -37,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         if(!_validator.InputValidate(Username,regex)){
             status = false;
         }
+
         if (status){
             String query = "SELECT * FROM Users WHERE Username='"+GetInputText(Username)+
                     "' and Password='"+GetInputText(Password)+"'";

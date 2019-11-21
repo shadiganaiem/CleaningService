@@ -52,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/default_btn"
                 android:hint="@string/FirstName"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -66,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/default_btn"
                 android:hint="@string/LastName"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,7 +112,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/default_btn"
                 android:hint="@string/City"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:inputType="textPersonName"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -125,7 +129,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/default_btn"
                 android:hint="@string/Address"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -165,7 +170,8 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/default_btn"
                 android:hint="@string/Username"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -200,6 +206,8 @@
                 android:padding="3dp"
                 android:inputType="textPassword"
                 />
+
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <Switch

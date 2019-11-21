@@ -41,7 +41,8 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/default_btn"
                 android:hint="@string/Username"
-                android:padding="6dp" />
+                android:padding="6dp"
+                android:inputType="textPersonName"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -54,7 +55,8 @@
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/default_btn"
                     android:hint="@string/Password"
-                    android:padding="6dp" />
+                    android:padding="6dp"
+                    android:inputType="textPassword"/>
 
 
             </com.google.android.material.textfield.TextInputLayout>
