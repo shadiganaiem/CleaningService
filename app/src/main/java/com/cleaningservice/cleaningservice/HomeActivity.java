@@ -43,10 +43,10 @@ public class HomeActivity extends AppCompatActivity {
                         initilizingFragment(profilefragment);
                         return true;
                     case R.id.navigation_favlist:
-                        initilizingFragment(findcleanerfragment);
+                        initilizingFragment(flistfragment);
                         return true;
                     case R.id.navigation_findcleaner:
-                        initilizingFragment(flistfragment);
+                        initilizingFragment(findcleanerfragment);
                         return true;
 
                 }

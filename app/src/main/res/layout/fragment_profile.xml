@@ -14,4 +14,8 @@
         android:textColor="#F44336"
         android:textSize="30sp" />
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </FrameLayout>
