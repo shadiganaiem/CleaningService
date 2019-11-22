@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_person_black_24dp"
-        android:title="Profile" />
+        android:id="@+id/navigation_findcleaner"
+        android:icon="@drawable/ic_create_black_24dp"
+        android:title="Find Cleaner" />
 
     <item
         android:id="@+id/navigation_favlist"
@@ -12,8 +12,8 @@
         android:title="Favorites List" />
 
     <item
-        android:id="@+id/navigation_findcleaner"
-        android:icon="@drawable/ic_create_black_24dp"
-        android:title="Find Cleaner" />
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="Profile" />
 
 </menu>

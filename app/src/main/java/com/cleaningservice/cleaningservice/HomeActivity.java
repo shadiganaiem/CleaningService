@@ -32,13 +32,13 @@ public class HomeActivity extends AppCompatActivity {
         navigation = findViewById(R.id.bottomNav);
         frameLayout = findViewById(R.id.frameLayout);
 
-       
+
 
         profilefragment = new ProfileFragment();
         findcleanerfragment = new FindCleanerFragment();
         flistfragment = new FavoritesListFragment();
 
-        initilizingFragment(profilefragment);
+        initilizingFragment(findcleanerfragment);
 
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
