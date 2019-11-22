@@ -21,24 +21,30 @@ public class HomeActivity extends AppCompatActivity {
     private FindCleanerFragment findcleanerfragment;
     private FavoritesListFragment flistfragment;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         navigation = findViewById(R.id.bottomNav);
         frameLayout = findViewById(R.id.frameLayout);
+
+       
 
         profilefragment = new ProfileFragment();
         findcleanerfragment = new FindCleanerFragment();
         flistfragment = new FavoritesListFragment();
 
+        initilizingFragment(profilefragment);
+
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 //Switch to select which case is chosen
-
-                switch(menuItem.getItemId()){
+                switch(menuItem.getItemId()) {
                     case R.id.navigation_profile:
                         initilizingFragment(profilefragment);
                         return true;

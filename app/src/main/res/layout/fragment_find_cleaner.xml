@@ -15,7 +15,7 @@
         />
 
     <TextView
-        android:id="@+id/tvDesc"
+        android:id="@+id/logoH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -26,19 +26,17 @@
         android:textSize="17sp" />
 
     <TextView
-        android:id="@+id/tvLogin"
+        android:id="@+id/titleH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDesc"
+        android:layout_below="@+id/logoH"
         android:transitionName="tvLogin"
-        android:layout_alignLeft="@+id/tvDesc"
+        android:layout_alignLeft="@+id/logoH"
         android:elevation="5dp"
         android:text="מציאת מנקה"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
-
-
 
     <ImageView
         android:id="@+id/circle1"
@@ -105,7 +103,7 @@
                     android:paddingBottom="50dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="מספר חדרים"
@@ -121,7 +119,7 @@
                         android:inputType="text" />
 
                     <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="כתובת"
@@ -134,10 +132,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:inputType="textPassword" />
+                        android:inputType="text" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="תקציב"
@@ -150,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:inputType="textPassword" />
+                        android:inputType="text" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
