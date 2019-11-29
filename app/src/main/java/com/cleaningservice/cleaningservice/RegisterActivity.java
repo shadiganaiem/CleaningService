@@ -1,16 +1,29 @@
 package com.cleaningservice.cleaningservice;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewStructure;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Arrays;
 
 public class RegisterActivity extends AppCompatActivity {
     private LinearLayout FirstStep;
@@ -30,6 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText Username;
     private TextInputEditText Password;
     private TextInputEditText RePassword;
+
+    //Google Places API Client
+    PlacesClient placesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         _context = new ApplicationDbContext();
         _validator = new Validator();
+        GooglePlacesApiConnect();
     }
 
     //
@@ -95,7 +112,6 @@ public class RegisterActivity extends AppCompatActivity {
         String regex = "^[\\p{L}0-9_]+$";
         boolean status = true;
 
-        //if(GetInputText(Username).contains(" ")){
         if(!_validator.InputValidate(Username,regex)){
             status = false;
         }
@@ -130,19 +146,31 @@ public class RegisterActivity extends AppCompatActivity {
         return editText.getText().toString();
     }
 
-    /*
-    public void WarningToastShow(String msg) {
 
-        LayoutInflater li = getLayoutInflater();
-        View layout = li.inflate(R.layout.toast,(ViewGroup)findViewById(R.id.CustomToast));
-        TextView text = layout.findViewById(R.id.warningText);
-        text.setText(msg);
-        Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
-        toast.setView(layout);
-        toast.show();
-    }*/
+    public void GooglePlacesApiConnect(){
+        String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
 
+        if(!Places.isInitialized()){
+            Places.initialize(getApplicationContext(),ApiKey);
+        }
+        placesClient = Places.createClient(this);
+
+        final AutocompleteSupportFragment autocompleteSupportFragment=
+                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.LAT_LNG,Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng= place.getLatLng();
+                Log.i("placesAPI","onPlaceSelected: "+latLng.latitude+"\n"+latLng.longitude);
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
+    }
 
 }
