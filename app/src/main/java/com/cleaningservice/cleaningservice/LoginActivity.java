@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         _validator = new Validator();
         Intent intent = getIntent();
         if(intent.getBooleanExtra("flag", false)){
-            Toast.makeText(getApplicationContext(),"asdasd", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"חשבון נוצר בהצלחה", Toast.LENGTH_SHORT).show();
         }
     }
 

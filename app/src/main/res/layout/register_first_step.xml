@@ -26,6 +26,7 @@
                 android:background="@drawable/default_btn"
                 android:hint="@string/FirstName"
                 android:inputType="textPersonName"
+                android:drawableRight="@drawable/ic_person_black_24dp"
                 android:padding="3dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,6 +42,7 @@
                 android:background="@drawable/default_btn"
                 android:hint="@string/LastName"
                 android:inputType="textPersonName"
+                android:drawableRight="@drawable/ic_person_black_24dp"
                 android:padding="3dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,6 +58,7 @@
                 android:background="@drawable/default_btn"
                 android:hint="@string/Email"
                 android:inputType="textEmailAddress"
+                android:drawableRight="@drawable/ic_email_black_24dp"
                 android:padding="3dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,38 +74,7 @@
                 android:background="@drawable/default_btn"
                 android:hint="@string/Phone"
                 android:inputType="phone"
-                android:padding="3dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/CityLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/City"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/default_btn"
-                android:hint="@string/City"
-                android:inputType="textPersonName"
-                android:padding="3dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/AddressLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/default_btn"
-                android:hint="@string/Address"
-                android:inputType="textPersonName"
+                android:drawableRight="@drawable/ic_local_phone_black_24dp"
                 android:padding="3dp" />
         </com.google.android.material.textfield.TextInputLayout>
 

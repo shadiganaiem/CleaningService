@@ -12,6 +12,7 @@ import android.view.ViewStructure;
 import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -36,13 +37,14 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText Lastname;
     private TextInputEditText Email;
     private TextInputEditText Phone;
-    private TextInputEditText City;
-    private TextInputEditText Address;
 
     //User Details
     private TextInputEditText Username;
     private TextInputEditText Password;
     private TextInputEditText RePassword;
+
+    //Switch
+    private Switch IsEmployee;
 
     //Google Places API Client
     PlacesClient placesClient;
@@ -59,20 +61,22 @@ public class RegisterActivity extends AppCompatActivity {
         Lastname = findViewById(R.id.Lastname);
         Email = findViewById(R.id.Email);
         Phone= findViewById(R.id.Phone);
-        City= findViewById(R.id.City);
-        Address= findViewById(R.id.Address);
         Username = findViewById(R.id.Username);
         Password = findViewById(R.id.Password);
         RePassword = findViewById(R.id.RePassword);
+
+        IsEmployee = findViewById(R.id.Type);
 
         _context = new ApplicationDbContext();
         _validator = new Validator();
         GooglePlacesApiConnect();
     }
 
-    //
+    /**
+     * Validate all Inputs And get the next register step
+     * @param v
+     */
     public void NextStepRegister(View v) {
-
 
         String regex = "^[\\p{L} ]+$";
         boolean status = true;
@@ -80,10 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
         if(!_validator.InputValidate(Firstname,regex))
             status = false;
         if(!_validator.InputValidate(Lastname,regex))
-            status = false;
-        if(!_validator.InputValidate(City,regex))
-            status = false;
-        if(!_validator.InputValidate(Address,regex))
             status = false;
         if(GetInputText(Phone).length() != 10){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>מספר נייד לא תקין</font>");
@@ -102,11 +102,19 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * back to first register step
+     * @param v
+     */
     public void PreviousStepRegister(View v) {
         FirstStep.setVisibility(View.VISIBLE);
         SecondStep.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * add User to Database
+     * @param v
+     */
     public void AddUser(View v) {
 
         String regex = "^[\\p{L}0-9_]+$";
@@ -122,21 +130,25 @@ public class RegisterActivity extends AppCompatActivity {
             status = false;
         }
         if (status){
-            String query = "INSERT INTO Customers(Firstname,Lastname,Email,Phone,City,Address) "+
+            String table  = IsEmployee.isChecked() ?  "Employees" : "Customers";
+            String tableId = IsEmployee.isChecked() ? "EmployeeId" : "CustomerId";
+
+            String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
                 "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
-                    "','"+GetInputText(Phone)+"','"+GetInputText(City)+"','"+GetInputText(Address)+"');"+
-                "INSERT INTO Users(Username,CustomerId,Password,Status) " + "SELECT '"+GetInputText(Username)+"',MAX(ID),'"+GetInputText(Password)+"','1' " +
-                "FROM Customers WHERE Customers.Phone = '"+GetInputText(Phone)+"';";
+                    "','"+GetInputText(Phone)+"');"+
+                "INSERT INTO Users(Username,"+ tableId +",Password,Status) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','1' " +
+                "FROM "+ table +" WHERE +"+table+".Phone = '"+GetInputText(Phone)+"';";
 
-            _context.ExecuteInsertData(query);
-            Intent intent = new Intent(this,LoginActivity.class);
-            intent.putExtra("flag", true);
-            startActivity(intent);
-
+            if(_context.ExecuteInsertData(query)){
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.putExtra("flag", true);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
-
 
     /**
      * @param editText
@@ -146,7 +158,9 @@ public class RegisterActivity extends AppCompatActivity {
         return editText.getText().toString();
     }
 
-
+    /**
+     * Google Places API connect
+     */
     public void GooglePlacesApiConnect(){
         String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
 
@@ -172,5 +186,4 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
 }
