@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewStructure;
-import android.view.ViewStub;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -27,18 +24,22 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Arrays;
 
 public class RegisterActivity extends AppCompatActivity {
-    private LinearLayout FirstStep;
-    private LinearLayout SecondStep;
+
+    //Database context
     private ApplicationDbContext _context = null;
+
+    //Inputs validator class
     private Validator _validator = null;
 
-    //Customer Details
+    //Registration steps layouts
+    private LinearLayout FirstStep;
+    private LinearLayout SecondStep;
+
+    //User input Details
     private TextInputEditText Firstname;
     private TextInputEditText Lastname;
     private TextInputEditText Email;
     private TextInputEditText Phone;
-
-    //User Details
     private TextInputEditText Username;
     private TextInputEditText Password;
     private TextInputEditText RePassword;
@@ -54,9 +55,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        _context = new ApplicationDbContext();
+        _validator = new Validator();
+        GooglePlacesApiConnect();
+
+        //layouts
         FirstStep = findViewById(R.id.FirstStep);
         SecondStep = findViewById(R.id.SecondStep);
-
+        //User inputs
         Firstname = findViewById(R.id.Firstname);
         Lastname = findViewById(R.id.Lastname);
         Email = findViewById(R.id.Email);
@@ -64,12 +70,8 @@ public class RegisterActivity extends AppCompatActivity {
         Username = findViewById(R.id.Username);
         Password = findViewById(R.id.Password);
         RePassword = findViewById(R.id.RePassword);
-
+        //user type
         IsEmployee = findViewById(R.id.Type);
-
-        _context = new ApplicationDbContext();
-        _validator = new Validator();
-        GooglePlacesApiConnect();
     }
 
     /**
@@ -151,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
+     * get input text string
      * @param editText
      * @return InputValue
      */
@@ -159,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * Google Places API connect
+     * Google Places API connect and initialize
      */
     public void GooglePlacesApiConnect(){
         String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
