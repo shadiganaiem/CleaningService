@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 OpenHomeActivity();
             }
         });
-
-
-
     }
 
     public void OpenHomeActivity(){

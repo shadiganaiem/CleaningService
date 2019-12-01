@@ -21,7 +21,9 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -72,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         RePassword = findViewById(R.id.RePassword);
         //user type
         IsEmployee = findViewById(R.id.Type);
+
     }
 
     /**
@@ -134,14 +137,18 @@ public class RegisterActivity extends AppCompatActivity {
         if (status){
             String table  = IsEmployee.isChecked() ?  "Employees" : "Customers";
             String tableId = IsEmployee.isChecked() ? "EmployeeId" : "CustomerId";
-
+            String activationCode = GenerateActivationCode();
             String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
                 "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
                     "','"+GetInputText(Phone)+"');"+
-                "INSERT INTO Users(Username,"+ tableId +",Password,Status) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','1' " +
-                "FROM "+ table +" WHERE +"+table+".Phone = '"+GetInputText(Phone)+"';";
+                "INSERT INTO Users(Username,"+ tableId +",Password,Status,ActivationCode) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','0','"
+                    +activationCode+"' " +
+                "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
+
+
 
             if(_context.ExecuteInsertData(query)){
+                SendConfirmationEmail(GetInputText(Email),activationCode);
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.putExtra("flag", true);
                 startActivity(intent);
@@ -152,6 +159,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
+    private String GenerateActivationCode(){
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
+    }
     /**
      * get input text string
      * @param editText
@@ -188,5 +203,22 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void SendConfirmationEmail(String userEmail,String activationCode ){
+        try {
+            String customerName = GetInputText(Firstname) + " " + GetInputText(Lastname);
+            String body = "Dear "+customerName+",\n" +
+                    "Thank you for choosing our system.\n\n"
+                    +"To activate your account please enter the activation code below: \n"
+                    +activationCode;
+            MailService _mailService = new MailService("cleaningservice.project.sce@gmail.com", "Project@00");
+            _mailService.sendMail("CleaningService Activation Email",
+                    body,
+                    "CleaningService",
+                    userEmail);
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
     }
 }
