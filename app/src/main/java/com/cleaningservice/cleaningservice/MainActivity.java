@@ -23,7 +23,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
     private Button SignUpButton;
     private Button SignInButton;
-    private Button HomeButton;
 
 
     @Override
@@ -33,19 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
         SignUpButton= findViewById(R.id.SignUpBtn);
         SignInButton= findViewById(R.id.SignInBtn);
-        HomeButton= findViewById(R.id.HomeBtn);
-        HomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenHomeActivity();
-            }
-        });
+
     }
 
-    public void OpenHomeActivity(){
-        Intent intent = new Intent(this,HomeActivity.class);
-        startActivity(intent);
-    }
 
     public void OpenRegisterActivity(View v){
         Intent intent = new Intent(this,RegisterActivity.class);

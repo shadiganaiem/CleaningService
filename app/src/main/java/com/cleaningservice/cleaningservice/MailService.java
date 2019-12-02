@@ -16,13 +16,14 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import android.se.omapi.Session;
+
 import android.util.Log;
 
 public class MailService extends javax.mail.Authenticator {
     private String mailhost = "smtp.gmail.com";
     private String user;
     private String password;
+    private Session session;
 
 
     static {
