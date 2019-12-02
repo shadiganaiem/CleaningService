@@ -27,7 +27,16 @@ public class LoginActivity extends AppCompatActivity {
         Username = findViewById(R.id.LoginUsername);
         Password = findViewById(R.id.LoginPassword);
 
-        _context = new ApplicationDbContext();
+        try{
+            _context = new ApplicationDbContext(
+                    Util.DBProperty("db.driver",getApplicationContext()),
+                    Util.DBProperty("db.url",getApplicationContext()),
+                    Util.DBProperty("db.username",getApplicationContext()),
+                    Util.DBProperty("db.password",getApplicationContext()));
+        }catch (Exception ex){
+            Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        }
+
         _validator = new Validator();
         Intent intent = getIntent();
         if(intent.getBooleanExtra("flag", false)){
@@ -60,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
            }
            catch (Exception ex){
                 ex.printStackTrace();
+               Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
            }
 
         }

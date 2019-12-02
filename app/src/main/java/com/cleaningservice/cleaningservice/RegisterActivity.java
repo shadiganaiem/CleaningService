@@ -57,7 +57,15 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        _context = new ApplicationDbContext();
+        try{
+            _context = new ApplicationDbContext(
+                    Util.DBProperty("db.driver",getApplicationContext()),
+                    Util.DBProperty("db.url",getApplicationContext()),
+                    Util.DBProperty("db.username",getApplicationContext()),
+                    Util.DBProperty("db.password",getApplicationContext()));
+        }catch (Exception ex){
+            Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        }
         _validator = new Validator();
         GooglePlacesApiConnect();
 

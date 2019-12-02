@@ -4,26 +4,31 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ResourceBundle;
 
 import javax.xml.validation.Validator;
 
-public class ApplicationDbContext {
+public class ApplicationDbContext extends AppCompatActivity {
     private Connection _connection;
     private String query;
 
-    public ApplicationDbContext(){
+    public ApplicationDbContext(String driver,String url,String username,String password){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Connection connection = null;
         String connectionURL = null;
         try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            connectionURL = "jdbc:jtds:sqlserver://82.80.211.84/CleaningService;user=CleaningService_User;password=CleaningService_User";
+            //Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
+            //connectionURL = "jdbc:jtds:sqlserver://82.80.211.84/CleaningService;user=CleaningService_User;password=CleaningService_User";
 
+            Class.forName(driver).newInstance();
+            connectionURL = url+";user="+username+";password="+password+";";
             connection = DriverManager.getConnection(connectionURL);
         }catch (Exception ex){
             String e = ex.getMessage();
