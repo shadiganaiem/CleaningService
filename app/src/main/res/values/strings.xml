@@ -16,6 +16,7 @@
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
     <string name="End">יצירה</string>
+    <string name="Login">התחבר</string>
     <string name="title_activity_homes">HomesActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

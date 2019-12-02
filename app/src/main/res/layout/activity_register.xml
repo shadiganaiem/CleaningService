@@ -8,229 +8,82 @@
     android:background="@drawable/gradient"
     tools:context=".RegisterActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="60dp"
-        android:contentDescription="@string/MainLogo"
-        app:layout_constraintBottom_toTopOf="@+id/FirstStep"
+    <LinearLayout
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo" />
+        android:layout_marginTop="50dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/MainLogo"
+            app:srcCompat="@mipmap/logo"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/FirstStep"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:visibility="visible">
 
-        <Button
-            android:id="@+id/NextBtn"
-            android:layout_width="wrap_content"
+        <include
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/primary_btn"
-            android:onClick="NextStepRegister"
-            android:text="@string/NextBtn"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            layout="@layout/register_first_step"/>
 
-        <EditText
-            android:id="@+id/Address"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/Address"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/NextBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/City"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/City"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Address"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/Phone"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/Phone"
-            android:inputType="phone"
-            app:layout_constraintBottom_toTopOf="@+id/City"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/Email"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/Email"
-            android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@+id/Phone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/Lastname"
-            android:layout_width="110dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/LastName"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Email"
-            app:layout_constraintEnd_toStartOf="@+id/Firstname"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/Firstname"
-            android:layout_width="110dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/FirstName"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/Lastname" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/SecondStep"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="invisible"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:visibility="invisible">
 
-        <EditText
-            android:id="@+id/Username"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="@string/Username"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:hint="@string/Username" />
-
-        <EditText
-            android:id="@+id/Password"
-            android:layout_width="250dp"
+        <include
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="@string/Password"
-            android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/RePassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            layout="@layout/register_second_step"
+            />
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/RePassword"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="@string/RePassword"
-            android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/Type"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Switch
-            android:id="@+id/Type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="130dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/accountType"
-            app:layout_constraintBottom_toTopOf="@+id/Create"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/Create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/success_btn"
-            android:onClick="AddUser"
-            android:text="@string/End"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/Previous"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/Previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/danger_btn"
-            android:onClick="PreviousStepRegister"
-            android:text="@string/Previous"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/Create" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

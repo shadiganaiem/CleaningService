@@ -34,38 +34,37 @@ public class ApplicationDbContext {
     }
 
     /**
-     * Get Current Connection Object to Database
-     * @return
+     * Execute an executable Query.
+     * @param query
      */
-    public Connection getConnection(){
-        return _connection;
+    public boolean ExecuteInsertData(String query){
+
+        try {
+            Statement stmt = _connection.createStatement();
+            stmt.executeUpdate(query);
+            _connection.close();
+            return true;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
     }
 
     /**
      * Execute an executable Query.
      * @param query
      */
-    public void ExecuteQuery(String query){
+    public ResultSet ExecuteSelectQuery(String query){
 
-        //this.query  = query;
         try {
             Statement stmt = _connection.createStatement();
-            stmt.executeUpdate(query);
-            _connection.close();
+            ResultSet result = stmt.executeQuery(query);
+            return result;
 
         }catch (Exception ex){
             ex.printStackTrace();
-        }
-            //InsertData insert = new InsertData();
-            //insert.execute();
-    }
-
-    private class InsertData extends AsyncTask<String,String,String>{
-        @Override
-        protected String doInBackground(String... strings){
-
-
-            return "";
+            return null;
         }
     }
 }
