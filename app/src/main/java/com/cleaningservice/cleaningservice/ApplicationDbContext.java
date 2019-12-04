@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import javax.xml.transform.Result;
 import javax.xml.validation.Validator;
 
 public class ApplicationDbContext extends AppCompatActivity {
@@ -47,7 +48,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         try {
             Statement stmt = _connection.createStatement();
             stmt.executeUpdate(query);
-            _connection.close();
             return true;
 
         }catch (Exception ex){
@@ -61,7 +61,6 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param query
      */
     public ResultSet ExecuteSelectQuery(String query){
-
         try {
             Statement stmt = _connection.createStatement();
             ResultSet result = stmt.executeQuery(query);
@@ -72,4 +71,25 @@ public class ApplicationDbContext extends AppCompatActivity {
             return null;
         }
     }
+
+    public ResultSet GetUser(int id){
+        String query  = "SELECT * FROM Users WHERE ID="+id;
+        return ExecuteSelectQuery(query);
+    }
+
+    public ResultSet GetUser(String username){
+        String query  = "SELECT * FROM Users WHERE Username='"+username+"'";
+        return ExecuteSelectQuery(query);
+    }
+    public ResultSet GetCustomer(int id){
+        String query  = "SELECT * FROM Customers WHERE ID="+id;
+        return ExecuteSelectQuery(query);
+    }
+
+    public ResultSet GetEmployee(int id){
+        String query = "SELECT * FROM Employees WHERE ID="+id;
+        return ExecuteSelectQuery(query);
+    }
+
+
 }

@@ -3,11 +3,13 @@ package com.cleaningservice.cleaningservice;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Random;
+
+import Models.UserViewModel;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -50,7 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Switch IsEmployee;
 
     //Google Places API Client
-    PlacesClient placesClient;
+    private PlacesClient placesClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
             Phone.setError(errorMsg);
             status = false;
         }
-        regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        regex = "^[A-Za-z0-9_.-]+@(.+).[A-Za-z]+$";
         if(!_validator.InputValidate(Email,regex) || GetInputText(Email).equals("")){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>דואר אלקטרוני אינו תקין</font>");
             Email.setError(errorMsg);
@@ -129,7 +134,6 @@ public class RegisterActivity extends AppCompatActivity {
      * @param v
      */
     public void AddUser(View v) {
-
         String regex = "^[\\p{L}0-9_]+$";
         boolean status = true;
 
@@ -153,13 +157,20 @@ public class RegisterActivity extends AppCompatActivity {
                     +activationCode+"' " +
                 "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
 
+            UserViewModel userViewModel = new UserViewModel();
 
 
             if(_context.ExecuteInsertData(query)){
                 SendConfirmationEmail(GetInputText(Email),activationCode);
-                Intent intent = new Intent(this,LoginActivity.class);
-                intent.putExtra("flag", true);
-                startActivity(intent);
+                try{
+                    userViewModel.User =  _context.GetUser(GetInputText(Username));
+                    userViewModel.User.next();
+                    Intent intent = new Intent(getBaseContext(), Activation.class);
+                    intent.putExtra("USER_ID", userViewModel.User.getInt("ID"));
+                    startActivity(intent);
+                }catch (Exception ex){
+                    Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
             else{
                 Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();

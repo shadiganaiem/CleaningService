@@ -22,6 +22,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
+    <string name="Activation">הפעלת חשבון</string>
+    <string name="ActivationCode">קוד אימות</string>
+    <string name="Activation_detail">נא להזין את קוד האימות שקיבלת במייל</string>
+    <string name="Activation_not_sent_details">שלח קוד אימות חדש</string>
+    <string name="Activation_not_sent_title">\? לא קיבלת מייל</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

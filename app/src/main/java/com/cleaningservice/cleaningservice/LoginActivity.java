@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.ResultSet;
+
+import Models.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText Username;
@@ -59,8 +60,19 @@ public class LoginActivity extends AppCompatActivity {
 
            try{
                if(result.next()){
-                   Intent intent = new Intent(this,HomeActivity.class);
-                   startActivity(intent);
+                   UserViewModel userViewModel = new UserViewModel();
+                   userViewModel.User = _context.GetUser((result.getInt("ID")));
+                   userViewModel.User.next();
+
+                   if(result.getBoolean("Status")){
+                       Intent intent = new Intent(this,HomeActivity.class);
+                       startActivity(intent);
+                   }
+                   else{
+                       Intent intent = new Intent(getBaseContext(), Activation.class);
+                       intent.putExtra("USER_ID", userViewModel.User.getInt("ID"));
+                       startActivity(intent);
+                   }
                }
                else{
                    Username.setError("שם משתמש וסיסמה לא תואמות");
