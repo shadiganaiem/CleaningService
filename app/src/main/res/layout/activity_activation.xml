@@ -65,7 +65,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
-                android:background="#FFFFFF"
                 android:gravity="center"
                 android:onClick="ReSendActicationCode"
                 android:text="@string/Activation_not_sent_details"
