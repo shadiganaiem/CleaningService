@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -21,7 +22,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    private Button SignUpButton;
+    private TextView SignUpButton;
     private Button SignInButton;
 
 
@@ -30,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SignUpButton= findViewById(R.id.SignUpBtn);
-        SignInButton= findViewById(R.id.SignInBtn);
+          SignUpButton= findViewById(R.id.SignUpBtn);
+          SignInButton= findViewById(R.id.SignInBtn);
 
     }
 

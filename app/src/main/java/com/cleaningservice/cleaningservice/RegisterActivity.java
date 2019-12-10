@@ -2,6 +2,7 @@ package com.cleaningservice.cleaningservice;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,8 +35,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Validator _validator = null;
 
     //Registration steps layouts
-    private LinearLayout FirstStep;
-    private LinearLayout SecondStep;
+    private ConstraintLayout FirstStep;
+    private ConstraintLayout SecondStep;
 
     //User input Details
     private TextInputEditText Firstname;
@@ -59,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         _context = new ApplicationDbContext();
         _validator = new Validator();
-        GooglePlacesApiConnect();
+        //GooglePlacesApiConnect();
 
         //layouts
         FirstStep = findViewById(R.id.FirstStep);
@@ -179,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
     /**
      * Google Places API connect and initialize
      */
-    public void GooglePlacesApiConnect(){
+/*    public void GooglePlacesApiConnect(){
         String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
 
         if(!Places.isInitialized()){
@@ -188,7 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
         placesClient = Places.createClient(this);
 
         final AutocompleteSupportFragment autocompleteSupportFragment=
-                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+              //  (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.LAT_LNG,Place.Field.NAME));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -203,7 +204,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     public void SendConfirmationEmail(String userEmail,String activationCode ){
         try {
@@ -221,4 +222,10 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e("SendMail", e.getMessage(), e);
         }
     }
+
+    public void OpenMainActivity(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
 }

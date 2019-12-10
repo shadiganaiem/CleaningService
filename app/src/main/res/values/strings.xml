@@ -7,21 +7,29 @@
     <string name="LastName">שם משפחה</string>
     <string name="Email">דוא"ל</string>
     <string name="Phone">נייד</string>
-    <string name="Username">שם משתמש</string>
-    <string name="Password">סיסמה</string>
-    <string name="RePassword">אימות סיסמה</string>
+    <string name="Username">User name</string>
+    <string name="Password">Password</string>
+    <string name="RePassword">Re enter password</string>
     <string name="City">ישוב</string>
     <string name="Address">רחוב</string>
-    <string name="NextBtn">הבא</string>
+    <string name="NextBtn">Next</string>
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
     <string name="End">יצירה</string>
-    <string name="Login">התחבר</string>
+    <string name="Login">Login</string>
     <string name="title_activity_homes">HomesActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
+    <string name="member">You are not a member?</string>
+    <string name="register">Register</string>
+    <string name="hello">Hello There!</string>
+    <string name="but">back button</string>
+    <string name="join">Join Now</string>
+    <string name="done">Almost Done</string>
+    <string name="logoword">Cleaning Services</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
