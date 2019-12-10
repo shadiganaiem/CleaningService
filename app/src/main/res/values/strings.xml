@@ -22,6 +22,14 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
+    <string name="member">You are not a member?</string>
+    <string name="register">Register</string>
+    <string name="hello">Hello There!</string>
+    <string name="but">back button</string>
+    <string name="join">Join Now</string>
+    <string name="done">Almost Done</string>
+    <string name="logoword">Cleaning Services</string>
+
     <string name="Activation">הפעלת חשבון</string>
     <string name="ActivationCode">קוד אימות</string>
     <string name="Activation_detail">נא להזין את קוד האימות שקיבלת במייל</string>

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,6 +19,7 @@ import Models.UserViewModel;
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText Username;
     private TextInputEditText Password;
+
 
     private ApplicationDbContext _context = null;
     private Validator _validator = null;
@@ -94,5 +98,15 @@ public class LoginActivity extends AppCompatActivity {
      */
     public String GetInputText(TextInputEditText editText){
         return editText.getText().toString();
+    }
+
+    public void OpenRegisterActivity(View v){
+        Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void OpenMainActivity(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
