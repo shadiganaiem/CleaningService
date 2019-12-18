@@ -5,16 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.sql.ResultSet;
-
-import Models.UserViewModel;
+import Models.User;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText Username;
@@ -64,17 +58,15 @@ public class LoginActivity extends AppCompatActivity {
 
            try{
                if(result.next()){
-                   UserViewModel userViewModel = new UserViewModel();
-                   userViewModel.User = _context.GetUser((result.getInt("ID")));
-                   userViewModel.User.next();
+                   User user = _context.GetUser((result.getInt("ID")));
 
-                   if(result.getBoolean("Status")){
+                   if(user.StatusId == 2){
                        Intent intent = new Intent(this,HomeActivity.class);
                        startActivity(intent);
                    }
                    else{
                        Intent intent = new Intent(getBaseContext(), Activation.class);
-                       intent.putExtra("USER_ID", userViewModel.User.getInt("ID"));
+                       intent.putExtra("USER_ID", user.ID);
                        startActivity(intent);
                    }
                }

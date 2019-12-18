@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CleaningService</string>
+    <string name="Activation">تفعيل الحساب</string>
+    <string name="ActivationCode">كود التفعيل</string>
+    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرف في البريد الاكتروني</string>
+    <string name="Activation_not_sent_details">ارسل كود تفعيل جديد</string>
+    <string name="Activation_not_sent_title">لم يصلني بريد الكتروني</string>
+    <string name="Address">العنوان</string>
+    <string name="City">البلد</string>
+    <string name="Email">البريد الاكتروني</string>
+    <string name="End">انشاء</string>
+    <string name="FirstName">الاسم الشخصي</string>
+    <string name="LastName">اسم العائلة</string>
+    <string name="Login">اتصال</string>
+    <string name="NextBtn">التالي</string>
+    <string name="Password">كلمة المرور</string>
+    <string name="Phone">رقم الهاتف</string>
+    <string name="Previous">السابق</string>
+    <string name="RePassword">تأكيد كلمة المرور</string>
+    <string name="Username">اسم المستخدم</string>
+    <string name="accountType">تعريف كموظف</string>
+</resources>

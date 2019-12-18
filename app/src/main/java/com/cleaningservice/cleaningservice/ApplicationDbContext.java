@@ -1,19 +1,17 @@
 package com.cleaningservice.cleaningservice;
 
-import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ResourceBundle;
 
-import javax.xml.transform.Result;
-import javax.xml.validation.Validator;
+import Models.Customer;
+import Models.Employee;
+import Models.Status;
+import Models.User;
 
 public class ApplicationDbContext extends AppCompatActivity {
     private Connection _connection;
@@ -72,24 +70,116 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
     }
 
-    public ResultSet GetUser(int id){
+    public User GetUser(int id){
         String query  = "SELECT * FROM Users WHERE ID="+id;
-        return ExecuteSelectQuery(query);
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                User user = new User(
+                        result.getString("Username"),
+                        result.getString("Password"),
+                        result.getString("ActivationCode"),
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("EmployeeId"),
+                        result.getInt("StatusId")
+                );
+                user.status = GetStatus(user.StatusId);
+                user.employee = GetEmployee(user.EmployeeId);
+                user.customer = GetCustomer(user.CustomerId);
+
+                return user;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new User();
     }
 
-    public ResultSet GetUser(String username){
+    public User GetUser(String username){
         String query  = "SELECT * FROM Users WHERE Username='"+username+"'";
-        return ExecuteSelectQuery(query);
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                User user = new User(
+                        result.getString("Username"),
+                        result.getString("Password"),
+                        result.getString("ActivationCode"),
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("EmployeeId"),
+                        result.getInt("StatusId")
+                );
+
+                return user;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new User();
     }
-    public ResultSet GetCustomer(int id){
+
+    public Customer GetCustomer(int id){
         String query  = "SELECT * FROM Customers WHERE ID="+id;
-        return ExecuteSelectQuery(query);
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                Customer customer = new Customer(
+                        result.getInt("ID"),
+                        result.getString("Firstname"),
+                        result.getString("Lastname"),
+                        result.getString("Email"),
+                        result.getString("Phone")
+                );
+
+                return customer;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new Customer();
     }
 
-    public ResultSet GetEmployee(int id){
+    public Employee GetEmployee(int id){
         String query = "SELECT * FROM Employees WHERE ID="+id;
-        return ExecuteSelectQuery(query);
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                Employee employee = new Employee(
+                        result.getInt("ID"),
+                        result.getString("Firstname"),
+                        result.getString("Lastname"),
+                        result.getString("Email"),
+                        result.getString("Phone")
+                );
+                return employee;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new Employee();
     }
 
+    public Status GetStatus(int id){
+        String query = "SELECT * FROM Statuses WHERE ID="+id;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                Status status = new Status(
+                        result.getInt("ID"),
+                        result.getString("Name")
+                );
+                return status;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new Status();
+    }
 
 }

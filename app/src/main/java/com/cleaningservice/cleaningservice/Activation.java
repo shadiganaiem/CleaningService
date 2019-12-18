@@ -16,15 +16,17 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Random;
 
-import Models.UserViewModel;
+import Models.User;
 
 public class Activation extends AppCompatActivity {
 
     private TextInputEditText codeInput;
-    private UserViewModel userViewModel;
 
     //Database context
     private ApplicationDbContext _context = null;
+
+    //Current User
+    private User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +44,7 @@ public class Activation extends AppCompatActivity {
         }
 
         int userId = getIntent().getIntExtra("USER_ID",0);
-        userViewModel = new UserViewModel();
-        userViewModel.User = _context.GetUser(userId);
-
-        try{
-            userViewModel.User.next();
-            int id = userViewModel.User.getInt("CustomerId");
-            if(id != 0){
-                userViewModel.Customer = _context.GetCustomer(id);
-                userViewModel.Customer.next();
-            }
-            id = userViewModel.User.getInt("EmployeeId");
-            if(id != 0){
-                userViewModel.Employee = _context.GetEmployee(id);
-                userViewModel.Employee.next();
-            }
-        }
-        catch (Exception ex){
-            Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
-        }
-
+        user = _context.GetUser(userId);
 
         codeInput = findViewById(R.id.code);
         codeInput.addTextChangedListener(new TextWatcher() {
@@ -80,7 +63,7 @@ public class Activation extends AppCompatActivity {
                 if(s.length() == 6) {
                     try {
 
-                        if (s.toString().equals(userViewModel.User.getString("ActivationCode"))){
+                        if (s.toString().equals(user.ActivationCode)){
                             if(ActivateAccount()) {
                                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                                 startActivity(intent);
@@ -104,7 +87,7 @@ public class Activation extends AppCompatActivity {
 
     private boolean ActivateAccount(){
         try{
-            String query = "UPDATE USERS SET STATUS = 1 WHERE ID = "+userViewModel.User.getInt("ID")+";";
+            String query = "UPDATE USERS SET StatusId = 2 WHERE ID = "+user.ID+";";
 
             if(_context.ExecuteInsertData(query)){
                 SendActivationEmail();
@@ -123,11 +106,11 @@ public class Activation extends AppCompatActivity {
     public void SendActivationEmail(){
         try {
             String userEmail ="";
-            if(userViewModel.Employee != null){
-                userEmail = userViewModel.Employee.getString("Email");
+            if(user.EmployeeId != 0){
+                userEmail = user.employee.Email;
             }
-            else if(userViewModel.Customer != null){
-                userEmail = userViewModel.Customer.getString(("Email"));
+            else if(user.customer !=  null){
+                userEmail = user.customer.Email;
             }
 
             String body = "Dear Customer \n" +
@@ -156,16 +139,16 @@ public class Activation extends AppCompatActivity {
 
             String customerName = "";
             String userEmail= "";
-            if(userViewModel.Employee != null){
-                customerName = userViewModel.Employee.getString("Firstname") + " " +userViewModel.Employee.getString("Lastname");
-                userEmail = userViewModel.Employee.getString("Email");
+            if(user.EmployeeId != 0){
+                customerName = user.employee.Firstname + " " +user.employee.Lastname;
+                userEmail = user.employee.Email;
             }
-            else if(userViewModel.Customer != null){
-                customerName = userViewModel.Customer.getString("Firstname") + " " +userViewModel.Customer.getString("Lastname");
-                userEmail = userViewModel.Customer.getString("Email");
+            else if(user.CustomerId != 0){
+                customerName = user.customer.Firstname + " " +user.customer.Lastname;
+                userEmail = user.customer.Email;
             }
 
-            String query = "UPDATE Users SET ActivationCode = '"+activationCode+"' WHERE ID="+userViewModel.User.getInt("ID")+";";
+            String query = "UPDATE Users SET ActivationCode = '"+activationCode+"' WHERE ID="+user.ID+";";
             if(_context.ExecuteInsertData(query)){
                 String body = "Dear "+customerName+",\n" +
                         "Thank you for choosing our system.\n\n"
@@ -177,8 +160,7 @@ public class Activation extends AppCompatActivity {
                     "CleaningService",
                     userEmail);
 
-                userViewModel.User = _context.GetUser(userViewModel.User.getInt("ID"));
-                userViewModel.User.next();
+                user = _context.GetUser(user.ID);
                 Toast.makeText(getApplicationContext(),"קוד חדש נשלח לך בהצלחה", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
