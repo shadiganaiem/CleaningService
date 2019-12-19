@@ -10,12 +10,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="  profile fragment"
-        android:textColor="#F44336"
+        android:text=" profile"
+        android:textColor="#FF9800"
         android:textSize="30sp" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </FrameLayout>

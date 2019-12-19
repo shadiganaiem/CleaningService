@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 public class ProfileFragment extends Fragment {
 
 
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -27,5 +28,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
+
 
 }
