@@ -5,14 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.sql.ResultSet;
+import Models.User;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText Username;
@@ -30,10 +26,16 @@ public class LoginActivity extends AppCompatActivity {
         Username = findViewById(R.id.LoginUsername);
         Password = findViewById(R.id.LoginPassword);
 
+        try{
+            _context = new ApplicationDbContext(
+                    Util.DBProperty("db.driver",getApplicationContext()),
+                    Util.DBProperty("db.url",getApplicationContext()),
+                    Util.DBProperty("db.username",getApplicationContext()),
+                    Util.DBProperty("db.password",getApplicationContext()));
+        }catch (Exception ex){
+            Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        }
 
-
-
-        _context = new ApplicationDbContext();
         _validator = new Validator();
         Intent intent = getIntent();
         if(intent.getBooleanExtra("flag", false)){
@@ -56,8 +58,17 @@ public class LoginActivity extends AppCompatActivity {
 
            try{
                if(result.next()){
-                   Intent intent = new Intent(this,HomeActivity.class);
-                   startActivity(intent);
+                   User user = _context.GetUser((result.getInt("ID")));
+
+                   if(user.StatusId == 2){
+                       Intent intent = new Intent(this,HomeActivity.class);
+                       startActivity(intent);
+                   }
+                   else{
+                       Intent intent = new Intent(getBaseContext(), Activation.class);
+                       intent.putExtra("USER_ID", user.ID);
+                       startActivity(intent);
+                   }
                }
                else{
                    Username.setError("שם משתמש וסיסמה לא תואמות");
@@ -66,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
            }
            catch (Exception ex){
                 ex.printStackTrace();
+               Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
            }
 
         }

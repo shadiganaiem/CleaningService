@@ -18,7 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ImagePickerActivity"/>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".FavoritesListActivity" />
+        <activity android:name=".Activation" />
+        <activity android:name=".FindCleanerActivity" />
+        <activity android:name=".ImagePickerActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
         <!--
@@ -33,14 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- cache directory file provider paths -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- cache directory file provider paths -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -50,6 +50,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

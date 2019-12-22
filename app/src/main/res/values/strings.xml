@@ -7,16 +7,16 @@
     <string name="LastName">שם משפחה</string>
     <string name="Email">דוא"ל</string>
     <string name="Phone">נייד</string>
-    <string name="Username">User name</string>
-    <string name="Password">Password</string>
-    <string name="RePassword">Re enter password</string>
+    <string name="Username">שם משתמש</string>
+    <string name="Password">סיסמה</string>
+    <string name="RePassword">אימות סיסמה</string>
     <string name="City">ישוב</string>
     <string name="Address">רחוב</string>
-    <string name="NextBtn">Next</string>
+    <string name="NextBtn">הבא</string>
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
     <string name="End">יצירה</string>
-    <string name="Login">Login</string>
+    <string name="Login">התחבר</string>
     <string name="title_activity_homes">HomesActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -30,6 +30,11 @@
     <string name="done">Almost Done</string>
     <string name="logoword">Cleaning Services</string>
 
+    <string name="Activation">הפעלת חשבון</string>
+    <string name="ActivationCode">קוד אימות</string>
+    <string name="Activation_detail">נא להזין את קוד האימות שקיבלת במייל</string>
+    <string name="Activation_not_sent_details">שלח קוד אימות חדש</string>
+    <string name="Activation_not_sent_title">\? לא קיבלת מייל</string>
 
     <string name="action_settings">Settings</string>
     <string name="profile_desc">Rowan Sebastian Atkinson CBE is an English actor,  comedian and screenwriter</string>
@@ -54,6 +59,5 @@
     <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
     <string name="go_to_settings">GOTO SETTINGS</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

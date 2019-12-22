@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CleaningService</string>
+    <string name="Activation">تفعيل الحساب</string>
+    <string name="ActivationCode">كود التفعيل</string>
+    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرف في البريد الاكتروني</string>
+    <string name="Activation_not_sent_details">ارسل كود تفعيل جديد</string>
+    <string name="Activation_not_sent_title">لم يصلني بريد الكتروني</string>
+    <string name="Address">العنوان</string>
+    <string name="City">البلد</string>
+    <string name="Email">البريد الاكتروني</string>
+    <string name="End">انشاء</string>
+    <string name="FirstName">الاسم الشخصي</string>
+    <string name="LastName">اسم العائلة</string>
+    <string name="Login">اتصال</string>
+    <string name="NextBtn">التالي</string>
+    <string name="Password">كلمة المرور</string>
+    <string name="Phone">رقم الهاتف</string>
+    <string name="Previous">السابق</string>
+    <string name="RePassword">تأكيد كلمة المرور</string>
+    <string name="Username">اسم المستخدم</string>
+    <string name="accountType">تعريف كموظف</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="profile_desc">Rowan Sebastian Atkinson CBE is an English actor,  comedian and screenwriter</string>
+    <string name="profile_title">Mr Bean</string>
+    <string name="posts">posts</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+
+    <!-- font families -->
+    <string name="font_family_light">sans-serif-light</string>
+    <string name="font_family_medium">sans-serif-medium</string>
+    <string name="font_family_regular">sans-serif</string>
+    <string name="font_family_condensed">sans-serif-condensed</string>
+    <string name="font_family_black">sans-serif-black</string>
+    <string name="font_family_thin">sans-serif-thin</string>
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+
+    <string name="title_activity_homes">HomesActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_task">TaskActivity</string>
+    <string name="member">You are not a member?</string>
+    <string name="register">Register</string>
+    <string name="hello">Hello There!</string>
+    <string name="but">back button</string>
+    <string name="join">Join Now</string>
+    <string name="done">Almost Done</string>
+    <string name="logoword">Cleaning Services</string>
+
+    <string name="התחברות">התחברות</string>
+    <string name="הרשמה">הרשמה</string>
+    <string name="MainLogo">MainLogo</string>
+</resources>

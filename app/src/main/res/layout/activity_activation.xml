@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/MainLogo"
+            app:srcCompat="@mipmap/lock" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amatic_sc_bold"
+            android:gravity="center"
+            android:text="@string/Activation"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amatic_sc_bold"
+            android:gravity="center"
+            android:text="@string/Activation_detail"
+            android:textSize="30dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ActivationCode"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/sendCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="ReSendActicationCode"
+                android:text="@string/Activation_not_sent_details"
+                android:textColor="#FF608BDC"
+                android:textSize="15dp"
+                android:visibility="visible" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="10dp"
+            android:visibility="visible" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
