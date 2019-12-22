@@ -3,11 +3,14 @@ package com.cleaningservice.cleaningservice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import java.sql.ResultSet;
+
+import Authentications.Preferences;
 import Models.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -62,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
                    if(user.StatusId == 2){
                        Intent intent = new Intent(this,HomeActivity.class);
+                       Preferences sp = new Preferences();
+                       sp.SetUserID(this,user.ID,user.CustomerId!=0?true:false);
                        startActivity(intent);
                    }
                    else{

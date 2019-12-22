@@ -21,21 +21,30 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.Arrays;
 
+import Authentications.Preferences;
+
 public class MainActivity extends AppCompatActivity {
     private TextView SignUpButton;
     private Button SignInButton;
+    private Preferences sp;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp = new Preferences();
+        if(sp.GetLoggedInUserID(this) != 0){
+            Intent intent = new Intent(this,HomeActivity.class);
+            Preferences sp = new Preferences();
+            startActivity(intent);
+        }
 
           SignUpButton= findViewById(R.id.SignUpBtn);
           SignInButton= findViewById(R.id.SignInBtn);
 
     }
-
 
     public void OpenRegisterActivity(View v){
         Intent intent = new Intent(this,RegisterActivity.class);
