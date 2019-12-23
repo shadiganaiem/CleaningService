@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Random;
 
+import Authentications.Preferences;
 import Models.User;
 
 public class Activation extends AppCompatActivity {
@@ -66,6 +67,8 @@ public class Activation extends AppCompatActivity {
                         if (s.toString().equals(user.ActivationCode)){
                             if(ActivateAccount()) {
                                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                                Preferences sp = new Preferences();
+                                sp.SetUserID(getApplicationContext(),user.ID,user.CustomerId != 0 ? true : false);
                                 startActivity(intent);
                             }
                             else{

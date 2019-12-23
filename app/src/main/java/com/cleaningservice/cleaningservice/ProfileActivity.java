@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,11 +34,14 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.io.IOException;
 import java.util.List;
 
+import Authentications.Preferences;
 import Models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static Authentications.Preferences.GetLoggedInUserID;
+import static Authentications.Preferences.isCustomer;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -101,7 +105,31 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
         }
 
-       // User user =_context.GetUser();
+        if(GetLoggedInUserID(this)!=0){
+            User user =_context.GetUser(GetLoggedInUserID(this));
+            TextView name = findViewById(R.id.name);
+            TextView userType = findViewById(R.id.user_type);
+            TextView mail = findViewById(R.id.emaill);
+            TextView phone =  findViewById(R.id.phonenum);
+
+
+            if(isCustomer(this)) {
+                name.setText(user.customer.Lastname+" "+user.customer.Firstname);
+                userType.setText("Job Provider");
+                mail.setText(user.customer.Email);
+                phone.setText(user.customer.Phone);
+            }
+            else{
+                name.setText(user.employee.Lastname+" "+user.employee.Firstname);
+                userType.setText("Employee");
+                mail.setText(user.employee.Email);
+                phone.setText(user.employee.Phone);
+            }
+        }
+        else{
+
+        }
+
 
 
         // Clearing older images from cache directory
@@ -121,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void loadProfileDefault() {
         GlideApp.with(this).load(R.drawable.baseline_account_circle_black_48)
                 .into(imgProfile);
-        imgProfile.setColorFilter(ContextCompat.getColor(this, R.color.danger));
+        imgProfile.setColorFilter(ContextCompat.getColor(this, R.color.darkblue));
     }
 
     @OnClick({R.id.img_plus, R.id.img_profile})
