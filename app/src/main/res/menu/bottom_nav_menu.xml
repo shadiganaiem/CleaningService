@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
     <item
         android:id="@+id/navigation_findcleaner"
         android:icon="@drawable/ic_create_black_24dp"
@@ -15,5 +17,5 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="Profile" />
-
+     </group>
 </menu>

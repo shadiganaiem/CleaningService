@@ -44,10 +44,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     }
 
-
-
-
-
+    
     /**
      * Execute an executable Query.
      * @param query

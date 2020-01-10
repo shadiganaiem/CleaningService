@@ -13,10 +13,14 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -46,8 +51,9 @@ import static Authentications.Preferences.GetLoggedInUserID;
 import static Authentications.Preferences.isCustomer;
 
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
+    private  DrawerLayout drawer;
     private ApplicationDbContext _context = null;
     BottomNavigationView navigation;
 
@@ -69,32 +75,19 @@ public class ProfileActivity extends AppCompatActivity {
         loadProfileDefault();
 
 
-        navigation = findViewById(R.id.bottomNav);
-        Menu menu = navigation.getMenu();
-        MenuItem item = menu.getItem(2);
-        item.setChecked(true);
+
+        Toolbar toolbar2 = findViewById(R.id.sidebar);
+        setSupportActionBar(toolbar2);
+
+        drawer=findViewById(R.id.drawer_layout);
+        NavigationView nav = findViewById(R.id.nav_view);
+        nav.setNavigationItemSelectedListener(this);
 
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
-                    case R.id.navigation_profile:
-                        break;
-                    case R.id.navigation_favlist:
-                        Intent intent = new Intent(ProfileActivity.this,FavoritesListActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.navigation_findcleaner:
-                        Intent intent2 = new Intent(ProfileActivity.this,FindCleanerActivity.class);
-                        startActivity(intent2);
-                        break;
-
-                }
-                return false;
-            }
-        });
 
 
         try {
@@ -129,12 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
 
-      //  Singleton singleton2 = new Singleton();
-       // _context = singleton2.getInstance();
-        //if(_context==null)
-        //    System.out.println("aaaaaaaaaaaaaaaaaa");
-       /// else
-           // System.out.println("nnnnnnnnnnnnnn");
 
 
         // Clearing older images from cache directory
@@ -271,6 +258,33 @@ public class ProfileActivity extends AppCompatActivity {
         Preferences.Logout(this);
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.navigation_profile:
+                break;
+            case R.id.navigation_favlist:
+                Intent intent2 = new Intent(ProfileActivity.this,FavoritesListActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.navigation_findcleaner:
+                Intent intent3 = new Intent(ProfileActivity.this,FindCleanerActivity.class);
+                startActivity(intent3);
+                break;
+        }
+        return false;
     }
 }
 
