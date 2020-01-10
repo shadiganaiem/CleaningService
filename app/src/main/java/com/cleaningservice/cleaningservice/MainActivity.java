@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = new Preferences();
-        if(sp.GetLoggedInUserID(this) != 0){
+        int userId = sp.GetLoggedInUserID(this);
+        if(userId != 0){
             Intent intent = new Intent(this,HomeActivity.class);
-            Preferences sp = new Preferences();
             startActivity(intent);
         }
 

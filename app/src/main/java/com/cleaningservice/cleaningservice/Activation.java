@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.sql.SQLException;
 import java.util.Random;
 
 import Authentications.Preferences;
@@ -34,7 +35,7 @@ public class Activation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activation);
 
-        try{
+       /* try{
             _context = new ApplicationDbContext(
                     Util.DBProperty("db.driver",getApplicationContext()),
                     Util.DBProperty("db.url",getApplicationContext()),
@@ -42,6 +43,12 @@ public class Activation extends AppCompatActivity {
                     Util.DBProperty("db.password",getApplicationContext()));
         }catch (Exception ex){
             Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        }*/
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         int userId = getIntent().getIntExtra("USER_ID",0);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import Authentications.Preferences;
 import Models.User;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         Username = findViewById(R.id.LoginUsername);
         Password = findViewById(R.id.LoginPassword);
 
-        try{
+       /* try{
             _context = new ApplicationDbContext(
                     Util.DBProperty("db.driver",getApplicationContext()),
                     Util.DBProperty("db.url",getApplicationContext()),
@@ -37,6 +38,12 @@ public class LoginActivity extends AppCompatActivity {
                     Util.DBProperty("db.password",getApplicationContext()));
         }catch (Exception ex){
             Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        }*/
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         _validator = new Validator();

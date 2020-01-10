@@ -202,4 +202,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emaill"
         app:layout_constraintVertical_bias="0.129" />
+
+    <Button
+        android:id="@+id/Previous"
+        android:layout_width="108dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/peace_btn"
+        android:onClick="Logout"
+        android:text="@string/logout"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Type"
+        app:layout_constraintVertical_bias="0.247" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

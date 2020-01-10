@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import Authentications.Preferences;
@@ -95,15 +97,12 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        try{
-            _context = new ApplicationDbContext(
-                    Util.DBProperty("db.driver",getApplicationContext()),
-                    Util.DBProperty("db.url",getApplicationContext()),
-                    Util.DBProperty("db.username",getApplicationContext()),
-                    Util.DBProperty("db.password",getApplicationContext()));
-        }catch (Exception ex){
-            Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
 
         if(GetLoggedInUserID(this)!=0){
             User user =_context.GetUser(GetLoggedInUserID(this));
@@ -130,6 +129,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
 
+      //  Singleton singleton2 = new Singleton();
+       // _context = singleton2.getInstance();
+        //if(_context==null)
+        //    System.out.println("aaaaaaaaaaaaaaaaaa");
+       /// else
+           // System.out.println("nnnnnnnnnnnnnn");
 
 
         // Clearing older images from cache directory
@@ -262,6 +267,10 @@ public class ProfileActivity extends AppCompatActivity {
         startActivityForResult(intent, 101);
     }
 
-
+    public void Logout(View view){
+        Preferences.Logout(this);
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 }
 

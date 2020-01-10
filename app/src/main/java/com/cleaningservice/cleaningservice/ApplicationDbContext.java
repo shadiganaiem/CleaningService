@@ -1,11 +1,16 @@
 package com.cleaningservice.cleaningservice;
 
+import android.content.Context;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import Models.Customer;
@@ -14,10 +19,12 @@ import Models.Status;
 import Models.User;
 
 public class ApplicationDbContext extends AppCompatActivity {
-    private Connection _connection;
-    private String query;
 
-    public ApplicationDbContext(String driver,String url,String username,String password){
+    private static ApplicationDbContext instance;
+    private Connection _connection;
+
+
+    private ApplicationDbContext(String driver,String url,String username,String password){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Connection connection = null;
@@ -36,6 +43,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         _connection = connection;
 
     }
+
+
+
+
 
     /**
      * Execute an executable Query.
@@ -181,5 +192,37 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return new Status();
     }
+
+    public Connection getConnection(){
+        return _connection;
+    }
+
+    public static ApplicationDbContext getInstance(Context context1) throws SQLException {
+        if (instance == null) {
+            try {
+                instance = new ApplicationDbContext(
+                        Util.DBProperty("db.driver", context1),
+                        Util.DBProperty("db.url", context1),
+                        Util.DBProperty("db.username", context1),
+                        Util.DBProperty("db.password", context1));
+            } catch (Exception ex) {
+                Toast.makeText(context1, "אין חיבור", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (instance.getConnection().isClosed()){
+            try {
+                instance = new ApplicationDbContext(
+                        Util.DBProperty("db.driver", context1),
+                        Util.DBProperty("db.url", context1),
+                        Util.DBProperty("db.username", context1),
+                        Util.DBProperty("db.password", context1));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
+
+
 
 }

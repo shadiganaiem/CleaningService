@@ -20,6 +20,11 @@ public class Preferences {
         editor.commit();
     }
 
+    public static void Logout(Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putInt(PREF_USER_ID,0);
+        editor.commit();
+    }
     public static int GetLoggedInUserID(Context ctx)
     {
         return getSharedPreferences(ctx).getInt(PREF_USER_ID, 0);
