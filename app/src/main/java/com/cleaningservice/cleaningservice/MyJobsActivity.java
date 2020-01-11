@@ -11,63 +11,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MyJobsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    BottomNavigationView navigation;
     private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_cleaner);
-
-       /* navigation = findViewById(R.id.bottomNav);
-        Menu menu = navigation.getMenu();
-        MenuItem item = menu.getItem(0);
-        item.setChecked(true);*/
+        setContentView(R.layout.activity_my_jobs);
 
 
-        Toolbar toolbar2 = findViewById(R.id.sidebar);
-        setSupportActionBar(toolbar2);
+        Toolbar toolbar = findViewById(R.id.sidebar);
+        setSupportActionBar(toolbar);
 
         drawer=findViewById(R.id.drawer_layout);
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
-            case R.id.navigation_profile:
-                Intent intent = new Intent(FindCleanerActivity.this,ProfileActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.navigation_favlist:
-                Intent intent2 = new Intent(FindCleanerActivity.this,FavoritesListActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.navigation_findcleaner:
-                break;
-            case R.id.navigation_myjobs:
-                Intent intent4 = new Intent(FindCleanerActivity.this, MyJobsActivity.class);
-                startActivity(intent4);
-                break;
-            case R.id.navigation_notifications:
-                Intent intent5 = new Intent(FindCleanerActivity.this, NotificationsActivity.class);
-                startActivity(intent5);
-                break;
-        }
-        return false;
     }
 
     @Override
@@ -78,5 +44,30 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.navigation_profile:
+                Intent intent = new Intent(MyJobsActivity.this,ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.navigation_favlist:
+                Intent intent2 = new Intent(MyJobsActivity.this,FavoritesListActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.navigation_findcleaner:
+                Intent intent3 = new Intent(MyJobsActivity.this,FindCleanerActivity.class);
+                startActivity(intent3);
+                break;
+            case R.id.navigation_myjobs:
+                break;
+            case R.id.navigation_notifications:
+                Intent intent4 = new Intent(MyJobsActivity.this, NotificationsActivity.class);
+                startActivity(intent4);
+                break;
+        }
+        return false;
     }
 }

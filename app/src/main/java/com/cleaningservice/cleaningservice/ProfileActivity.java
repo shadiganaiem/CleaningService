@@ -22,12 +22,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -282,6 +280,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             case R.id.navigation_findcleaner:
                 Intent intent3 = new Intent(ProfileActivity.this,FindCleanerActivity.class);
                 startActivity(intent3);
+                break;
+            case R.id.navigation_myjobs:
+                Intent intent4 = new Intent(ProfileActivity.this, MyJobsActivity.class);
+                startActivity(intent4);
+                break;
+            case R.id.navigation_notifications:
+                Intent intent5 = new Intent(ProfileActivity.this, NotificationsActivity.class);
+                startActivity(intent5);
                 break;
         }
         return false;

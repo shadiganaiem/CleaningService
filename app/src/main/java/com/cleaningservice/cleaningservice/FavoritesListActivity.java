@@ -9,9 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -61,6 +59,14 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
             case R.id.navigation_findcleaner:
                 Intent intent2 = new Intent(FavoritesListActivity.this,FindCleanerActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.navigation_myjobs:
+                Intent intent4 = new Intent(FavoritesListActivity.this, MyJobsActivity.class);
+                startActivity(intent4);
+                break;
+            case R.id.navigation_notifications:
+                Intent intent5 = new Intent(FavoritesListActivity.this, NotificationsActivity.class);
+                startActivity(intent5);
                 break;
 
         }
