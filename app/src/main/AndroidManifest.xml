@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".NotificationsActivity"></activity>
+        <activity android:name=".SetWorkingDetailsActivity"></activity>
+        <activity android:name=".NotificationsActivity" />
         <activity android:name=".MyJobsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FavoritesListActivity" />

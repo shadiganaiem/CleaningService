@@ -30,16 +30,6 @@ public class LoginActivity extends AppCompatActivity {
         Username = findViewById(R.id.LoginUsername);
         Password = findViewById(R.id.LoginPassword);
 
-       /* try{
-            _context = new ApplicationDbContext(
-                    Util.DBProperty("db.driver",getApplicationContext()),
-                    Util.DBProperty("db.url",getApplicationContext()),
-                    Util.DBProperty("db.username",getApplicationContext()),
-                    Util.DBProperty("db.password",getApplicationContext()));
-        }catch (Exception ex){
-            Toast.makeText(getApplicationContext(),"אין חיבור", Toast.LENGTH_SHORT).show();
-        }*/
-
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
         } catch (SQLException e) {

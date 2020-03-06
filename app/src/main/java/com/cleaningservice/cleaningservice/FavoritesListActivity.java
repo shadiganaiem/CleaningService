@@ -16,7 +16,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class FavoritesListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    BottomNavigationView navigation;
     private DrawerLayout drawer;
 
 
@@ -26,16 +25,10 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_favorites_list);
 
 
-      /*  navigation = findViewById(R.id.bottomNav);
-        Menu menu = navigation.getMenu();
-        MenuItem item = menu.getItem(1);
-        item.setChecked(true);*/
-
-
         Toolbar toolbar2 = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar2);
 
-       drawer=findViewById(R.id.drawer_layout);
+        drawer=findViewById(R.id.drawer_layout);
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 

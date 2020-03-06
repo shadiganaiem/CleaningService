@@ -116,16 +116,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 phone.setText(user.employee.Phone);
             }
         }
-        else{
 
-        }
 
 
 
         // Clearing older images from cache directory
         // don't call this line if you want to choose multiple images in the same activity
         // call this once the bitmap(s) usage is over
-      //  ImagePickerActivity.clearCache(this);
+      //  ImagePickerActivity.clearCache(this);*/
     }
 
     private void loadProfile(String url) {
