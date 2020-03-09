@@ -27,6 +27,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cleaningservice.cleaningservice.Customer.FavoritesListActivity;
+import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
+import com.cleaningservice.cleaningservice.Customer.MyJobsActivity;
+import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
@@ -272,11 +276,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             case R.id.navigation_profile:
                 break;
             case R.id.navigation_favlist:
-                Intent intent2 = new Intent(ProfileActivity.this,FavoritesListActivity.class);
+                Intent intent2 = new Intent(ProfileActivity.this, FavoritesListActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.navigation_findcleaner:
-                Intent intent3 = new Intent(ProfileActivity.this,FindCleanerActivity.class);
+                Intent intent3 = new Intent(ProfileActivity.this, FindCleanerActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.navigation_myjobs:

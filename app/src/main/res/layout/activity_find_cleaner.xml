@@ -6,232 +6,199 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context=".FindCleanerActivity">
+    tools:context=".Customer.FindCleanerActivity">
 
 
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/sidebar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/darkblue"
-            android:id="@+id/sidebar"
+            android:elevation="3dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="3dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-        <FrameLayout
-            android:id="@+id/activities_container"
+        <TextView
+            android:id="@+id/titleH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logoH"
+            android:layout_marginTop="40dp"
+            android:elevation="5dp"
+            android:text="@string/FindCleaner"
+            android:textColor="@color/darkblue"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:transitionName="tvLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sidebar" />
+
+        <TextView
+            android:id="@+id/logoH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:text="@string/LogoTitle"
+            android:textColor="@color/darkblue"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleH" />
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+           >
 
-           <!-- <com.google.android.material.navigation.NavigationView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:id="@+id/nav_view"
-                app:headerLayout="@layout/side_bar"
-                app:menu="@menu/bottom_nav_menu"/>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:background="@drawable/header" />
-
-            <TextView
-                android:id="@+id/logoH"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="40dp"
-                android:elevation="5dp"
-                android:text="Real World cleaning services"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/titleH"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/logoH"
-                android:transitionName="tvLogin"
-                android:layout_alignLeft="@+id/logoH"
-                android:elevation="5dp"
-                android:text="מציאת מנקה"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/circle1"
-                android:layout_width="134dp"
-                android:layout_height="134dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="-80dp"
-                android:layout_marginRight="-100dp"
-                android:layout_below="@+id/toolbar"
-                android:src="@drawable/circle" />
-
-            <ImageView
-                android:id="@+id/circle2"
-                android:layout_width="134dp"
-                android:layout_height="134dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv"
+                android:layout_width="379dp"
+                android:layout_height="372dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="-100dp"
-                android:layout_marginBottom="60dp"
-                android:src="@drawable/circle" />
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="199dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="159dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
 
-            <ImageView
-                android:id="@+id/circle3"
-                android:layout_width="182dp"
-                android:layout_height="182dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="-80dp"
-                android:layout_marginBottom="-30dp"
-                android:src="@drawable/circle2" />
-
-            <ImageView
-                android:id="@+id/circle4"
-                android:layout_width="134dp"
-                android:layout_height="134dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="-50dp"
-                android:layout_marginBottom="-50dp"
-                android:layout_toLeftOf="@+id/circle3"
-                android:src="@drawable/circle" />
-
-            <ScrollView
-                android:id="@+id/sv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/toolbar">
-
-                <RelativeLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="358dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="150dp"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="4dp">
+                        android:orientation="vertical"
+                        android:paddingBottom="50dp">
 
-                        <androidx.core.widget.NestedScrollView
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:paddingTop="20dp"
+                            android:text="@string/Rooms"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingBottom="50dp">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:inputType="text" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/City"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="מספר חדרים"
-                                    android:textColor="@color/darkblue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:inputType="text" />
 
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:inputType="text" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/Budget"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="כתובת"
-                                    android:textColor="@color/darkblue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:inputType="text" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="תקציב"
-                                    android:textColor="@color/darkblue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:inputType="text" />
-
-                            </LinearLayout>
-                        </androidx.core.widget.NestedScrollView>
-                    </androidx.cardview.widget.CardView>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cv"
-                        android:layout_alignLeft="@+id/cv"
-                        android:layout_alignRight="@+id/cv"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginTop="-180dp"
-                        android:layout_marginRight="35dp"
-                        android:elevation="10dp">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:inputType="text" />
 
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_ui"
-                            android:text="פרסם"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white" />
-                    </RelativeLayout>
+                            android:padding="10dp"
+                            android:layout_margin="10dp"
+                            android:text="pick a date"
+                            android:shadowRadius="@integer/config_navAnimTime"
+                            android:textColor="@color/darkblue"
+                            android:background="@color/lightgray"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:id="@+id/show_dialog"/>
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/cv"
-                        android:layout_alignRight="@+id/cv"
-                        android:layout_marginTop="-20dp"
-                        android:layout_marginRight="-20dp"
-                        android:elevation="10dp">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/date_text"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="תקציב"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:inputType="text" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cv"
+                android:layout_alignLeft="@+id/cv"
+                android:layout_alignRight="@+id/cv"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="-180dp"
+                android:layout_marginRight="35dp"
+                android:elevation="10dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ui"
+                    android:text="פרסם"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
 
-                    </RelativeLayout>
-                </RelativeLayout>
-            </ScrollView>-->
-
-        </FrameLayout>
+        </RelativeLayout>
 
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
@@ -240,5 +207,7 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/side_bar"
         app:menu="@menu/bottom_nav_menu"/>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

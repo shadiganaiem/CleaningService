@@ -1,4 +1,4 @@
-package com.cleaningservice.cleaningservice;
+package com.cleaningservice.cleaningservice.Customer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,17 +11,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.cleaningservice.cleaningservice.ProfileActivity;
+import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class MyJobsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NotificationsActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_jobs);
-
+        setContentView(R.layout.activity_notifications);
 
         Toolbar toolbar = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar);
@@ -50,22 +51,22 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_profile:
-                Intent intent = new Intent(MyJobsActivity.this,ProfileActivity.class);
+                Intent intent = new Intent(NotificationsActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_favlist:
-                Intent intent2 = new Intent(MyJobsActivity.this,FavoritesListActivity.class);
+                Intent intent2 = new Intent(NotificationsActivity.this, FavoritesListActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.navigation_findcleaner:
-                Intent intent3 = new Intent(MyJobsActivity.this,FindCleanerActivity.class);
+                Intent intent3 = new Intent(NotificationsActivity.this, FindCleanerActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.navigation_myjobs:
+                Intent intent4 = new Intent(NotificationsActivity.this, MyJobsActivity.class);
+                startActivity(intent4);
                 break;
             case R.id.navigation_notifications:
-                Intent intent4 = new Intent(MyJobsActivity.this, NotificationsActivity.class);
-                startActivity(intent4);
                 break;
         }
         return false;

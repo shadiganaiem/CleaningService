@@ -61,6 +61,10 @@
     <string name="go_to_settings">GOTO SETTINGS</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="FindCleaner">מציאת מנקה</string>
+    <string name="LogoTitle">Real World Cleaning Service</string>
+    <string name="Budget">תקציב</string>
+    <string name="Rooms">מספר חדרים</string>
 
 
 </resources>

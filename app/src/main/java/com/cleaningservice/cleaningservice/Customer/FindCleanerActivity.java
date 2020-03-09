@@ -1,4 +1,4 @@
-package com.cleaningservice.cleaningservice;
+package com.cleaningservice.cleaningservice.Customer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -7,16 +7,24 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
+import com.cleaningservice.cleaningservice.ProfileActivity;
+import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.Calendar;
 
-    BottomNavigationView navigation;
+public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
+
+    private TextView dateText;
     private DrawerLayout drawer;
 
     @Override
@@ -37,18 +45,25 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        dateText = findViewById(R.id.date_text);
 
+        findViewById(R.id.show_dialog).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_profile:
-                Intent intent = new Intent(FindCleanerActivity.this,ProfileActivity.class);
+                Intent intent = new Intent(FindCleanerActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_favlist:
-                Intent intent2 = new Intent(FindCleanerActivity.this,FavoritesListActivity.class);
+                Intent intent2 = new Intent(FindCleanerActivity.this, FavoritesListActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.navigation_findcleaner:
@@ -74,4 +89,25 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             super.onBackPressed();
         }
     }
+
+
+
+
+    public void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = "month/day/year: " + month + "/" + dayOfMonth + "/" + year;
+        dateText.setText(date);
+    }
 }
+
+
