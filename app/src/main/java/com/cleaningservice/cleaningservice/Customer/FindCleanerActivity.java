@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.gms.common.api.Status;
@@ -28,8 +30,14 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+
+import Authentications.Preferences;
+import Models.JobForm;
 
 public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
@@ -40,7 +48,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     private DrawerLayout drawer;
     private int roomNum;
     private float budget;
-    private String adress;
+    private String address;
+    private ApplicationDbContext _context = null;
 
 
 
@@ -53,6 +62,12 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_cleaner);
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar2 = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar2);
@@ -191,12 +206,28 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
 
 
     public void Publish(View view) {
-        roomNum = Integer.parseInt(findViewById(R.id.roomNum).toString());
-        budget = Float.parseFloat(findViewById(R.id.LoginPassword).toString());
-        adress = findViewById(R.id.autocomplete_fragment).toString();
+        budget = Float.parseFloat(((EditText)findViewById(R.id.budget)).getText().toString());
+        roomNum = Integer.parseInt(((EditText)findViewById(R.id.roomNum)).getText().toString());
+        address = ((EditText)findViewById(R.id.autocomplete_fragment)).getText().toString();
         startDate = dateText.toString();
         endDate = dateText2.toString();
 
+        int customerId = _context.GetUser(Preferences.GetLoggedInUserID(this)).CustomerId;
+        try {
+            JobForm jobForm = new JobForm(
+                    customerId,
+                    roomNum,
+                    address,
+                    address,
+                    budget,
+                    new SimpleDateFormat("dd/MM/yyyy").parse(startDate),
+                    new SimpleDateFormat("dd/MM/yyyy").parse(endDate)
+            );
+
+            _context.InsertJobForm(jobForm);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
 

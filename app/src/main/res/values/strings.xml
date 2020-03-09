@@ -65,6 +65,9 @@
     <string name="LogoTitle">Real World Cleaning Service</string>
     <string name="Budget">תקציב</string>
     <string name="Rooms">מספר חדרים</string>
+    <string name="FormJobsList">טפסי עבודה זמינים</string>
+    <string name="RoomsNumber">מס\' חדרים</string>
+    <string name="Home">דף בית</string>
     <string name="StartDate">תאריך התחלה</string>
     <string name="EndDate">תאריך סיום</string>
 

@@ -12,9 +12,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import Models.Customer;
 import Models.Employee;
+import Models.JobForm;
 import Models.Status;
 import Models.User;
 
@@ -22,7 +25,6 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     private static ApplicationDbContext instance;
     private Connection _connection;
-
 
     private ApplicationDbContext(String driver,String url,String username,String password){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -44,7 +46,6 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     }
 
-    
     /**
      * Execute an executable Query.
      * @param query
@@ -78,6 +79,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get User By Id
+     * @param id
+     * @return
+     */
     public User GetUser(int id){
         String query  = "SELECT * FROM Users WHERE ID="+id;
         try{
@@ -105,6 +111,51 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new User();
     }
 
+    /**
+     * Get All JobForms
+     * @return
+     */
+    public List<JobForm> GetJobForms(){
+        String query = "SELECT * FROM JobForms";
+        List<JobForm> jobForms = new ArrayList<>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId")
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForms.add(jobForm);
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+    public boolean InsertJobForm(JobForm jobForm){
+        String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId)";
+        query += "VALUES("+jobForm.CustomerId + ",'"+jobForm.Rooms + "','"+jobForm.City+"','"+jobForm.Address + "','"+
+                jobForm.Budget + "','"+jobForm.StartDate.toString() + "','"+jobForm.EndDate.toString()+"',3)";
+
+        return ExecuteInsertData(query);
+    }
+    /**
+     * Get User Object By username
+     * @param username
+     * @return
+     */
     public User GetUser(String username){
         String query  = "SELECT * FROM Users WHERE Username='"+username+"'";
         try{
@@ -129,6 +180,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new User();
     }
 
+    /**
+     * Get Customer By Id
+     * @param id
+     * @return
+     */
     public Customer GetCustomer(int id){
         String query  = "SELECT * FROM Customers WHERE ID="+id;
         try{
@@ -151,6 +207,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new Customer();
     }
 
+    /**
+     * Get Employee By Id
+     * @param id
+     * @return
+     */
     public Employee GetEmployee(int id){
         String query = "SELECT * FROM Employees WHERE ID="+id;
         try{
@@ -172,6 +233,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new Employee();
     }
 
+    /**
+     * Get Status By Id
+     * @param id
+     * @return
+     */
     public Status GetStatus(int id){
         String query = "SELECT * FROM Statuses WHERE ID="+id;
         try{
@@ -190,10 +256,20 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new Status();
     }
 
+    /**
+     * Get Connection
+     * @return
+     */
     public Connection getConnection(){
         return _connection;
     }
 
+    /**
+     * Get ApplicationDbContext instance ( Singleton )
+     * @param context1
+     * @return
+     * @throws SQLException
+     */
     public static ApplicationDbContext getInstance(Context context1) throws SQLException {
         if (instance == null) {
             try {
@@ -219,7 +295,4 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return instance;
     }
-
-
-
 }

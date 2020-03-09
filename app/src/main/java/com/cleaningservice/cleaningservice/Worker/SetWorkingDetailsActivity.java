@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -29,15 +30,20 @@ public class SetWorkingDetailsActivity extends AppCompatActivity implements Navi
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.navigation_employee_home:
+                Intent intent = new Intent(SetWorkingDetailsActivity.this, Home.class);
+                startActivity(intent);
+                break;
+
+        }
         return false;
     }
 
