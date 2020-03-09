@@ -69,4 +69,6 @@
     <string name="LogoTitle">Real World Cleaning Service</string>
     <string name="Budget">السعر يا غالي</string>
     <string name="Rooms">عدد الغرف</string>
+    <string name="StartDate">تاريخ البداية</string>
+    <string name="EndDate">تاريخ النهاية</string>
 </resources>

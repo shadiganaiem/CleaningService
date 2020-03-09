@@ -19,18 +19,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         if(isCustomer(this)) {
             Intent intent = new Intent(HomeActivity.this, FindCleanerActivity.class);
             startActivity(intent);
         }
+
         else{
             Intent intent = new Intent(HomeActivity.this, SetWorkingDetailsActivity.class);
             startActivity(intent);
         }
 
     }
-
-
-
-
 }

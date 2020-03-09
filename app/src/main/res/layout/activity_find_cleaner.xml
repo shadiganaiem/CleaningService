@@ -101,7 +101,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:id="@+id/roomNum"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -117,7 +118,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:id="@+id/city"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -133,43 +135,110 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:id="@+id/budget"/>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="20dp"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+
 
                         <Button
-                            android:layout_width="match_parent"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:layout_margin="10dp"
-                            android:text="pick a date"
+                            android:text="@string/StartDate"
                             android:shadowRadius="@integer/config_navAnimTime"
-                            android:textColor="@color/darkblue"
-                            android:background="@color/lightgray"
+                            android:textColor="@color/white"
+                            android:background="@drawable/darkblue_button"
                             android:textSize="14sp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/light"
                             android:id="@+id/show_dialog"/>
 
-                        <EditText
+
+                        <TextView
+                            android:background="@drawable/input_fealds"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="47dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:id="@+id/date_text"/>
+                            android:textSize="20dp"
+                            android:id="@+id/date_text"
+                            android:gravity="center"/>
+
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+
+
+                            <Button
+
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:layout_margin="10dp"
+                                android:text="@string/EndDate"
+                                android:shadowRadius="@integer/config_navAnimTime"
+                                android:textColor="@color/white"
+                                android:background="@drawable/darkblue_button"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/light"
+                                android:id="@+id/show_dialog2"/>
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="47dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/input_fealds"
+                                android:textSize="20dp"
+                                android:gravity="center"
+                                android:id="@+id/date_text2"/>
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="תקציב"
+                            android:text="@string/Address"
                             android:textColor="@color/darkblue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:inputType="text" />
+
+
+                          <LinearLayout
+                                  android:id="@+id/linearLayout"
+                                  android:layout_width="match_parent"
+                                  android:gravity="center"
+                                  android:layout_height="50dp"
+                                  android:background="@drawable/input_fealds"
+                                  android:orientation="horizontal"
+                                  app:layout_constraintEnd_toEndOf="parent"
+                                  app:layout_constraintStart_toStartOf="parent"
+                                  app:layout_constraintTop_toTopOf="parent">
+
+                           <fragment
+                                  android:id="@+id/autocomplete_fragment"
+                                  android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                               />
+                          </LinearLayout>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
             </androidx.cardview.widget.CardView>
@@ -191,7 +260,8 @@
                     android:background="@drawable/bg_ui"
                     android:text="פרסם"
                     android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:onClick="Publish"/>
             </RelativeLayout>
 
 

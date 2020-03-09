@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;
@@ -59,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         _validator = new Validator();
-        //GooglePlacesApiConnect();
+
 
         //layouts
         FirstStep = findViewById(R.id.FirstStep);
@@ -180,34 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
         return editText.getText().toString();
     }
 
-    /**
-     * Google Places API connect and initialize
-     */
-/*    public void GooglePlacesApiConnect(){
-        String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
 
-        if(!Places.isInitialized()){
-            Places.initialize(getApplicationContext(),ApiKey);
-        }
-        placesClient = Places.createClient(this);
-
-        final AutocompleteSupportFragment autocompleteSupportFragment=
-              //  (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.LAT_LNG,Place.Field.NAME));
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                final LatLng latLng= place.getLatLng();
-                Log.i("placesAPI","onPlaceSelected: "+latLng.latitude+"\n"+latLng.longitude);
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-
-            }
-        });
-    }*/
 
     public void SendConfirmationEmail(String userEmail,String activationCode ){
         try {
