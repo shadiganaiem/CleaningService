@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 
 import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
+import com.cleaningservice.cleaningservice.Worker.Home;
 import com.cleaningservice.cleaningservice.Worker.SetWorkingDetailsActivity;
 
 import static Authentications.Preferences.isCustomer;
@@ -24,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else{
-            Intent intent = new Intent(HomeActivity.this, SetWorkingDetailsActivity.class);
+            Intent intent = new Intent(HomeActivity.this, Home.class);
             startActivity(intent);
         }
 
