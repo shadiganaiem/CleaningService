@@ -70,6 +70,18 @@
     <string name="Home">דף בית</string>
     <string name="StartDate">תאריך התחלה</string>
     <string name="EndDate">תאריך סיום</string>
+    <string name="Tomorrow">מחר</string>
+    <string name="TheDayAfterTomorrow">מחרתיים</string>
+    <string name="ThisWeek">השבוע</string>
+    <string name="All">הכל</string>
+    <string name="ThisMonth">החודש</string>
 
+    <string-array name="ratingOptions">
+        <item>0-5 ★</item>
+        <item>0-2 ★</item>
+        <item>2-4 ★</item>
+        <item>3-5 ★</item>
+    </string-array>
+    <string name="chooseRating">בחר דירוג</string>
 
 </resources>

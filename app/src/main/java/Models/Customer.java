@@ -1,5 +1,7 @@
 package Models;
 
+import android.media.Rating;
+
 public class Customer{
 
     public int ID;
@@ -7,6 +9,7 @@ public class Customer{
     public String Lastname;
     public String Email;
     public String Phone;
+    public int Rating;
 
     public Customer (int ID,String Firstname,String Lastname,String Email,String Phone){
         this.ID = ID;

@@ -74,4 +74,10 @@
     <string name="Home">الصفحة الرئيسية</string>
     <string name="StartDate">تاريخ البداية</string>
     <string name="EndDate">تاريخ النهاية</string>
+    <string name="Tomorrow">غدًا</string>
+    <string name="TheDayAfterTomorrow">بعد غد</string>
+    <string name="ThisWeek">هذا الاُسبوع</string>
+    <string name="All">الكل</string>
+    <string name="ThisMonth">هذا الشهر</string>
+    <string name="chooseRating">اختر تقييم</string>
 </resources>
