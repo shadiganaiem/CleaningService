@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void Login(View v){
+    public void dLogin(View v){
         String regex = "^[\\p{L}0-9_]+$";
         boolean status = true;
 

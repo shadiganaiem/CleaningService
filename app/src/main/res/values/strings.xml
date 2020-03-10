@@ -11,7 +11,7 @@
     <string name="Password">סיסמה</string>
     <string name="RePassword">אימות סיסמה</string>
     <string name="City">ישוב</string>
-    <string name="Address">רחוב</string>
+    <string name="Address">כתובת</string>
     <string name="NextBtn">הבא</string>
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
@@ -70,6 +70,31 @@
     <string name="Home">דף בית</string>
     <string name="StartDate">תאריך התחלה</string>
     <string name="EndDate">תאריך סיום</string>
+    <string name="JobLocation">מקום העבודה</string>
+
+    <string-array name="RoomsNumberOptions">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+    <string name="Addphotos">הוספת תמונות</string>
 
 
 </resources>

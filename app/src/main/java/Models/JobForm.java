@@ -30,7 +30,7 @@ public class JobForm {
         this.StatusId = StatusId;
     }
 
-    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate){
+    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget){
         this.CustomerId = CustomerId;
         this.Rooms = Rooms;
         this.City = City;

@@ -144,10 +144,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         return jobForms;
     }
 
-    public boolean InsertJobForm(JobForm jobForm){
+    public boolean InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId)";
-        query += "VALUES("+jobForm.CustomerId + ",'"+jobForm.Rooms + "','"+jobForm.City+"','"+jobForm.Address + "','"+
-                jobForm.Budget + "','"+jobForm.StartDate.toString() + "','"+jobForm.EndDate.toString()+"',3)";
+        query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City+"','"+jobForm.Address + "',"+
+                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',3)";
 
         return ExecuteInsertData(query);
     }

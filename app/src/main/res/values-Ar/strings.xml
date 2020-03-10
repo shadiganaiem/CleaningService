@@ -74,4 +74,6 @@
     <string name="Home">الصفحة الرئيسية</string>
     <string name="StartDate">تاريخ البداية</string>
     <string name="EndDate">تاريخ النهاية</string>
+    <string name="JobLocation">احداثيات العمل</string>
+    <string name="Addphotos">اضافة صور</string>
 </resources>

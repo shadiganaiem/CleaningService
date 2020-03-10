@@ -86,6 +86,7 @@
                         android:orientation="vertical"
                         android:paddingBottom="50dp">
 
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -95,33 +96,26 @@
                             android:textColor="@color/darkblue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
-
                         <EditText
-                            android:layout_width="match_parent"
+                            android:layout_width="100dp"
+                            android:layout_marginLeft="260dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:inputType="text"
                             android:id="@+id/roomNum"/>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/City"
-                            android:textColor="@color/darkblue"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
 
-                        <EditText
-                            android:layout_width="match_parent"
+                        <Spinner
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:inputType="text"
-                            android:id="@+id/city"/>
+                            android:layout_marginLeft="290dp"
+                            android:gravity="center"
+                            android:entries="@array/RoomsNumberOptions"
+                            android:id="@+id/sda"/>
+
 
                         <TextView
+                            android:paddingTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -131,9 +125,9 @@
                             android:textStyle="bold" />
 
                         <EditText
-                            android:layout_width="match_parent"
+                            android:layout_width="100dp"
+                            android:layout_marginLeft="260dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:inputType="text"
                             android:id="@+id/budget"/>
@@ -214,7 +208,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="@string/Address"
+                            android:text="@string/JobLocation"
                             android:textColor="@color/darkblue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -226,6 +220,8 @@
                                   android:layout_width="match_parent"
                                   android:gravity="center"
                                   android:layout_height="50dp"
+                                  android:layout_marginLeft="10dp"
+                                  android:layout_marginRight="10dp"
                                   android:background="@drawable/input_fealds"
                                   android:orientation="horizontal"
                                   app:layout_constraintEnd_toEndOf="parent"
@@ -237,8 +233,53 @@
                                   android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                                   android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
+
                                />
                           </LinearLayout>
+                        <TextView
+                            android:paddingTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/City"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:background="@drawable/input_fealds"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:id="@+id/city"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/Address"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:background="@drawable/input_fealds"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:id="@+id/street"/>
+
+                        <Button
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/Addphotos">
+
+                        </Button>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
             </androidx.cardview.widget.CardView>
