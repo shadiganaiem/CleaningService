@@ -21,7 +21,7 @@ import java.util.Random;
 
 import Models.User;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity  {
 
     //Database context
     private ApplicationDbContext _context = null;

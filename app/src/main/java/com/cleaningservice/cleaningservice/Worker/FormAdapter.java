@@ -100,45 +100,14 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
         }
     }
 
-    /*
-    @Override
-    public Filter getFilter(){
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    FilterdList = list;
-                } else {
-                    List<JobForm> filteredList = new ArrayList<>();
-                    for (JobForm row : list) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getPhone().contains(charSequence)) {
-                            filteredList.add(row);
-                        }
-                    }
-
-                    contactListFiltered = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = contactListFiltered;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                contactListFiltered = (ArrayList<Contact>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
+    /**
+     * Update JobForms Data List.
+     * @param jobForms
      */
-
-    public interface ContactsAdapterListener {
-        void onContactSelected(JobForm jobForm);
+    public void UpdateList(List<JobForm> jobForms){
+        List<JobForm> listJobForms = new ArrayList<JobForm>();
+        listJobForms.addAll(jobForms);
+        notifyDataSetChanged();
     }
+
 }

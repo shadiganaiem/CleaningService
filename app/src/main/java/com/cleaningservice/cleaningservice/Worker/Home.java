@@ -21,6 +21,7 @@ import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,10 +29,12 @@ import java.util.List;
 
 import Models.JobForm;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener {
 
     private DrawerLayout drawer;
+    private FormAdapter jobFormAdapter;
     private ApplicationDbContext _context = null;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        tabLayout = findViewById(R.id.TabLayout);
+        tabLayout.setOnTabSelectedListener(this);
+
         RecyclerView view = findViewById(R.id.job_form_list);
         new Thread(){
             @Override
@@ -64,7 +70,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     @Override
                     public void run() {
                         List<JobForm> jobForms = _context.GetJobForms();
-                        view.setAdapter(new FormAdapter(jobForms, getApplicationContext()));
+                        jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
+                        view.setAdapter(jobFormAdapter);
                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                         findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
@@ -106,7 +113,85 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent);
                 break;
         }
+
         return false;
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        RecyclerView view = findViewById(R.id.job_form_list);
+        findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
+        switch (tab.getPosition()){
+            case 0:
+                new Thread(){
+                    @Override
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<JobForm> jobForms = _context.GetJobForms();
+                                jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
+                                view.setAdapter(jobFormAdapter);
+                                view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                                //jobFormAdapter.UpdateList(jobForms);
+                                findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                }.start();
+
+                break;
+            case 1:
+                new Thread(){
+                    @Override
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<JobForm> jobForms = _context.GetJobFormsForThisWeek();
+                                jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
+                                view.setAdapter(jobFormAdapter);
+                                view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                                //jobFormAdapter.UpdateList(jobForms);
+                                findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                }.start();
+                break;
+            case 2:
+                new Thread(){
+                    @Override
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<JobForm> jobForms = _context.GetJobFormsForThisMonth();
+                                jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
+                                view.setAdapter(jobFormAdapter);
+                                view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                                //jobFormAdapter.UpdateList(jobForms);
+                                findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                }.start();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,7 +17,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Models.Customer;
@@ -120,6 +127,95 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public List<JobForm> GetJobForms(){
         String query = "SELECT * FROM JobForms";
+        List<JobForm> jobForms = new ArrayList<>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId")
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForms.add(jobForm);
+
+                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                if(imageResultSet.next()){
+                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                }
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+    public List<JobForm> GetJobFormsForThisWeek(){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String today = dateFormat.format(date);
+        Calendar c = Calendar.getInstance();
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        c.add(Calendar.DATE, 7-dayOfWeek);
+        date = c.getTime();
+        String lastDateInThisWeek = dateFormat.format(date);
+        String query = "SELECT * FROM JobForms WHERE StartDate >= '"+ today+ "' and StartDate<= '" +lastDateInThisWeek + "'" ;
+        List<JobForm> jobForms = new ArrayList<>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId")
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForms.add(jobForm);
+
+                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                if(imageResultSet.next()){
+                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                }
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+    public List<JobForm> GetJobFormsForThisMonth(){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String today = dateFormat.format(date);
+        date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get( calendar.MONTH)+1;
+        int year = calendar.get(calendar.YEAR);
+        calendar.set(year, month - 1, 1);
+        calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+        date = calendar.getTime();
+        String lastDayDateThisMonth = dateFormat.format(date);
+        String query = "SELECT * FROM JobForms WHERE StartDate >= '"+ today+ "' and StartDate<= '" +lastDayDateThisMonth + "'" ;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
