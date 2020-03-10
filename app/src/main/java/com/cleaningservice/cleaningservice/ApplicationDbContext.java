@@ -1,11 +1,14 @@
 package com.cleaningservice.cleaningservice;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.StrictMode;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -136,6 +139,12 @@ public class ApplicationDbContext extends AppCompatActivity {
                 jobForm.status = GetStatus(jobForm.StatusId);
 
                 jobForms.add(jobForm);
+
+                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                if(imageResultSet.next()){
+                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                }
             }
 
         }catch (Exception ex){
@@ -198,6 +207,10 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getString("Phone")
                 );
 
+                query = "SELECT * FROM USERS WHERE CustomerId="+id;
+                result = ExecuteSelectQuery(query);
+                if(result.next())
+                    customer.Rating = result.getInt("Rating");
                 return customer;
             }
         }
@@ -262,6 +275,17 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public Connection getConnection(){
         return _connection;
+    }
+
+
+    public boolean InsertImage(int jobFormId , Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String bitmapString= Base64.encodeToString(b, Base64.DEFAULT);
+
+        String query = "INSERT INTO Images(JobFormId,Bitmap) Values('"+ jobFormId + "','"+bitmapString+"')";
+        return ExecuteInsertData(query);
     }
 
     /**

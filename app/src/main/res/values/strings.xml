@@ -11,7 +11,7 @@
     <string name="Password">סיסמה</string>
     <string name="RePassword">אימות סיסמה</string>
     <string name="City">ישוב</string>
-    <string name="Address">כתובת</string>
+    <string name="Address">רחוב</string>
     <string name="NextBtn">הבא</string>
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
@@ -95,6 +95,18 @@
         <item>20</item>
     </string-array>
     <string name="Addphotos">הוספת תמונות</string>
+    <string name="Tomorrow">מחר</string>
+    <string name="TheDayAfterTomorrow">מחרתיים</string>
+    <string name="ThisWeek">השבוע</string>
+    <string name="All">הכל</string>
+    <string name="ThisMonth">החודש</string>
 
+    <string-array name="ratingOptions">
+        <item>0-5 ★</item>
+        <item>0-2 ★</item>
+        <item>2-4 ★</item>
+        <item>3-5 ★</item>
+    </string-array>
+    <string name="chooseRating">בחר דירוג</string>
 
 </resources>

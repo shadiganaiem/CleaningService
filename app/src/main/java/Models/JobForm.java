@@ -17,6 +17,7 @@ public class JobForm {
 
     public Customer customer;
     public Status status;
+    public String bitmapString;
 
     public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId){
         this.ID = ID;

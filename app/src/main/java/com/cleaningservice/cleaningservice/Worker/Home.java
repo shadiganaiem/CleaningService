@@ -10,9 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
+import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,6 +35,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home);
 
@@ -50,11 +57,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         RecyclerView view = findViewById(R.id.job_form_list);
-        synchronized (this) {
-            List<JobForm> jobForms = _context.GetJobForms();
-            view.setAdapter(new FormAdapter(jobForms, getApplicationContext()));
-            view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        }
+        new Thread(){
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<JobForm> jobForms = _context.GetJobForms();
+                        view.setAdapter(new FormAdapter(jobForms, getApplicationContext()));
+                        view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                        findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }.start();
     }
 
     @Override
@@ -84,7 +101,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 intent = new Intent(Home.this, SetWorkingDetailsActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.navigation_profile:
+                intent = new Intent(Home.this, ProfileActivity.class);
+                startActivity(intent);
+                break;
         }
         return false;
     }

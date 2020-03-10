@@ -26,13 +26,27 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/activities_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
+
+            <ProgressBar
+                android:id="@+id/jobFormsProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/Linear_Job_Forms_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,11 +62,51 @@
                     android:textColor="@color/darkblue"
                     android:textSize="@dimen/dimen_20dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="7dp">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7"
+                        android:layoutDirection="rtl">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/All" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ThisWeek" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ThisMonth" />
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:entries="@array/ratingOptions"
+                        android:prompt="@string/chooseRating" />
+
+                </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/job_form_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="1dp" />
+                    android:layout_marginTop="1dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
