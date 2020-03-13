@@ -1,62 +1,80 @@
 package com.cleaningservice.cleaningservice.Customer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.Customer.CustomSpinner.OnSpinnerEventsListener;
+import com.cleaningservice.cleaningservice.GlideApp;
+import com.cleaningservice.cleaningservice.ImagePickerActivity;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Util;
-import com.google.android.gms.common.api.ApiException;
+import com.cleaningservice.cleaningservice.Validator;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import Authentications.Preferences;
 import Models.JobForm;
+import butterknife.OnClick;
 
-import static java.security.AccessController.getContext;
+
 
 public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = "";
     private TextView dateText;
     private TextView dateText2;
     private TextView cityText;
@@ -66,10 +84,19 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     private DrawerLayout drawer;
     private int roomNum;
     private float budget;
-    private String address;
-    private String city;
+    private String address =null;
+    private String city = null;
     private ApplicationDbContext _context = null;
-
+    private static final String TAG = FindCleanerActivity.class.getSimpleName();
+    public static final int REQUEST_IMAGE = 100;
+    private ArrayList<String> list =new ArrayList<String>();
+    //private RelativeLayout relativeLayout;
+    private LinearLayout linearLayout;
+    private Validator _validator = null;
+    private Date date1=null;
+    private Date date2=null;
+    private TextInputEditText budgt;
+    private Boolean status;
 
 
     //Google Places API Client
@@ -104,7 +131,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         dateText2= findViewById(R.id.date_text2);
         addressText = findViewById(R.id.street);
         cityText = findViewById(R.id.city);
-
+        linearLayout = findViewById(R.id.linearLayout3);
+        _validator = new Validator();
 
         findViewById(R.id.show_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +149,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         });
 
 
+       // imgProfile = findViewById(R.id.img_profile2);
 
     }
 
@@ -190,9 +219,22 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         month+=1;
         String date =  month +  "/" + dayOfMonth + "/" + year;
         if(flag==0) {
+            try {
+                date1 =new Date();
+               // DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                date1 =  new SimpleDateFormat("MM/dd/yyyy").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             dateText.setText(date);
         }
         else{
+            try {
+                date2 =new Date();
+                date2 =  new SimpleDateFormat("MM/dd/yyyy").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             dateText2.setText(date);
         }
     }
@@ -201,10 +243,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
      * Google Places API connect and initialize
      */
     public void GooglePlacesApiConnect(){
-        String ApiKey = null;
-        try {
-            ApiKey = Util.GetProperty("api.googleplaces",getApplicationContext());
-
+        String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
 
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(),ApiKey);
@@ -241,34 +280,208 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+
+
             }
+
             @Override
             public void onError(@NonNull Status status) {
 
             }
         });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
     }
 
 
     public void Publish(View view) throws ParseException {
-        budget = Float.parseFloat(((EditText)findViewById(R.id.budget)).getText().toString());
-        roomNum = Integer.parseInt(((EditText)findViewById(R.id.roomNum)).getText().toString());
-        startDate = dateText.getText().toString();
-        endDate = dateText2.getText().toString();
+        String regex = "([0-9]*[.])?[0-9]+";
+        budgt = findViewById(R.id.budget);
+        status = true;
 
-        int customerId = _context.GetUser(Preferences.GetLoggedInUserID(this)).CustomerId;
-        JobForm jobForm = new JobForm(
-                customerId,
-                roomNum,
-                city,
-                address,
-                budget
-        );
 
-        _context.InsertJobForm(jobForm,startDate,endDate);
+        if(!_validator.InputValidate(budgt,regex)) {
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'> ערך לא חוקי</font>");
+            budgt.setError(errorMsg);
+            status = false;
+        }
+
+            Compare_dates();
+            if (address==null || city==null){
+                TextView ci = findViewById(R.id.city);
+                TextView st = findViewById(R.id.street);
+                android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>כתובת ועיר הם שדות חובה</font>");
+                ci.setError(errorMsg);
+                st.setError(errorMsg);
+                status = false;
+            }
+
+        if(status) {
+            budget = Float.parseFloat((budgt).getText().toString());
+            startDate = dateText.getText().toString();
+            endDate = dateText2.getText().toString();
+
+            Spinner spinner = (Spinner) findViewById(R.id.spinner2);
+            String text = spinner.getSelectedItem().toString();
+            roomNum = Integer.parseInt(text);
+            int customerId = _context.GetUser(Preferences.GetLoggedInUserID(this)).CustomerId;
+            JobForm jobForm = new JobForm(
+                    customerId,
+                    roomNum,
+                    city,
+                    address,
+                    budget
+            );
+            _context.InsertJobForm(jobForm, startDate, endDate);
+        }
+    }
+
+    private void Compare_dates() {
+        Date todayDate= new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = dateFormat.format(todayDate);
+        try {
+            todayDate =  new SimpleDateFormat("MM/dd/yyyy").parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        TextView first = findViewById(R.id.date_text);
+        TextView second = findViewById(R.id.date_text2);
+
+        if(date1==null || todayDate.after(date1)){
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך כבר עבר או לא קיים</font>");
+            first.setError(errorMsg);
+            status= false;
+        }
+        if (date2==null || todayDate.after(date2) ){
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך כבר עבר או לא קיים</font>");
+            second.setError(errorMsg);
+            status= false;
+        }
+        if(date1==null || date2==null || date2.before(date1)) {
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך סיום לא יכול להיות לפני תאריך התחלה</font>");
+            first.setError(errorMsg);
+            second.setError(errorMsg);
+            status= false;
+        }
+    }
+
+    @OnClick({R.id.addPhotos})
+    public void onProfileImageClick(View view) {
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            showImagePickerOptions();
+                        }
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            showSettingsDialog();
+                        }
+                    }
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    private void loadProfile(String url) {
+        list.add(url);
+            ImageView imgView= new ImageView(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            imgView.setLayoutParams(lp);
+           // Log.d(TAG, "Image cache path: " + element);
+            GlideApp.with(this).load(url).override(500)
+                    .into(imgView);
+            imgView.setColorFilter(ContextCompat.getColor(this, android.R.color.transparent));
+            linearLayout.addView(imgView);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+                    // loading profile image from local cache
+                    loadProfile(uri.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void showImagePickerOptions() {
+        ImagePickerActivity.showImagePickerOptions(this, new ImagePickerActivity.PickerOptionListener() {
+            @Override
+            public void onTakeCameraSelected() {
+                launchCameraIntent();
+            }
+
+            @Override
+            public void onChooseGallerySelected() {
+                launchGalleryIntent();
+            }
+        });
+    }
+
+    private void launchCameraIntent() {
+        Intent intent = new Intent(FindCleanerActivity.this, ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
+
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void launchGalleryIntent() {
+        Intent intent = new Intent(FindCleanerActivity.this, ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void showSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FindCleanerActivity.this);
+        builder.setTitle(getString(R.string.dialog_permission_title));
+        builder.setMessage(getString(R.string.dialog_permission_message));
+        builder.setPositiveButton(getString(R.string.go_to_settings), (dialog, which) -> {
+            dialog.cancel();
+            openSettings();
+        });
+        builder.setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+
+    //navigating user to app settings
+    private void openSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
     }
 }
 

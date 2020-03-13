@@ -153,7 +153,7 @@ public class ImagePickerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_IMAGE_CAPTURE:
+           case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     cropImage(getCacheImagePath(fileName));
                 } else {
@@ -191,12 +191,12 @@ public class ImagePickerActivity extends AppCompatActivity {
         options.setCompressionQuality(IMAGE_COMPRESSION);
 
         // applying UI theme
-        options.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.darkblue));
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.darkblue));
+        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.darkblue));
 
-        if (lockAspectRatio)
-            options.withAspectRatio(ASPECT_RATIO_X, ASPECT_RATIO_Y);
+        //if (lockAspectRatio)
+           // options.withAspectRatio(ASPECT_RATIO_X, ASPECT_RATIO_Y);
 
         if (setBitmapMaxWidthHeight)
             options.withMaxResultSize(bitmapMaxWidth, bitmapMaxHeight);
