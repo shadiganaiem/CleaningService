@@ -25,6 +25,7 @@ import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.Customer.CustomSpinner.OnSpinnerEventsListener;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -200,7 +201,10 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
      * Google Places API connect and initialize
      */
     public void GooglePlacesApiConnect(){
-        String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
+        String ApiKey = null;
+        try {
+            ApiKey = Util.GetProperty("api.googleplaces",getApplicationContext());
+
 
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(),ApiKey);
@@ -237,19 +241,15 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
-
             }
-
             @Override
             public void onError(@NonNull Status status) {
 
             }
         });
-
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

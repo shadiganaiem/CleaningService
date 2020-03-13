@@ -47,7 +47,7 @@
         android:layout_gravity="center"
         android:background="@drawable/login_btn"
         android:fontFamily="@font/bold"
-        android:onClick="Login"
+        android:onClick="dLogin"
         android:text="@string/Login"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

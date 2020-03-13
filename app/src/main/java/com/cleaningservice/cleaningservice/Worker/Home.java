@@ -59,6 +59,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //Tabs Layout
         tabLayout = findViewById(R.id.TabLayout);
         tabLayout.setOnTabSelectedListener(this);
 

@@ -3,24 +3,25 @@ package com.cleaningservice.cleaningservice.Worker;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cleaningservice.cleaningservice.R;
+import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayInputStream;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
+import java.util.concurrent.ThreadFactory;
+
 import Models.JobForm;
 
 public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
@@ -33,13 +34,11 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
         this.context = context;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.job_form, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -50,16 +49,15 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Runnable task = () -> {
         JobForm jobForm = list.get(position);
         String Title;
         String Description;
         Title = jobForm.customer.Firstname + " " + jobForm.customer.Lastname;
         String roomsNumber = context.getResources().getString(R.string.RoomsNumber);
-        Description = jobForm.City + " - " + jobForm.Address +"\n"+ roomsNumber + ": " + jobForm.Rooms;
-        if(jobForm.customer.Rating != 0){
-            Description +="\n";
-            for (int i =0 ;i<jobForm.customer.Rating && i<5 ;i++){
+        Description = jobForm.City + " - " + jobForm.Address + "\n" + roomsNumber + ": " + jobForm.Rooms;
+        if (jobForm.customer.Rating != 0) {
+            Description += "\n";
+            for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
                 Description += "★";
             }
         }
@@ -67,17 +65,15 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
         holder.title.setText(Title);
         holder.description.setText(Description);
 
-                if (jobForm.bitmapString != null && jobForm.bitmapString != "") {
-
-                    byte[] encodeByte = Base64.decode(jobForm.bitmapString, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-                    holder.image.setImageBitmap(bitmap);
-                    //Picasso.get().load(bitmap).into(holder.image);
+        if (jobForm.ImageBytes != null) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(jobForm.ImageBytes, 0, jobForm.ImageBytes.length));
+                    holder.image.setImageDrawable(bitmap);
                 }
-            };
-            task.run();
-            Thread thread = new Thread(task);
-            thread.start();
+            });
+        }
     }
 
     @Override
@@ -99,15 +95,4 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
             description = itemView.findViewById(R.id.description);
         }
     }
-
-    /**
-     * Update JobForms Data List.
-     * @param jobForms
-     */
-    public void UpdateList(List<JobForm> jobForms){
-        List<JobForm> listJobForms = new ArrayList<JobForm>();
-        listJobForms.addAll(jobForms);
-        notifyDataSetChanged();
-    }
-
 }

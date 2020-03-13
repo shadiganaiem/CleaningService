@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -141,16 +142,18 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
                         result.getInt("StatusId")
+
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
 
+
                 jobForms.add(jobForm);
 
-                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
-                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
             }
 
@@ -190,10 +193,10 @@ public class ApplicationDbContext extends AppCompatActivity {
 
                 jobForms.add(jobForm);
 
-                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
-                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
             }
 
@@ -236,10 +239,10 @@ public class ApplicationDbContext extends AppCompatActivity {
 
                 jobForms.add(jobForm);
 
-                query = "SELECT * FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
-                    jobForm.bitmapString = imageResultSet.getString("Bitmap");
+                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
             }
 
@@ -378,9 +381,18 @@ public class ApplicationDbContext extends AppCompatActivity {
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
-        String bitmapString= Base64.encodeToString(b, Base64.DEFAULT);
 
-        String query = "INSERT INTO Images(JobFormId,Bitmap) Values('"+ jobFormId + "','"+bitmapString+"')";
+        String query = "INSERT INTO Images(JobFormId,ImageBytes) Values(?,?)";
+        try {
+            PreparedStatement pst = _connection.prepareStatement(query);
+            pst.setInt(1,jobFormId);
+            pst.setBytes(2,b);
+            int row = pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return ExecuteInsertData(query);
     }
 
@@ -394,10 +406,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         if (instance == null) {
             try {
                 instance = new ApplicationDbContext(
-                        Util.DBProperty("db.driver", context1),
-                        Util.DBProperty("db.url", context1),
-                        Util.DBProperty("db.username", context1),
-                        Util.DBProperty("db.password", context1));
+                        Util.GetProperty("db.driver", context1),
+                        Util.GetProperty("db.url", context1),
+                        Util.GetProperty("db.username", context1),
+                        Util.GetProperty("db.password", context1));
             } catch (Exception ex) {
                 Toast.makeText(context1, "אין חיבור", Toast.LENGTH_SHORT).show();
             }
@@ -405,10 +417,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         else if (instance.getConnection().isClosed()){
             try {
                 instance = new ApplicationDbContext(
-                        Util.DBProperty("db.driver", context1),
-                        Util.DBProperty("db.url", context1),
-                        Util.DBProperty("db.username", context1),
-                        Util.DBProperty("db.password", context1));
+                        Util.GetProperty("db.driver", context1),
+                        Util.GetProperty("db.url", context1),
+                        Util.GetProperty("db.username", context1),
+                        Util.GetProperty("db.password", context1));
             } catch (IOException e) {
                 e.printStackTrace();
             }
