@@ -135,7 +135,7 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
             }
         };
     }
-
+aladגדדשג
      */
 
     public interface ContactsAdapterListener {

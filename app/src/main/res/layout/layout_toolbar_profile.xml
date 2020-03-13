@@ -12,7 +12,6 @@
         android:id="@+id/circle1"
         android:layout_width="134dp"
         android:layout_height="134dp"
-        android:layout_below="@+id/toolbar"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="332dp"
@@ -25,7 +24,6 @@
         android:id="@+id/circle"
         android:layout_width="134dp"
         android:layout_height="134dp"
-        android:layout_below="@+id/toolbar"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="620dp"
@@ -74,8 +72,8 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="@dimen/toolbar_profile_width"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -85,18 +83,16 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/img_profile"
-            android:layout_width="@dimen/toolbar_profile_width"
-            android:layout_height="@dimen/toolbar_profile_width"
-            android:layout_marginTop="@dimen/activity_padding"
-            android:layout_marginBottom="@dimen/activity_padding"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="centerInside"
-            app:civ_border_color="@color/darkblue"
-            android:src="@drawable/baseline_account_circle_black_48" />
+            android:src="@drawable/baseline_account_circle_black_48"
+            app:civ_border_color="@color/darkblue" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/img_plus"
-            android:layout_width="@dimen/ic_plus_width"
-            android:layout_height="@dimen/ic_plus_width"
+            android:layout_width="@dimen/dimen_40dp"
+            android:layout_height="@dimen/dimen_40dp"
             android:layout_alignBottom="@id/img_profile"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_plus" />
@@ -125,8 +121,8 @@
         android:paddingLeft="@dimen/dimen_20dp"
         android:paddingRight="@dimen/dimen_20dp"
         android:textColor="@color/quantum_orange800"
-
         android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,8 +132,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="200dp"
         android:layout_height="1dp"
-
-        android:layout_marginBottom="328dp"
+        android:layout_marginBottom="380dp"
         android:background="@color/darkblue"
         android:orientation="horizontal"
         android:paddingTop="@dimen/activity_padding"
@@ -149,11 +144,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="66dp"
-            android:layout_gravity="center"
-            android:background="@android:color/white" />
+
 
 
     </LinearLayout>

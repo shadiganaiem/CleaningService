@@ -58,7 +58,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private  DrawerLayout drawer;
     private ApplicationDbContext _context = null;
-    BottomNavigationView navigation;
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
