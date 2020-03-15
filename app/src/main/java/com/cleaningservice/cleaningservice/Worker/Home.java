@@ -14,28 +14,34 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import Models.JobForm;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        TabLayout.OnTabSelectedListener {
 
+    private int tabSelected = 0;
+    private int minRateSelected = 0;
+    private int maxRateSelected = 5;
     private DrawerLayout drawer;
+    private TabLayout tabLayout;
+    private Dictionary ratingDict;
+    private Spinner ratingSpinner;
     private FormAdapter jobFormAdapter;
     private ApplicationDbContext _context = null;
-    private TabLayout tabLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -63,6 +69,46 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         tabLayout = findViewById(R.id.TabLayout);
         tabLayout.setOnTabSelectedListener(this);
 
+        // Initializing a Dictionary
+        ratingDict = new Hashtable();
+        // put() method
+        ratingDict.put(0, "0 5");
+        ratingDict.put(1, "0 2");
+        ratingDict.put(2, "2 4");
+        ratingDict.put(3, "3 5");
+
+        ratingSpinner = findViewById(R.id.RatingSpinner);
+        ratingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                /** Recycler View*/
+                RecyclerView recyclerView = findViewById(R.id.job_form_list);
+                findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
+                findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
+                /** Spinner Value gives The rating range that user had selected */
+                String rating = ratingDict.get(position).toString();
+                String[] splittedRating = rating.split(" ");
+                /** Get min and max rate range */
+                minRateSelected = Integer.parseInt(splittedRating[0]);
+                maxRateSelected = Integer.parseInt(splittedRating[1]);
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<JobForm> jobForms = _context.GetJobFormsByPublisherRating(minRateSelected,maxRateSelected,tabSelected);
+                        jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
+                        recyclerView.setAdapter(jobFormAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                        findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
+
         RecyclerView view = findViewById(R.id.job_form_list);
         new Thread(){
             @Override
@@ -70,7 +116,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        List<JobForm> jobForms = _context.GetJobForms();
+                        List<JobForm> jobForms = _context.GetJobForms(minRateSelected,maxRateSelected);
                         jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
                         view.setAdapter(jobFormAdapter);
                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
@@ -118,81 +164,73 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return false;
     }
 
+    /**
+     * On Tabs Layout Select , Get the relevant jobforms list.
+     * @param tab
+     */
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+
         RecyclerView view = findViewById(R.id.job_form_list);
         findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
         findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
         switch (tab.getPosition()){
             case 0:
-                new Thread(){
-                    @Override
-                    public void run() {
+                tabSelected= 0;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                List<JobForm> jobForms = _context.GetJobForms();
+                                List<JobForm> jobForms = _context.GetJobForms(minRateSelected,maxRateSelected);
                                 jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
                                 view.setAdapter(jobFormAdapter);
                                 view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-                                //jobFormAdapter.UpdateList(jobForms);
                                 findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
                             }
                         });
-                    }
-                }.start();
-
                 break;
             case 1:
-                new Thread(){
-                    @Override
-                    public void run() {
+                tabSelected = 1;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                List<JobForm> jobForms = _context.GetJobFormsForThisWeek();
+                                List<JobForm> jobForms = _context.GetJobFormsForThisWeek(minRateSelected,maxRateSelected);
                                 jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
                                 view.setAdapter(jobFormAdapter);
                                 view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-                                //jobFormAdapter.UpdateList(jobForms);
                                 findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
                             }
                         });
-                    }
-                }.start();
                 break;
             case 2:
-                new Thread(){
-                    @Override
-                    public void run() {
+                tabSelected = 2;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                List<JobForm> jobForms = _context.GetJobFormsForThisMonth();
+                                List<JobForm> jobForms = _context.GetJobFormsForThisMonth(minRateSelected,maxRateSelected);
                                 jobFormAdapter = new FormAdapter(jobForms,getApplicationContext());
                                 view.setAdapter(jobFormAdapter);
                                 view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-                                //jobFormAdapter.UpdateList(jobForms);
                                 findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
                             }
                         });
-                    }
-                }.start();
                 break;
         }
-
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+    }
+
+    public void FilterByPublisherRating(View view){
 
     }
+
+
 }

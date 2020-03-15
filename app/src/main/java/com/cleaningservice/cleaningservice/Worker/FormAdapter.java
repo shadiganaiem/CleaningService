@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cleaningservice.cleaningservice.R;
-import com.google.android.gms.tasks.Task;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.concurrent.ThreadFactory;
 
 import Models.JobForm;
 
 public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
     private List<JobForm> list;
-    private List<JobForm> FilterdList;
     private Context context;
 
     public FormAdapter(List<JobForm> list, Context context){

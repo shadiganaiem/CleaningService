@@ -126,8 +126,14 @@ public class ApplicationDbContext extends AppCompatActivity {
      * Get All JobForms
      * @return
      */
-    public List<JobForm> GetJobForms(){
-        String query = "SELECT * FROM JobForms";
+    public List<JobForm> GetJobForms(int minRate,int maxRate){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String today = dateFormat.format(date);
+
+        String query = "SELECT * FROM JobForms JOIN Users ON JobForms.CustomerId = Users.CustomerId"+
+                " WHERE JobForms.EndDate >= '"+today+"' AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
+                " AND JobForms.StatusId = 3";
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -163,7 +169,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         return jobForms;
     }
 
-    public List<JobForm> GetJobFormsForThisWeek(){
+    /**
+     * get all job forms for this week.
+     * @return
+     */
+    public List<JobForm> GetJobFormsForThisWeek(int minRate, int maxRate){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -172,7 +182,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         c.add(Calendar.DATE, 7-dayOfWeek);
         date = c.getTime();
         String lastDateInThisWeek = dateFormat.format(date);
-        String query = "SELECT * FROM JobForms WHERE StartDate >= '"+ today+ "' and StartDate<= '" +lastDateInThisWeek + "'" ;
+        String query = "SELECT * FROM JobForms JOIN USERS ON JobForms.CustomerId = Users.CustomerId" +
+                " WHERE JobForms.EndDate >= '"+today+"' AND JobForms.EndDate<= '" +lastDateInThisWeek + "'"+
+                " AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
+                " AND JobForms.StatusId = 3";
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -206,7 +219,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         return jobForms;
     }
 
-    public List<JobForm> GetJobFormsForThisMonth(){
+    /**
+     * Get all jobforms for this month.
+     * @return
+     */
+    public List<JobForm> GetJobFormsForThisMonth(int minRate,int maxRate){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -218,7 +235,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
         date = calendar.getTime();
         String lastDayDateThisMonth = dateFormat.format(date);
-        String query = "SELECT * FROM JobForms WHERE StartDate >= '"+ today+ "' and StartDate<= '" +lastDayDateThisMonth + "'" ;
+        String query = "SELECT * FROM JobForms JOIN Users ON JobForms.CustomerId = Users.CustomerId"+
+                " WHERE JobForms.EndDate >= '"+today+"' AND JobForms.EndDate<= '" +lastDayDateThisMonth + "'"+
+                "AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
+                " AND JobForms.StatusId = 3";
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -252,6 +272,86 @@ public class ApplicationDbContext extends AppCompatActivity {
         return jobForms;
     }
 
+    /**
+     * Get All JobForms by publisher rating and date range
+     * date range set by tab selected index.
+     * @param minRate
+     * @param maxRate
+     * @param tabSelected
+     * @return
+     */
+    public List<JobForm> GetJobFormsByPublisherRating (int minRate ,int maxRate,int tabSelected ){
+        String query = "SELECT * FROM JobForms JOIN Users on JobForms.CustomerId = Users.CustomerId Where Users.Rating >= " +
+                minRate + " and Users.Rating <= " + maxRate+
+                " AND JobForms.StatusId = 3";
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String minDate = dateFormat.format(date);
+        Calendar calendar = Calendar.getInstance();
+        String maxDate;
+        switch (tabSelected){
+            case 0:
+                query += " AND EndDate >= '"+minDate+"'";
+                break;
+            case 1:
+                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                calendar.add(Calendar.DATE, 7-dayOfWeek);
+                date = calendar.getTime();
+                maxDate = dateFormat.format(date);
+                query += " AND EndDate >= '"+minDate+"' AND JobForms.EndDate<= '" +maxDate + "'";
+                break;
+            case 2:
+                int month = calendar.get( calendar.MONTH)+1;
+                int year = calendar.get(calendar.YEAR);
+                calendar.set(year, month - 1, 1);
+                calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+                date = calendar.getTime();
+                maxDate =dateFormat.format(date);
+                query += " AND EndDate >= '"+minDate+"' AND JobForms.EndDate<= '" +maxDate + "'";
+                break;
+        }
+
+        List<JobForm> jobForms = new ArrayList<>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId")
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForms.add(jobForm);
+
+                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                if(imageResultSet.next()){
+                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
+                }
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+    /**
+     * Inser a new JobForm
+     * @param jobForm
+     * @param StartDate
+     * @param EndDate
+     * @return
+     */
     public boolean InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId)";
         query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City+"','"+jobForm.Address + "',"+
@@ -259,6 +359,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         return ExecuteInsertData(query);
     }
+
     /**
      * Get User Object By username
      * @param username
@@ -376,7 +477,12 @@ public class ApplicationDbContext extends AppCompatActivity {
         return _connection;
     }
 
-
+    /**
+     * insert bitmap image for new jobform.
+     * @param jobFormId
+     * @param bitmap
+     * @return
+     */
     public boolean InsertImage(int jobFormId , Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
