@@ -346,6 +346,49 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * Get JobFrom Object By ID
+     * @param jobFormId
+     * @return
+     */
+    public JobForm GetJobFormById (int jobFormId){
+        String query = "SELECT * FROM JobForms WHERE ID = " + jobFormId;
+
+        JobForm jobForm = null;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId")
+
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForm.AllImagesBytes = new ArrayList<byte[]>();
+
+                query = "SELECT ImageBytes FROM IMAGES WHERE JobFormId = "+jobFormId;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                while (imageResultSet.next()){
+                    jobForm.AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
+                }
+            }
+
+        }catch (Exception ex){
+
+        }
+
+        return jobForm;
+    }
+
+    /**
      * Inser a new JobForm
      * @param jobForm
      * @param StartDate

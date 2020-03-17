@@ -23,10 +23,12 @@ import Models.JobForm;
 public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
     private List<JobForm> list;
     private Context context;
+    private OnJobFormListiner onJobFormListiner;
 
-    public FormAdapter(List<JobForm> list, Context context){
+    public FormAdapter(List<JobForm> list, Context context,OnJobFormListiner onJobFormListiner){
         this.list  = list;
         this.context = context;
+        this.onJobFormListiner = onJobFormListiner;
     }
 
     @NonNull
@@ -34,7 +36,7 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.job_form, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view,onJobFormListiner);
     }
 
     /***
@@ -79,15 +81,30 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
     /**
      * define all card view Components.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
-        public TextView title;
-        public TextView description;
-        public ViewHolder(@NonNull View itemView) {
+        public TextView title, description;
+        public OnJobFormListiner onJobFormListiner;
+        public ViewHolder(@NonNull View itemView,OnJobFormListiner onJobFormListiner) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
+            this.onJobFormListiner = onJobFormListiner;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onJobFormListiner.onJobFormClick(getAdapterPosition());
+        }
+    }
+
+    /**
+     * on Click Listener
+     */
+    public interface OnJobFormListiner{
+        void onJobFormClick(int position);
     }
 }

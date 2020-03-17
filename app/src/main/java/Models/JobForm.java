@@ -3,6 +3,7 @@ package Models;
 import net.sourceforge.jtds.jdbc.DateTime;
 
 import java.util.Date;
+import java.util.List;
 
 public class JobForm {
     public int ID;
@@ -18,6 +19,7 @@ public class JobForm {
     public Customer customer;
     public Status status;
     public byte[] ImageBytes;
+    public List<byte[]> AllImagesBytes;
 
     public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId){
         this.ID = ID;
