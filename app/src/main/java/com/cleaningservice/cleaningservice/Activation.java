@@ -154,7 +154,9 @@ public class Activation extends AppCompatActivity {
                         "Thank you for choosing our system.\n\n"
                         +"To activate your account please enter the activation code below: \n"
                         +activationCode;
-                MailService _mailService = new MailService("cleaningservice.project.sce@gmail.com", "Project@00");
+                String email = Util.GetProperty("mail.email",getApplicationContext());
+                String password = Util.GetProperty("mail.password",getApplicationContext());
+                MailService _mailService = new MailService(email, password);
                 _mailService.sendMail("CleaningService Activation Email",
                     body,
                     "CleaningService",

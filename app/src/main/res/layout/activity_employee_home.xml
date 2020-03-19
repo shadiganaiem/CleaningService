@@ -69,6 +69,7 @@
                     android:padding="7dp">
 
                     <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/TabLayout"
                         android:layout_width="@dimen/dimen_20dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
@@ -91,7 +92,7 @@
                     </com.google.android.material.tabs.TabLayout>
 
                     <Spinner
-                        android:id="@+id/spinner"
+                        android:id="@+id/RatingSpinner"
                         android:layout_width="@dimen/dimen_20dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"

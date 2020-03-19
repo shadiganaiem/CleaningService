@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Worker.Home"></activity>
+        <activity android:name=".Worker.JobFormDetails"></activity>
+        <activity android:name=".Worker.Home" />
         <activity android:name=".Worker.SetWorkingDetailsActivity" />
         <activity android:name=".Customer.NotificationsActivity" />
         <activity android:name=".Customer.MyJobsActivity" />
