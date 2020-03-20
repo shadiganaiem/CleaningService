@@ -40,6 +40,7 @@ import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.ImagePickerActivity;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.cleaningservice.cleaningservice.Validator;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -89,7 +90,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     private ApplicationDbContext _context = null;
     private static final String TAG = FindCleanerActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
-    private ArrayList<String> list =new ArrayList<String>();
+    private ArrayList<Bitmap> images =new ArrayList<Bitmap>();
     //private RelativeLayout relativeLayout;
     private LinearLayout linearLayout;
     private Validator _validator = null;
@@ -126,7 +127,11 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        GooglePlacesApiConnect();
+        try {
+            GooglePlacesApiConnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         dateText = findViewById(R.id.date_text);
         dateText2= findViewById(R.id.date_text2);
         addressText = findViewById(R.id.street);
@@ -242,8 +247,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     /**
      * Google Places API connect and initialize
      */
-    public void GooglePlacesApiConnect(){
-        String ApiKey = "AIzaSyBtl61YpGjZBArHe_7h9XUjXwdfYlcAT-Y";
+    public void GooglePlacesApiConnect() throws IOException {
+        String ApiKey = Util.GetProperty("api.googleplaces",getApplicationContext());
 
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(),ApiKey);
@@ -296,7 +301,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     }
 
 
-    public void Publish(View view) throws ParseException {
+    public void Publish(View view) throws Exception {
         String regex = "([0-9]*[.])?[0-9]+";
         budgt = findViewById(R.id.budget);
         status = true;
@@ -334,7 +339,15 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                     address,
                     budget
             );
-            _context.InsertJobForm(jobForm, startDate, endDate);
+            int jobFormId = _context.InsertJobForm(jobForm, startDate, endDate);
+            if(jobFormId > 0){
+                if(_context.InsertImage(jobFormId,images)==false){
+                    throw new Exception("problem aquired while attempting to upload images to the database");
+                }
+            }
+            else{
+                throw new Exception("Form ID is not valid");
+            }
         }
     }
 
@@ -390,7 +403,6 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     }
 
     private void loadProfile(String url) {
-        list.add(url);
             ImageView imgView= new ImageView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             imgView.setLayoutParams(lp);
@@ -410,8 +422,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                 Uri uri = data.getParcelableExtra("path");
                 try {
                     // You can update this bitmap to your server
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-
+                        images.add(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
                     // loading profile image from local cache
                     loadProfile(uri.toString());
                 } catch (IOException e) {
