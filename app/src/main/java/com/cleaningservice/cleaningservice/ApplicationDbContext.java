@@ -395,12 +395,25 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param EndDate
      * @return
      */
-    public boolean InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
+    public int InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId)";
         query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City+"','"+jobForm.Address + "',"+
                 jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',3)";
 
-        return ExecuteInsertData(query);
+        int jobFormId = 0;
+        if(ExecuteInsertData(query)){
+            query = "SELECT ID FROM JobForms WHERE CustomerId = " + jobForm.CustomerId;
+            try{
+                ResultSet result = ExecuteSelectQuery(query);
+                if (result.next())
+                    jobFormId =  result.getInt("ID");
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+        return jobFormId;
     }
 
     /**
@@ -523,26 +536,31 @@ public class ApplicationDbContext extends AppCompatActivity {
     /**
      * insert bitmap image for new jobform.
      * @param jobFormId
-     * @param bitmap
+     * @param bitmaps
      * @return
      */
-    public boolean InsertImage(int jobFormId , Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
+    public boolean InsertImage(int jobFormId , List<Bitmap> bitmaps){
 
-        String query = "INSERT INTO Images(JobFormId,ImageBytes) Values(?,?)";
-        try {
-            PreparedStatement pst = _connection.prepareStatement(query);
-            pst.setInt(1,jobFormId);
-            pst.setBytes(2,b);
-            int row = pst.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(jobFormId ==0 )
+            return false;
+
+        for(int i=0;i<bitmaps.size();i++){
+            Bitmap bitmap = bitmaps.get(i);
+            ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+            byte [] b=baos.toByteArray();
+
+            String query = "INSERT INTO Images(JobFormId,ImageBytes) Values(?,?)";
+            try {
+                PreparedStatement pst = _connection.prepareStatement(query);
+                pst.setInt(1,jobFormId);
+                pst.setBytes(2,b);
+                pst.executeUpdate();
+            } catch (SQLException e) {
+               return false;
+            }
         }
-
-
-        return ExecuteInsertData(query);
+        return true;
     }
 
     /**
