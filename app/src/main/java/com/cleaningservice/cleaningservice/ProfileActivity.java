@@ -1,13 +1,15 @@
 package com.cleaningservice.cleaningservice;
-
-
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
@@ -53,7 +55,6 @@ import butterknife.OnClick;
 import static Authentications.Preferences.GetLoggedInUserID;
 import static Authentications.Preferences.isCustomer;
 
-
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private  DrawerLayout drawer;
@@ -74,8 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
-        loadProfileDefault();
-
 
 
         Toolbar toolbar2 = findViewById(R.id.sidebar);
@@ -85,12 +84,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
 
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
@@ -119,15 +115,22 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 mail.setText(user.employee.Email);
                 phone.setText(user.employee.Phone);
             }
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (user.Image != null && user.Image.length > 0) {
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(user.Image, 0, user.Image.length));
+                        GlideApp.with(getApplicationContext()).load(bitmap).into(imgProfile);
+                    }
+                    else {
+                        GlideApp.with(getApplicationContext()).load(R.drawable.baseline_account_circle_black_48)
+                                .into(imgProfile);
+                        imgProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.darkblue));
+                    }
+                }
+            });
         }
-
-
-
-
-        // Clearing older images from cache directory
-        // don't call this line if you want to choose multiple images in the same activity
-        // call this once the bitmap(s) usage is over
-      //  ImagePickerActivity.clearCache(this);*/
     }
 
     private void loadProfile(String url) {
@@ -136,12 +139,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         GlideApp.with(this).load(url)
                 .into(imgProfile);
         imgProfile.setColorFilter(ContextCompat.getColor(this, android.R.color.transparent));
-    }
-
-    private void loadProfileDefault() {
-        GlideApp.with(this).load(R.drawable.baseline_account_circle_black_48)
-                .into(imgProfile);
-        imgProfile.setColorFilter(ContextCompat.getColor(this, R.color.darkblue));
     }
 
     @OnClick({R.id.img_plus, R.id.img_profile})
@@ -219,8 +216,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
-                    // loading profile image from local cache
-                    loadProfile(uri.toString());
+                    //Update In DB
+                    if(_context.UpdateProfileImage(Preferences.GetLoggedInUserID(getApplicationContext()),bitmap));
+                        // loading profile image from local cache
+                        loadProfile(uri.toString());
                 } catch (IOException e) {
                      e.printStackTrace();
                 }

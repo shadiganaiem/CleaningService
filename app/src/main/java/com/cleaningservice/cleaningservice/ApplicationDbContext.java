@@ -112,6 +112,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 user.status = GetStatus(user.StatusId);
                 user.employee = GetEmployee(user.EmployeeId);
                 user.customer = GetCustomer(user.CustomerId);
+                user.Image = result.getBytes("Image");
 
                 return user;
             }
@@ -436,6 +437,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId")
                 );
 
+                user.Image = result.getBytes("Image");
                 return user;
             }
         }
@@ -561,6 +563,96 @@ public class ApplicationDbContext extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    /**
+     * Update User Profile Image.
+     * @param userId
+     * @param bitmap
+     * @return
+     */
+    public boolean UpdateProfileImage(int userId,Bitmap bitmap){
+        String query = "UPDATE USERS SET Image = ? WHERE ID = ?";
+
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+
+        try {
+            PreparedStatement pst = _connection.prepareStatement(query);
+            pst.setBytes(1,b);
+            pst.setInt(2,userId);
+            pst.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Get Profile Image By Customer Id
+     * @param customerId
+     * @return
+     */
+    public byte[] GetProfileImageByCustomerId (int customerId){
+        String query = "SELECT Image From USERS WHERE CustomerId = " +customerId;
+
+        try{
+            ResultSet result= ExecuteSelectQuery(query);
+            if(result.next()){
+                return result.getBytes("Image");
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get DEFAULT PROFILE IMAGE FROM DATABASE ( USER ID = 11 )
+     * @return
+     */
+    public byte[] GetDefaultProfileImage(){
+        String query = "SELECT Image From USERS WHERE ID = 11";
+
+        try{
+            ResultSet resultSet = ExecuteSelectQuery(query);
+            if(resultSet.next())
+                return resultSet.getBytes("Image");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * INITIALIZE DEFAULT PROFILE IMAGE FOR NEW USER
+     * @param userId
+     * @return
+     */
+    public boolean InitializeUserImage(int userId){
+
+        String query = "UPDATE USERS SET Image = ? WHERE ID = ?";
+        byte[] image = GetDefaultProfileImage();
+
+        try {
+            PreparedStatement pst = _connection.prepareStatement(query);
+            pst.setBytes(1,image);
+            pst.setInt(2,userId);
+            pst.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

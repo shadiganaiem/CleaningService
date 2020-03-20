@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
@@ -126,6 +127,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 @Override
                 public void run() {
 
+                    byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
+                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView)findViewById(R.id.jobFormDetailsProfileImage));
                     LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
 
                     for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
