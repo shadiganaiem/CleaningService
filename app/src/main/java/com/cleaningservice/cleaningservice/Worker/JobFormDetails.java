@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -124,9 +125,21 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    byte[] firstImageBytes = jobForm.AllImagesBytes.get(0);
-                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(firstImageBytes, 0, firstImageBytes.length));
-                    ((ImageView) findViewById(R.id.jobFormDetailsProfileImage)).setImageDrawable(bitmap);
+
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
+
+                    for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
+                        ImageView imageView = new ImageView(getApplicationContext());
+                        imageView.setId(i);
+                        imageView.setPadding(2, 2, 2, 2);
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        layout.addView(imageView);
+
+
+                        byte[] imageBytes = jobForm.AllImagesBytes.get(i);
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                        imageView.setImageDrawable(bitmap);
+                    }
                 }
             });
         }

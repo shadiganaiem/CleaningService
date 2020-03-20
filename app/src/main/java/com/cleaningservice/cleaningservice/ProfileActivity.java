@@ -219,7 +219,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
-                    boolean result = _context.InsertImage(2,bitmap);
                     // loading profile image from local cache
                     loadProfile(uri.toString());
                 } catch (IOException e) {
