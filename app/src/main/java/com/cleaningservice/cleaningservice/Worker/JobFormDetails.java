@@ -128,9 +128,15 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 public void run() {
 
                     byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
-                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView)findViewById(R.id.jobFormDetailsProfileImage));
-                    LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
+                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView) findViewById(R.id.jobFormDetailsProfileImage));
+                }
+                });
 
+            LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
                     for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
                         ImageView imageView = new ImageView(getApplicationContext());
                         imageView.setId(i);
