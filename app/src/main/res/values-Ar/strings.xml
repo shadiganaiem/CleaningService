@@ -29,9 +29,9 @@
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
-    <string name="lbl_set_profile_photo">Set profile image</string>
-    <string name="lbl_take_camera_picture">Take a picture</string>
-    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="lbl_set_profile_photo">اختر صورة البروفيل</string>
+    <string name="lbl_take_camera_picture">التقط صورة</string>
+    <string name="lbl_choose_from_gallery">اختر صورة</string>
     <string name="toast_image_intent_null">Image picker option is missing!</string>
 
     <!-- font families -->
@@ -50,12 +50,12 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">You are not a member?</string>
-    <string name="register">Register</string>
-    <string name="hello">Hello There!</string>
+    <string name="member">لست عضو؟</string>
+    <string name="register">التسجيل</string>
+    <string name="hello">مرحبا بك</string>
     <string name="but">back button</string>
     <string name="join">Join Now</string>
-    <string name="done">Almost Done</string>
+    <string name="done">تقريبا انتهينا</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">تسجيل الخروج</string>
 
@@ -82,4 +82,7 @@
     <string name="chooseRating">اختر تقييم</string>
     <string name="JobLocation">احداثيات العمل</string>
     <string name="Addphotos">اضافة صور</string>
+    <string name="approve">قبول الطلب</string>
+    <string name="dismiss">رفض الطلب</string>
+    <string name="description">التفاصيل</string>
 </resources>

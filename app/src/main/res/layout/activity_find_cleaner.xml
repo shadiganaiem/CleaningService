@@ -297,8 +297,28 @@
                             android:gravity="center"
                             android:id="@+id/street"/>
 
-                        <Button
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/description"
+                            android:textColor="@color/darkblue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:background="@drawable/input_fealds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:paddingRight="20dp"
+                            style="@android:style/Widget.EditText"
+                            android:gravity="right"
+                            android:id="@+id/Description"/>
+
+                        <Button
                             android:layout_height="match_parent"
                             android:layout_width="200dp"
                             android:layout_gravity="center"
@@ -320,9 +340,6 @@
                                 android:orientation="vertical"
                                 android:layout_marginTop="40dp"
                                 android:gravity="center">
-
-
-
 
                         </LinearLayout>
 

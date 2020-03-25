@@ -147,8 +147,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getFloat("Budget"),
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
-                        result.getInt("StatusId")
-
+                        result.getInt("StatusId"),
+                        result.getString("Description")
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
@@ -199,7 +199,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getFloat("Budget"),
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
-                        result.getInt("StatusId")
+                        result.getInt("StatusId"),
+                        result.getString("Description")
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
@@ -252,7 +253,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getFloat("Budget"),
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
-                        result.getInt("StatusId")
+                        result.getInt("StatusId"),
+                        result.getString("Description")
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
@@ -325,7 +327,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getFloat("Budget"),
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
-                        result.getInt("StatusId")
+                        result.getInt("StatusId"),
+                        result.getString("Description")
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
@@ -366,7 +369,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getFloat("Budget"),
                         result.getDate("StartDate"),
                         result.getDate("EndDate"),
-                        result.getInt("StatusId")
+                        result.getInt("StatusId"),
+                        result.getString("Description")
 
                 );
                 jobForm.customer = GetCustomer(jobForm.CustomerId);
@@ -396,9 +400,9 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public int InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
-        String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId)";
+        String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId,Description)";
         query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City+"','"+jobForm.Address + "',"+
-                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',3)";
+                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+3+",'"+jobForm.Description+"')";
 
         int jobFormId = 0;
         if(ExecuteInsertData(query)){

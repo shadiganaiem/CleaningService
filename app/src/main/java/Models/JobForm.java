@@ -15,13 +15,14 @@ public class JobForm {
     public Date StartDate;
     public Date EndDate;
     public int StatusId;
+    public String Description;
 
     public Customer customer;
     public Status status;
     public byte[] ImageBytes;
     public List<byte[]> AllImagesBytes;
 
-    public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId){
+    public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId,String Description){
         this.ID = ID;
         this.CustomerId = CustomerId;
         this.Rooms = Rooms;
@@ -31,16 +32,16 @@ public class JobForm {
         this.StartDate = StartDate;
         this.EndDate = EndDate;
         this.StatusId = StatusId;
+        this.Description = Description;
     }
 
-    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget){
+    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget,String Description){
         this.CustomerId = CustomerId;
         this.Rooms = Rooms;
         this.City = City;
         this.Address = Address;
         this.Budget = Budget;
-        this.StartDate = StartDate;
-        this.EndDate = EndDate;
+        this.Description = Description;
     }
 
     public JobForm(){}

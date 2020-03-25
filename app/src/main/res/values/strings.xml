@@ -11,7 +11,7 @@
     <string name="Password">סיסמה</string>
     <string name="RePassword">אימות סיסמה</string>
     <string name="City">ישוב</string>
-    <string name="Address">רחוב</string>
+    <string name="Address">כתובת</string>
     <string name="NextBtn">הבא</string>
     <string name="accountType">הגדר חשבון כעובד</string>
     <string name="Previous">קודם</string>
@@ -22,12 +22,12 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">You are not a member?</string>
-    <string name="register">Register</string>
-    <string name="hello">Hello There!</string>
+    <string name="member">לא רשום?</string>
+    <string name="register">הרשמה</string>
+    <string name="hello">ברוך הבא</string>
     <string name="but">back button</string>
     <string name="join">Join Now</string>
-    <string name="done">Almost Done</string>
+    <string name="done">כמעט סיימנו</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">יציאה</string>
 
@@ -44,9 +44,9 @@
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
-    <string name="lbl_set_profile_photo">Set profile image</string>
-    <string name="lbl_take_camera_picture">Take a picture</string>
-    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="lbl_set_profile_photo">בחר תמונת פרופיל</string>
+    <string name="lbl_take_camera_picture">צלם תמונה</string>
+    <string name="lbl_choose_from_gallery">בחר מגלריה</string>
     <string name="toast_image_intent_null">Image picker option is missing!</string>
 
     <!-- font families -->
@@ -108,5 +108,8 @@
         <item>3 - 5 ★</item>
     </string-array>
     <string name="chooseRating">בחר דירוג</string>
+    <string name="approve">אישור בקשה</string>
+    <string name="dismiss">מחק בקשה</string>
+    <string name="description">הערות</string>
 
 </resources>

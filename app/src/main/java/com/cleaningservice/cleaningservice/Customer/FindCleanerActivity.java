@@ -87,6 +87,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     private float budget;
     private String address =null;
     private String city = null;
+    private String description = "";
     private ApplicationDbContext _context = null;
     private static final String TAG = FindCleanerActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
@@ -137,6 +138,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         addressText = findViewById(R.id.street);
         cityText = findViewById(R.id.city);
         linearLayout = findViewById(R.id.linearLayout3);
+
         _validator = new Validator();
 
         findViewById(R.id.show_dialog).setOnClickListener(new View.OnClickListener() {
@@ -158,6 +160,12 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
 
     }
 
+    /**
+     *
+     * @param menuItem
+     * @return
+     * changes activities using the side bar
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
@@ -183,6 +191,9 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         return false;
     }
 
+    /**
+     * close or open side bar
+     */
     @Override
     public void onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)){
@@ -193,9 +204,9 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         }
     }
 
-
-
-
+    /**
+     * shows the Datepicker dialog
+     */
     public void showDatePickerDialog(){
         flag=0;
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -207,7 +218,9 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         datePickerDialog.show();
     }
 
-
+    /**
+     * shows the Datepicker dialog
+     */
     public void showDatePickerDialog2(){
         flag=1;
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -219,6 +232,14 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         datePickerDialog.show();
     }
 
+    /**
+     *
+     * @param view
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     * changes dates format
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         month+=1;
@@ -273,10 +294,10 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                     addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                     String saddress = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                     String scity = addresses.get(0).getLocality();
-                    String state = addresses.get(0).getAdminArea();
-                    String country = addresses.get(0).getCountryName();
-                    String postalCode = addresses.get(0).getPostalCode();
-                    String knownName = addresses.get(0).getFeatureName();
+                    //String state = addresses.get(0).getAdminArea();
+                    //String country = addresses.get(0).getCountryName();
+                    //String postalCode = addresses.get(0).getPostalCode();
+                    //String knownName = addresses.get(0).getFeatureName();
                     String[] add = saddress.split(",");
                     address=add[0];
                     city=scity;
@@ -300,7 +321,12 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
 
     }
 
-
+    /**
+     *
+     * @param view
+     * @throws Exception
+     * save the form data in the data base
+     */
     public void Publish(View view) throws Exception {
         String regex = "([0-9]*[.])?[0-9]+";
         budgt = findViewById(R.id.budget);
@@ -327,6 +353,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             budget = Float.parseFloat((budgt).getText().toString());
             startDate = dateText.getText().toString();
             endDate = dateText2.getText().toString();
+            TextInputEditText desc = findViewById(R.id.Description);
+            description = desc.getText().toString();
 
             Spinner spinner = (Spinner) findViewById(R.id.spinner2);
             String text = spinner.getSelectedItem().toString();
@@ -337,7 +365,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                     roomNum,
                     city,
                     address,
-                    budget
+                    budget,
+                    description
             );
             int jobFormId = _context.InsertJobForm(jobForm, startDate, endDate);
             if(jobFormId > 0){
@@ -351,6 +380,9 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         }
     }
 
+    /**
+     * check dates ellegability
+     */
     private void Compare_dates() {
         Date todayDate= new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
