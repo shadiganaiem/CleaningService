@@ -3,12 +3,11 @@ package com.cleaningservice.cleaningservice;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.StrictMode;
-import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import net.sourceforge.jtds.jdbc.DateTime;
+import Models.Request;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -393,6 +391,52 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * Get JobForms By Customer ID
+     * @return
+     */
+    public List<JobForm> GetJobFormsByCustomerID(User user){
+
+        String query = "SELECT * FROM JobForms WHERE CustomerId = "+user.CustomerId;
+
+        List<JobForm> jobForms = new ArrayList<>();
+        try{
+
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId"),
+                        result.getString("Description")
+                );
+
+
+                //jobForm.status = GetStatus(jobForm.StatusId);
+
+
+                jobForms.add(jobForm);
+
+                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+                ResultSet imageResultSet = ExecuteSelectQuery(query);
+                if(imageResultSet.next()){
+                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
+                }
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+
+    /**
      * Inser a new JobForm
      * @param jobForm
      * @param StartDate
@@ -420,6 +464,9 @@ public class ApplicationDbContext extends AppCompatActivity {
         return jobFormId;
     }
 
+
+
+
     /**
      * Get User Object By username
      * @param username
@@ -427,7 +474,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public User GetUser(String username){
         String query  = "SELECT * FROM Users WHERE Username='"+username+"'";
-        try{
+        try {
             ResultSet result = ExecuteSelectQuery(query);
             if (result.next()){
                 User user = new User(
@@ -478,6 +525,44 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         }
         return new Customer();
+    }
+
+
+    public ArrayList<Request> GetFormUserRequests (int jobFormId) throws SQLException {
+
+        String query = "SELECT * FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
+                "WHERE JobFormRequests.JobFormId = " + jobFormId;
+        ArrayList<Request> requests = new ArrayList<>();
+
+
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+
+                int id= result.getInt("ID");
+                String fn=result.getString("Firstname");
+                String ln =result.getString("Lastname");
+                String email=result.getString("Email");
+                String phone =result.getString("Phone");
+
+
+                 String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
+                 ResultSet result2 = ExecuteSelectQuery(query2);
+                 if(result2.next()){
+                     int rate= result2.getInt("Rating");
+                     //byte[] img= result2.getBytes("ImageBytes");
+                     Request request = new Request(
+                             fn,
+                             ln,
+                             phone,
+                             email,
+                             rate
+                     );
+                     requests.add(request);
+                 }
+            }
+
+
+        return requests;
     }
 
     /**

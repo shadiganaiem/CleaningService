@@ -307,6 +307,8 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
+
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:background="@drawable/input_fealds"
                             android:layout_width="match_parent"
@@ -316,7 +318,11 @@
                             android:paddingRight="20dp"
                             style="@android:style/Widget.EditText"
                             android:gravity="right"
-                            android:id="@+id/Description"/>
+                            android:id="@+id/Description" />
+
+
+
+
 
                         <Button
                             android:layout_height="match_parent"

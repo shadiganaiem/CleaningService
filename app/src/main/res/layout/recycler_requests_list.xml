@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Requests"
+    android:layoutDirection="rtl"
+    android:background="@color/white"
+    >
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="5dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:background="@drawable/requests_boarder">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imagehu"
+                        android:layout_width="100dp"
+                        android:layout_height="98dp"
+                        android:layout_gravity="end"
+                        android:scaleType="centerInside"
+                        android:contentDescription="TODO"
+                        app:civ_border_color="@color/white"
+                        android:src="@drawable/baseline_account_circle_black_48"
+                        android:background="@drawable/circles"/>
+
+
+                    <LinearLayout
+                        android:layout_width="170dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@color/darkblue">
+
+                        <TextView
+                            android:id="@+id/title2"
+                            android:paddingTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textDirection="rtl"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/title4"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textDirection="rtl" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/white_button"
+                            android:text="@string/approve"
+                            android:textColor="@color/quantum_googgreen800" />
+
+                        <Button
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/danger_btn"
+                            android:fontFamily="@font/regular"
+                            android:text="@string/dismiss"
+                            android:textColor="@color/white" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
+

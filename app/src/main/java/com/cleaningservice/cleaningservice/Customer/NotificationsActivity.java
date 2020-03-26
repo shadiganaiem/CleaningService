@@ -6,23 +6,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import Models.Employee;
+import Models.JobForm;
+import Models.Request;
+
+import static Authentications.Preferences.GetLoggedInUserID;
+
 public class NotificationsActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawer;
+    private ApplicationDbContext _context=null;
+    private ArrayList<Request> requests = new ArrayList<>();
+    private static final String TAG = "Notifictions";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar);
@@ -35,6 +59,20 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        List<JobForm> jobForms = _context.GetJobFormsByCustomerID(_context.GetUser(GetLoggedInUserID(this)));
+        for (JobForm form : jobForms){
+            try {
+                ArrayList<Request> reqs = _context.GetFormUserRequests(form.ID);
+                for (Request request : reqs){
+                    requests.add(request);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        initRecycleView();
     }
 
     @Override
@@ -70,5 +108,13 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
                 break;
         }
         return false;
+    }
+
+    private void initRecycleView(){
+        Log.d(TAG,"initRecyclerView: init recyclerview.");
+        RecyclerView recyclerView= findViewById(R.id.Requests_list);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,requests);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
