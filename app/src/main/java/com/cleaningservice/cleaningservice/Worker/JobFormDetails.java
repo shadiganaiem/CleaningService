@@ -112,6 +112,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     private  void InitializeViewModel() {
         TextView customerFullName = findViewById(R.id.CustomerFullName);
         TextView customerRating = findViewById(R.id.CustomerRating);
+        TextView descirption = (TextView) findViewById(R.id.descriptionBox);
         customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
         String rating = "";
         if (jobForm.customer.Rating != 0) {
@@ -121,8 +122,9 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
             }
         }
         customerRating.setText(rating);
+        descirption.setText(jobForm.Description);
 
-        if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
+        /*if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
@@ -151,6 +153,6 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                     }
                 }
             });
-        }
+        }*/
     }
 }

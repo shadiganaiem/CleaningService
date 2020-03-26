@@ -1,46 +1,45 @@
 package Models;
 
-import net.sourceforge.jtds.jdbc.DateTime;
-
 import java.util.Date;
 import java.util.List;
 
 public class JobForm {
     public int ID;
-    public int CustomerId;
     public int Rooms;
     public String City;
-    public String Address;
-    public float Budget;
-    public Date StartDate;
     public Date EndDate;
+    public float Budget;
     public int StatusId;
+    public int CustomerId;
+    public Date StartDate;
+    public String Address;
+    public String Description;
 
     public Customer customer;
     public Status status;
     public byte[] ImageBytes;
     public List<byte[]> AllImagesBytes;
 
-    public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId){
+    public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId,String Description){
         this.ID = ID;
-        this.CustomerId = CustomerId;
-        this.Rooms = Rooms;
         this.City = City;
-        this.Address = Address;
+        this.Rooms = Rooms;
         this.Budget = Budget;
-        this.StartDate = StartDate;
         this.EndDate = EndDate;
+        this.Address = Address;
         this.StatusId = StatusId;
+        this.StartDate = StartDate;
+        this.CustomerId = CustomerId;
+        this.Description = Description;
     }
 
-    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget){
-        this.CustomerId = CustomerId;
-        this.Rooms = Rooms;
+    public JobForm (int CustomerId,int Rooms,String City,String Address,float Budget,String Description){
         this.City = City;
-        this.Address = Address;
+        this.Rooms = Rooms;
         this.Budget = Budget;
-        this.StartDate = StartDate;
-        this.EndDate = EndDate;
+        this.Address = Address;
+        this.CustomerId = CustomerId;
+        this.Description = Description;
     }
 
     public JobForm(){}

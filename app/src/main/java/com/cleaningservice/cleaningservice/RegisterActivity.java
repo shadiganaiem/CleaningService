@@ -1,19 +1,15 @@
 package com.cleaningservice.cleaningservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
+import android.os.Bundle;
+import android.text.Html;
 import android.widget.Toast;
-
-import com.google.android.libraries.places.api.Places;
+import android.widget.Switch;
+import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;
