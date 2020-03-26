@@ -84,5 +84,5 @@
     <string name="Addphotos">اضافة صور</string>
     <string name="approve">قبول الطلب</string>
     <string name="dismiss">رفض الطلب</string>
-    <string name="description">التفاصيل</string>
+    <string name="description">وصف</string>
 </resources>

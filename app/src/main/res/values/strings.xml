@@ -110,6 +110,6 @@
     <string name="chooseRating">בחר דירוג</string>
     <string name="approve">אישור בקשה</string>
     <string name="dismiss">מחק בקשה</string>
-    <string name="description">הערות</string>
+    <string name="description">תיאור</string>
 
 </resources>

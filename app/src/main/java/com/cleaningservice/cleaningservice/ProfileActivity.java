@@ -6,8 +6,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
@@ -218,8 +223,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 try {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    // loading profile image from local cache
-                    loadProfile(uri.toString());
+
+                    //Update In DB
+                    if(_context.UpdateProfileImage(Preferences.GetLoggedInUserID(getApplicationContext()),bitmap));
+                        // loading profile image from local cache
+                        loadProfile(uri.toString());
                 } catch (IOException e) {
                      e.printStackTrace();
                 }

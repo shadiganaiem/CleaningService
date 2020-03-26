@@ -86,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerInside"
-            android:src="@drawable/baseline_account_circle_black_48"
             app:civ_border_color="@color/darkblue" />
 
         <com.mikhaellopez.circularimageview.CircularImageView

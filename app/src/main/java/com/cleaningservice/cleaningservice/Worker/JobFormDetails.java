@@ -20,10 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
@@ -110,6 +112,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     private  void InitializeViewModel() {
         TextView customerFullName = findViewById(R.id.CustomerFullName);
         TextView customerRating = findViewById(R.id.CustomerRating);
+        TextView descirption = (TextView) findViewById(R.id.descriptionBox);
         customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
         String rating = "";
         if (jobForm.customer.Rating != 0) {
@@ -119,16 +122,37 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
             }
         }
         customerRating.setText(rating);
+        descirption.setText(jobForm.Description);
 
-        if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
+        /*if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    byte[] firstImageBytes = jobForm.AllImagesBytes.get(0);
-                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(firstImageBytes, 0, firstImageBytes.length));
-                    ((ImageView) findViewById(R.id.jobFormDetailsProfileImage)).setImageDrawable(bitmap);
+
+                    byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
+                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView) findViewById(R.id.jobFormDetailsProfileImage));
+                }
+                });
+
+            LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
+                        ImageView imageView = new ImageView(getApplicationContext());
+                        imageView.setId(i);
+                        imageView.setPadding(2, 2, 2, 2);
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        layout.addView(imageView);
+
+
+                        byte[] imageBytes = jobForm.AllImagesBytes.get(i);
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                        imageView.setImageDrawable(bitmap);
+                    }
                 }
             });
-        }
+        }*/
     }
 }

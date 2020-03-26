@@ -1,19 +1,15 @@
 package com.cleaningservice.cleaningservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
+import android.os.Bundle;
+import android.text.Html;
 import android.widget.Toast;
-
-import com.google.android.libraries.places.api.Places;
+import android.widget.Switch;
+import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;
@@ -54,14 +50,12 @@ public class RegisterActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
         } catch (SQLException e) {
             e.printStackTrace();
         }
         _validator = new Validator();
-
 
         //layouts
         FirstStep = findViewById(R.id.FirstStep);
@@ -146,14 +140,14 @@ public class RegisterActivity extends AppCompatActivity  {
                     +activationCode+"' " +
                 "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
 
-
-
             if(_context.ExecuteInsertData(query)){
                 SendConfirmationEmail(GetInputText(Email),activationCode);
                 try{
                     User user =  _context.GetUser(GetInputText(Username));
                     Intent intent = new Intent(getBaseContext(), Activation.class);
                     intent.putExtra("USER_ID", user.ID);
+
+                    _context.InitializeUserImage(user.ID);
                     startActivity(intent);
                 }catch (Exception ex){
                     Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
