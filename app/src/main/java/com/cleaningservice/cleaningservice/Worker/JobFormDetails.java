@@ -16,6 +16,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +33,7 @@ import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.sql.SQLException;
 import java.util.Dictionary;
@@ -110,49 +113,76 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     }
 
     private  void InitializeViewModel() {
-        TextView customerFullName = findViewById(R.id.CustomerFullName);
-        TextView customerRating = findViewById(R.id.CustomerRating);
-        TextView descirption = (TextView) findViewById(R.id.descriptionBox);
-        customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
-        String rating = "";
-        if (jobForm.customer.Rating != 0) {
-            rating += "\n";
-            for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
-                rating += "★";
-            }
-        }
-        customerRating.setText(rating);
-        descirption.setText(jobForm.Description);
 
-        /*if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-
-                    byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
-                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView) findViewById(R.id.jobFormDetailsProfileImage));
-                }
-                });
-
-            LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
-
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
-                        ImageView imageView = new ImageView(getApplicationContext());
-                        imageView.setId(i);
-                        imageView.setPadding(2, 2, 2, 2);
-                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        layout.addView(imageView);
-
-
-                        byte[] imageBytes = jobForm.AllImagesBytes.get(i);
-                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                        imageView.setImageDrawable(bitmap);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                TextView customerFullName = findViewById(R.id.CustomerFullName);
+                TextView customerRating = findViewById(R.id.CustomerRating);
+                TextView descirption = (TextView) findViewById(R.id.descriptionBox);
+                customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
+                String rating = "";
+                if (jobForm.customer.Rating != 0) {
+                    rating += "\n";
+                    for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
+                        rating += "★";
                     }
                 }
-            });
-        }*/
+
+                String details = "";
+                details += "מיקום עבודה : ";
+                details += jobForm.City + " - " + jobForm.Address + "\n";
+                details += "מספר חדרים : ";
+                details += jobForm.Rooms + " חדרים" + "\n";
+                details += "תקציב משועך : ";
+                details += jobForm.Budget + "ש\"ח" + "\n \n";
+                details += "הערות : ";
+                details += jobForm.Description;
+
+                customerRating.setText(rating);
+                descirption.setMovementMethod(new ScrollingMovementMethod());
+                descirption.setTextSize(20);
+                descirption.setText(details);
+            }
+        });
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+
+                byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
+                GlideApp.with(getApplicationContext()).load(profileImage).into((CircularImageView) findViewById(R.id.jobFormDetailsProfileImage));
+            }
+        });
+
+
+        if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.image_container);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
+                byte[] imageBytes = jobForm.AllImagesBytes.get(i);
+
+                layoutParams.setMargins(20, 20, 20, 20);
+
+                layoutParams.gravity = Gravity.CENTER;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+
+                        ImageView imageView = new ImageView(getApplicationContext());
+                        imageView.setImageDrawable(bitmap);
+                        //imageView.setOnClickListener(documentImageListener);
+                        imageView.setLayoutParams(layoutParams);
+
+                        imageView.getLayoutParams().height = 600;
+                        imageView.getLayoutParams().width = 600;
+                        imageView.setBackgroundResource(R.drawable.image_border);
+                        layout.addView(imageView);
+                    }
+                });
+            }
+        }
     }
 }

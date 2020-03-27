@@ -308,15 +308,15 @@
                             android:textStyle="bold" />
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:background="@drawable/input_fealds"
+                            android:id="@+id/Description"
+                            style="@android:style/Widget.EditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:paddingRight="20dp"
-                            style="@android:style/Widget.EditText"
+                            android:background="@drawable/input_fealds"
                             android:gravity="right"
-                            android:id="@+id/descriptionBox"/>
+                            android:paddingRight="20dp" />
 
                         <Button
                             android:layout_height="match_parent"
