@@ -9,14 +9,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Worker.FormAdapter;
+import com.cleaningservice.cleaningservice.Worker.Home;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import java.sql.SQLException;
@@ -35,6 +42,8 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
     private ApplicationDbContext _context=null;
     private ArrayList<Request> requests = new ArrayList<>();
     private static final String TAG = "Notifictions";
+    RecyclerView recyclerView;
+    RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +69,24 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        recyclerView= findViewById(R.id.Requests_list);
+        adapter = new RecyclerViewAdapter(this,requests);
 
-        List<JobForm> jobForms = _context.GetJobFormsByCustomerID(_context.GetUser(GetLoggedInUserID(this)));
-        for (JobForm form : jobForms){
-            try {
-                ArrayList<Request> reqs = _context.GetFormUserRequests(form.ID);
-                for (Request request : reqs){
-                    requests.add(request);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.hasFixedSize();
+        recyclerView.setAdapter(adapter);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initRecycleView();
+                adapter.showShimmer =false;
+                recyclerView.setAdapter(adapter);
+
             }
-        }
-        initRecycleView();
+        },0);
+
+
     }
 
     @Override
@@ -111,10 +125,18 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
     }
 
     private void initRecycleView(){
-        Log.d(TAG,"initRecyclerView: init recyclerview.");
-        RecyclerView recyclerView= findViewById(R.id.Requests_list);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,requests);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                List<JobForm> jobForms = _context.GetJobFormsByCustomerID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                for (JobForm form : jobForms) {
+                    try {
+                        ArrayList<Request> reqs = _context.GetFormUserRequests(form.ID);
+                        for (Request request : reqs) {
+                            requests.add(request);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                }
     }
 }

@@ -51,7 +51,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home);
 
-        try {
+       try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
         } catch (SQLException e) {
             e.printStackTrace();

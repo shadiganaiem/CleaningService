@@ -2,6 +2,7 @@ package com.cleaningservice.cleaningservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.StrictMode;
 import android.widget.Toast;
 
@@ -548,16 +549,19 @@ public class ApplicationDbContext extends AppCompatActivity {
 
 
                  String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
+                 String query3= "SELECT Image From USERS WHERE EmployeeId = "+ id;
                  ResultSet result2 = ExecuteSelectQuery(query2);
-                 if(result2.next()){
+                 ResultSet result3 = ExecuteSelectQuery(query3);
+                 if(result2.next() && result3.next()){
                      int rate= result2.getInt("Rating");
-                     //byte[] img= result2.getBytes("ImageBytes");
+                     byte[] img= result3.getBytes("Image");
                      Request request = new Request(
                              fn,
                              ln,
                              phone,
                              email,
-                             rate
+                             rate,
+                             img
                      );
                      requests.add(request);
                  }

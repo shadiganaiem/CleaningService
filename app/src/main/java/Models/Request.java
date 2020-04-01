@@ -5,15 +5,15 @@ public class Request {
     public String LastName;
     public String Phone;
     public String Email;
-    //private byte[] ImageBytes;
+    public byte[] ImageBytes;
     public int Rating;
 
-    public Request(String firstName ,String lastName, String phone, String email, int rating){
+    public Request(String firstName ,String lastName, String phone, String email, int rating,byte[] image){
         FirstName=firstName;
         LastName=lastName;
         Phone=phone;
         Email=email;
-        //ImageBytes = image;
+        ImageBytes = image;
         Rating=rating;
 
     }
