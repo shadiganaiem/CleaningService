@@ -29,6 +29,7 @@ import java.util.List;
 import Models.Customer;
 import Models.Employee;
 import Models.JobForm;
+import Models.JobFormRequest;
 import Models.Status;
 import Models.User;
 
@@ -133,6 +134,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         String today = dateFormat.format(date);
 
         String query = "SELECT * FROM JobForms JOIN Users ON JobForms.CustomerId = Users.CustomerId"+
+                " JOIN Customers ON Customers.ID = Users.CustomerId "+
                 " WHERE JobForms.EndDate >= '"+today+"' AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
                 " AND JobForms.StatusId = 3";
         List<JobForm> jobForms = new ArrayList<>();
@@ -151,17 +153,21 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId"),
                         result.getString("Description")
                 );
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.customer = new Customer();
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.status = GetStatus(jobForm.StatusId);
-
 
                 jobForms.add(jobForm);
 
+                /*
                 query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
                     jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
+                */
             }
 
         }catch (Exception ex){
@@ -184,6 +190,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         date = c.getTime();
         String lastDateInThisWeek = dateFormat.format(date);
         String query = "SELECT * FROM JobForms JOIN USERS ON JobForms.CustomerId = Users.CustomerId" +
+                " JOUN Customers ON Customers.ID = Users.CustomerId " +
                 " WHERE JobForms.EndDate >= '"+today+"' AND JobForms.EndDate<= '" +lastDateInThisWeek + "'"+
                 " AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
                 " AND JobForms.StatusId = 3";
@@ -203,16 +210,23 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId"),
                         result.getString("Description")
                 );
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.customer = new Customer();
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.status = GetStatus(jobForm.StatusId);
 
                 jobForms.add(jobForm);
 
+                /*
                 query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
                     jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
+
+                 */
             }
 
         }catch (Exception ex){
@@ -238,6 +252,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         date = calendar.getTime();
         String lastDayDateThisMonth = dateFormat.format(date);
         String query = "SELECT * FROM JobForms JOIN Users ON JobForms.CustomerId = Users.CustomerId"+
+                " JOIN Customers ON Customers.ID = Users.CustomerId"+
                 " WHERE JobForms.EndDate >= '"+today+"' AND JobForms.EndDate<= '" +lastDayDateThisMonth + "'"+
                 "AND Users.Rating >= "+minRate + " AND Users.Rating <= "+maxRate+
                 " AND JobForms.StatusId = 3";
@@ -257,18 +272,25 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId"),
                         result.getString("Description")
                 );
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.customer = new Customer();
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.status = GetStatus(jobForm.StatusId);
 
                 jobForms.add(jobForm);
 
-                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+               /*
+               query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
+
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
                     jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
-                }
-            }
 
+                }
+
+                */
+            }
         }catch (Exception ex){
 
         }
@@ -284,8 +306,9 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public List<JobForm> GetJobFormsByPublisherRating (int minRate ,int maxRate,int tabSelected ){
-        String query = "SELECT * FROM JobForms JOIN Users on JobForms.CustomerId = Users.CustomerId Where Users.Rating >= " +
-                minRate + " and Users.Rating <= " + maxRate+
+        String query = "SELECT * FROM JobForms JOIN Users on JobForms.CustomerId = Users.CustomerId " +
+                "JOIN Customers ON Customers.ID = Users.CustomerId " +
+                "Where Users.Rating >= " + minRate + " and Users.Rating <= " + maxRate+
                 " AND JobForms.StatusId = 3";
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -331,16 +354,22 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId"),
                         result.getString("Description")
                 );
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.customer = new Customer();
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.status = GetStatus(jobForm.StatusId);
 
                 jobForms.add(jobForm);
 
+                /*
                 query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
                 ResultSet imageResultSet = ExecuteSelectQuery(query);
                 if(imageResultSet.next()){
                     jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
                 }
+
+                 */
             }
 
         }catch (Exception ex){

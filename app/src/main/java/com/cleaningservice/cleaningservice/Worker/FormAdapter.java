@@ -62,6 +62,7 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
         holder.title.setText(Title);
         holder.description.setText(Description);
 
+        /*
         if (jobForm.ImageBytes != null) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
@@ -71,6 +72,8 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
                 }
             });
         }
+
+         */
     }
 
     @Override

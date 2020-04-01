@@ -111,5 +111,7 @@
     <string name="approve">אישור בקשה</string>
     <string name="dismiss">מחק בקשה</string>
     <string name="description">תיאור</string>
+    <string name="sendJobRequest">שלח בקשת עבודה</string>
+    <string name="backToList">חזרה לרשימה</string>
 
 </resources>
