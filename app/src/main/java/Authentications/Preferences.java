@@ -25,6 +25,7 @@ public class Preferences {
         editor.putInt(PREF_USER_ID,0);
         editor.commit();
     }
+
     public static int GetLoggedInUserID(Context ctx)
     {
         return getSharedPreferences(ctx).getInt(PREF_USER_ID, 0);

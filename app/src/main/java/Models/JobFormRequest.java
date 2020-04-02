@@ -11,10 +11,9 @@ public class JobFormRequest {
     public JobForm jobForm;
     public Status status;
 
-    public JobFormRequest(int employeeId,int jobFormId ,int statusId){
+    public JobFormRequest(int employeeId,int jobFormId){
         EmployeeId = employeeId;
         JobFormId = jobFormId;
-        StatusId = statusId;
     }
 
     public JobFormRequest(){}

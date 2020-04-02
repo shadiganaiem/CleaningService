@@ -21,13 +21,16 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.GlideApp;
+import com.cleaningservice.cleaningservice.HomeActivity;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
@@ -35,12 +38,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.io.Console;
 import java.sql.SQLException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
+import Authentications.Preferences;
 import Models.JobForm;
+import Models.JobFormRequest;
 
 public class JobFormDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -112,7 +118,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         return false;
     }
 
-    private  void InitializeViewModel() {
+    private void InitializeViewModel() {
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -120,6 +126,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 TextView customerFullName = findViewById(R.id.CustomerFullName);
                 TextView customerRating = findViewById(R.id.CustomerRating);
                 TextView descirption = (TextView) findViewById(R.id.descriptionBox);
+                Button sendRequestBtn = (Button) findViewById(R.id.sendRequestBtn);
                 customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
                 String rating = "";
                 if (jobForm.customer.Rating != 0) {
@@ -143,6 +150,12 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 descirption.setMovementMethod(new ScrollingMovementMethod());
                 descirption.setTextSize(20);
                 descirption.setText(details);
+
+                int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
+                if(_context.IfJobFormRequested(jobForm.ID,employeeId)){
+                    sendRequestBtn.setText(R.string.RequestSent);
+                    sendRequestBtn.setOnClickListener(null);
+                }
             }
         });
 
@@ -184,5 +197,13 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 });
             }
         }
+    }
+
+    public void SendRequest(View v){
+        int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
+        JobFormRequest jobFormRequest = new JobFormRequest(employeeId,jobForm.ID);
+        _context.InsertJobFormRequest(jobFormRequest);
+        Intent intent = new Intent(JobFormDetails.this, Home.class);
+        startActivity(intent);
     }
 }

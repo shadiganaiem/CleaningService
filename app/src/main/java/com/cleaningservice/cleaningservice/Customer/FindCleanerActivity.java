@@ -70,8 +70,10 @@ import java.util.List;
 
 import Authentications.Preferences;
 import Models.JobForm;
+import Models.User;
 import butterknife.OnClick;
 
+import static Authentications.Preferences.GetLoggedInUserID;
 
 
 public class FindCleanerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
@@ -359,7 +361,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             Spinner spinner = (Spinner) findViewById(R.id.spinner2);
             String text = spinner.getSelectedItem().toString();
             roomNum = Integer.parseInt(text);
-            int customerId = _context.GetUser(Preferences.GetLoggedInUserID(this)).CustomerId;
+            int customerId = _context.GetUser(GetLoggedInUserID(this)).CustomerId;
             JobForm jobForm = new JobForm(
                     customerId,
                     roomNum,
