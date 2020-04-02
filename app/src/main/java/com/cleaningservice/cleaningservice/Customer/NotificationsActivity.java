@@ -39,7 +39,7 @@ import static Authentications.Preferences.GetLoggedInUserID;
 public class NotificationsActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawer;
-    private ApplicationDbContext _context=null;
+    public ApplicationDbContext _context=null;
     private ArrayList<Request> requests = new ArrayList<>();
     private static final String TAG = "Notifictions";
     RecyclerView recyclerView;
@@ -60,32 +60,36 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
         Toolbar toolbar = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar);
 
-        drawer=findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        recyclerView= findViewById(R.id.Requests_list);
-        adapter = new RecyclerViewAdapter(this,requests);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.hasFixedSize();
+        recyclerView = findViewById(R.id.Requests_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(NotificationsActivity.this));
+        adapter = new RecyclerViewAdapter(NotificationsActivity.this, requests);
         recyclerView.setAdapter(adapter);
+        adapter.showShimmer = true;
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
+
+        new Thread(){
             public void run() {
-                initRecycleView();
-                adapter.showShimmer =false;
-                recyclerView.setAdapter(adapter);
-
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        initRecycleView();
+                        adapter = new RecyclerViewAdapter(NotificationsActivity.this, requests);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        adapter.showShimmer = false;
+                    }
+                });
             }
-        },0);
-
+        }.start();
 
     }
 
@@ -126,17 +130,20 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
 
     private void initRecycleView(){
 
-                List<JobForm> jobForms = _context.GetJobFormsByCustomerID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
-                for (JobForm form : jobForms) {
+                List<Integer> formIds = _context.GetJobFormID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                for( Integer id : formIds) {
                     try {
-                        ArrayList<Request> reqs = _context.GetFormUserRequests(form.ID);
+                        ArrayList<Request> reqs = _context.GetFormUserRequests(id);
                         for (Request request : reqs) {
-                            requests.add(request);
+                            if(request.Status_id==5) {
+                                requests.add(request);
+                            }
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
                 }
     }
+
+
 }

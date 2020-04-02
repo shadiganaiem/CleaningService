@@ -396,45 +396,23 @@ public class ApplicationDbContext extends AppCompatActivity {
      * Get JobForms By Customer ID
      * @return
      */
-    public List<JobForm> GetJobFormsByCustomerID(User user){
+    public List<Integer> GetJobFormID(User user){
 
-        String query = "SELECT * FROM JobForms WHERE CustomerId = "+user.CustomerId;
+        String query = "SELECT ID FROM JobForms WHERE CustomerId = "+user.CustomerId;
 
-        List<JobForm> jobForms = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<Integer>();
         try{
 
             ResultSet result = ExecuteSelectQuery(query);
             while (result.next()){
-                JobForm jobForm = new JobForm(
-                        result.getInt("ID"),
-                        result.getInt("CustomerId"),
-                        result.getInt("Rooms"),
-                        result.getString("City"),
-                        result.getString("Address"),
-                        result.getFloat("Budget"),
-                        result.getDate("StartDate"),
-                        result.getDate("EndDate"),
-                        result.getInt("StatusId"),
-                        result.getString("Description")
-                );
 
-
-                //jobForm.status = GetStatus(jobForm.StatusId);
-
-
-                jobForms.add(jobForm);
-
-                query = "SELECT TOP 1 ImageBytes FROM IMAGES WHERE JobFormId = "+jobForm.ID;
-                ResultSet imageResultSet = ExecuteSelectQuery(query);
-                if(imageResultSet.next()){
-                    jobForm.ImageBytes  = imageResultSet.getBytes("ImageBytes");
-                }
+                ids.add(result.getInt("ID"));
             }
 
         }catch (Exception ex){
 
         }
-        return jobForms;
+        return ids;
     }
 
 
@@ -541,7 +519,8 @@ public class ApplicationDbContext extends AppCompatActivity {
             ResultSet result = ExecuteSelectQuery(query);
             while (result.next()){
 
-                int id= result.getInt("ID");
+                int id= result.getInt("EmployeeId");
+                int statusid= result.getInt("StatusId");
                 String fn=result.getString("Firstname");
                 String ln =result.getString("Lastname");
                 String email=result.getString("Email");
@@ -549,13 +528,15 @@ public class ApplicationDbContext extends AppCompatActivity {
 
 
                  String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
-                 String query3= "SELECT Image From USERS WHERE EmployeeId = "+ id;
+                 String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
                  ResultSet result2 = ExecuteSelectQuery(query2);
                  ResultSet result3 = ExecuteSelectQuery(query3);
-                 if(result2.next() && result3.next()){
-                     int rate= result2.getInt("Rating");
+                 if (result2.next() && result3.next()){
+                     int rate = result2.getInt("Rating");
                      byte[] img= result3.getBytes("Image");
                      Request request = new Request(
+                             id,
+                             statusid,
                              fn,
                              ln,
                              phone,
@@ -565,6 +546,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                      );
                      requests.add(request);
                  }
+
             }
 
 
@@ -738,6 +720,29 @@ public class ApplicationDbContext extends AppCompatActivity {
             PreparedStatement pst = _connection.prepareStatement(query);
             pst.setBytes(1,image);
             pst.setInt(2,userId);
+            pst.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     *  update request
+     * @param employeeId
+     * @return
+     */
+    public boolean UpdateRequestStatus(int employeeId, int statusId){
+
+        String query = "UPDATE JobFormRequests SET StatusId = ? WHERE EmployeeId = ?";
+
+        try {
+            PreparedStatement pst = _connection.prepareStatement(query);
+            pst.setInt(1,statusId);
+            pst.setInt(2,employeeId);
             pst.executeUpdate();
             return true;
         }
