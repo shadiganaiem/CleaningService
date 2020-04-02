@@ -5,17 +5,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Models.Request;
@@ -26,6 +30,7 @@ import Models.Request;
 public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<Request> requests = new ArrayList<>();
+    private ApplicationDbContext con = null;
     private Context context;
     boolean showShimmer = true;
     int SHIMMER_ITEM_NUM = 5; //number of items shown while loading
@@ -46,15 +51,24 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position)  {
         Log.d(TAG, "onBindViewHolder: called.");
 
         if(showShimmer){
             holder.shimmerFrameLayout.startShimmer();
-
         }else{
             holder.shimmerFrameLayout.stopShimmer(); // stop shimmer animation
             holder.shimmerFrameLayout.setShimmer(null); // remove shimmer
+
+            String Rating = "";
+            if (requests.get(position).Rating != 0) {
+                for (int i = 0; i < requests.get(position).Rating && i < 5; i++) {
+                    Rating += "★";
+                }
+            }
+
+            holder.rating.setBackground(null);
+            holder.rating.setText(Rating);
 
             String fullname = requests.get(position).FirstName+" "+ requests.get(position).LastName;
             holder.name.setBackground(null);
@@ -64,6 +78,42 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
             holder.Email.setText(requests.get(position).Email);
 
             Glide.with(context).asBitmap().load(requests.get(position).ImageBytes).into(holder.image);
+
+           /* holder.shimmerFrameLayout.setOnClickListener(new View.OnClickListener() {
+               @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,requests.get(position).FirstName,Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
+            try {
+                con = ApplicationDbContext.getInstance(context.getApplicationContext());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+           holder.confirm.setOnClickListener(new View.OnClickListener() {
+
+               @Override
+               public void onClick(View v) {
+                   requests.get(position).Status_id = 6;
+                   holder.shimmerFrameLayout.setVisibility(View.GONE);
+                   Toast.makeText(context, "Request Accepted", Toast.LENGTH_SHORT).show();
+                   con.UpdateRequestStatus(requests.get(position).EmployeeId, 6);
+               }
+           });
+
+           holder.reject.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   requests.get(position).Status_id= 7;
+                   holder.shimmerFrameLayout.setVisibility(View.GONE);
+                   Toast.makeText(context,"Request Rejected",Toast.LENGTH_SHORT).show();
+                   con.UpdateRequestStatus(requests.get(position).EmployeeId, 7);
+
+               }
+           });
+
         }
 
 
@@ -86,7 +136,11 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
         ImageView image;
         TextView name;
         TextView Email;
-        RelativeLayout relativelayout;
+        TextView rating;
+        Button confirm;
+        Button reject;
+
+       // RelativeLayout relativelayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,7 +149,9 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
             image = itemView.findViewById(R.id.imagehu);
             name = itemView.findViewById(R.id.title2);
             Email = itemView.findViewById(R.id.title4);
-
+            confirm = itemView.findViewById(R.id.confirm);
+            reject = itemView.findViewById(R.id.reject);
+            rating = itemView.findViewById(R.id.rating);
 
 
             //////////////////////////
@@ -106,4 +162,5 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
 
         }
     }
+
 }

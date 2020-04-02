@@ -25,7 +25,6 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
 
-
         Toolbar toolbar2 = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar2);
 
