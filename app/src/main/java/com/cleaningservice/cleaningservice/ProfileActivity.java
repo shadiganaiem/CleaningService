@@ -124,15 +124,16 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 mail.setText(user.employee.Email);
                 phone.setText(user.employee.Phone);
             }
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
+                            .into(imgProfile);
+                    imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                }
+            });
         }
-
-
-
-
-        // Clearing older images from cache directory
-        // don't call this line if you want to choose multiple images in the same activity
-        // call this once the bitmap(s) usage is over
-      //  ImagePickerActivity.clearCache(this);*/
     }
 
     private void loadProfile(String url) {

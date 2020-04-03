@@ -31,8 +31,10 @@ import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.HomeActivity;
+import com.cleaningservice.cleaningservice.MailService;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -45,6 +47,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import Authentications.Preferences;
+import Models.Employee;
 import Models.JobForm;
 import Models.JobFormRequest;
 
@@ -199,10 +202,68 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         }
     }
 
-    public void SendRequest(View v){
+    public void SendRequest(View v) {
         int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
-        JobFormRequest jobFormRequest = new JobFormRequest(employeeId,jobForm.ID);
-        _context.InsertJobFormRequest(jobFormRequest);
+        Employee employee = _context.GetEmployee(employeeId);
+
+        JobFormRequest jobFormRequest = new JobFormRequest(employeeId, jobForm.ID);
+        if (_context.InsertJobFormRequest(jobFormRequest)) {
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        String body = "Hi " + jobForm.customer.Firstname + ",\n"
+                                + "You have received a new job request From " + employee.Firstname + " " + employee.Lastname
+                                + ".\n" + "For your JobForm at " + jobForm.City + " " + jobForm.Address + "\n\n\n"
+                                + "The request will be rejected if no reply is made within 48 Hours !\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        String recipients = jobForm.customer.Email;
+                        String email = Util.GetProperty("mail.email", getApplicationContext());
+                        String password = Util.GetProperty("mail.password", getApplicationContext());
+                        MailService _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB REQUEST",
+                                body,
+                                "CleaningService",
+                                recipients);
+
+
+                        body = "Hi " + employee.Firstname + ",\n"
+                                + "Your job request has been sent. The request will be rejected if no reply is made within 48 Hours !\n"
+                                + "Job Details : \n"
+                                + "Customer name : " + jobForm.customer.Firstname + " " + jobForm.customer.Lastname + ".\n"
+                                + "Address : " + jobForm.City + " " + jobForm.Address + ".\n\n\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        recipients = employee.Email;
+                        email = Util.GetProperty("mail.email", getApplicationContext());
+                        password = Util.GetProperty("mail.password", getApplicationContext());
+                        _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB REQUEST",
+                                body,
+                                "CleaningService",
+                                recipients);
+
+                    } catch (Exception ex) {
+
+                    }
+                }
+            });
+
+            Intent intent = new Intent(JobFormDetails.this, Home.class);
+            startActivity(intent);
+        } else {
+
+        }
+    }
+
+    public void BackToHome(View v) {
         Intent intent = new Intent(JobFormDetails.this, Home.class);
         startActivity(intent);
     }

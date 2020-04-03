@@ -159,7 +159,6 @@ public class RegisterActivity extends AppCompatActivity  {
         }
     }
 
-
     private String GenerateActivationCode(){
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
@@ -167,6 +166,7 @@ public class RegisterActivity extends AppCompatActivity  {
         // this will convert any number sequence into 6 character.
         return String.format("%06d", number);
     }
+
     /**
      * get input text string
      * @param editText
@@ -175,8 +175,6 @@ public class RegisterActivity extends AppCompatActivity  {
     public String GetInputText(TextInputEditText editText){
         return editText.getText().toString();
     }
-
-
 
     public void SendConfirmationEmail(String userEmail,String activationCode ){
         try {

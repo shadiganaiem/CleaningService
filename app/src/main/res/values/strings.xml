@@ -114,5 +114,6 @@
     <string name="sendJobRequest">שלח בקשת עבודה</string>
     <string name="backToList">חזרה לרשימה</string>
     <string name="RequestSent">בקשה נשלחה</string>
+    <string name="newJobRequest">בקשת עבודה חדשה</string>
 
 </resources>

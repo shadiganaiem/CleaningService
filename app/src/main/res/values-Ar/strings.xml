@@ -88,4 +88,5 @@
     <string name="sendJobRequest">أرسل طلب عَمل</string>
     <string name="backToList">العودة للقائمة</string>
     <string name="RequestSent">تم الإرسال</string>
+    <string name="newJobRequest">طلب عمل جديد</string>
 </resources>

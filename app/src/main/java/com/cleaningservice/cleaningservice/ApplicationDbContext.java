@@ -228,7 +228,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 " J.StatusId, J.Description, C.Firstname , C.Lastname , U.Rating " +
                 " FROM JobForms AS J JOIN USERS AS U ON J.CustomerId = U.CustomerId" +
                 " JOIN Customers ON C C.ID = U.CustomerId " +
-                " WHERE J.EndDate >= '"+today+"' AND J.EndDate<= '" +lastDateInThisWeek + "'"+
+                " WHERE J.StartDate < '"+lastDateInThisWeek+"' AND J.EndDate>= '" +today + "'"+
                 " AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
                 " AND J.StatusId = 3";
         List<JobForm> jobForms = new ArrayList<>();
@@ -495,7 +495,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public int InsertJobForm(JobForm jobForm,String StartDate,String EndDate){
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId,Description)";
-        query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City+"','"+jobForm.Address + "',"+
+        query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City.replace("'","")+"','"+jobForm.Address.replace("'","") + "',"+
                 jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+3+",'"+jobForm.Description+"')";
 
         int jobFormId = 0;
