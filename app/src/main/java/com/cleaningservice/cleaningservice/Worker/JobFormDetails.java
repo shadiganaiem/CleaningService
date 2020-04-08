@@ -4,10 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -20,31 +17,21 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.GlideApp;
-import com.cleaningservice.cleaningservice.HomeActivity;
-import com.cleaningservice.cleaningservice.MailService;
+import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
-import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.Console;
 import java.sql.SQLException;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
 
 import Authentications.Preferences;
 import Models.Employee;
@@ -213,7 +200,6 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 @Override
                 public void run() {
                     try {
-
                         String body = "Hi " + jobForm.customer.Firstname + ",\n"
                                 + "You have received a new job request From " + employee.Firstname + " " + employee.Lastname
                                 + ".\n" + "For your JobForm at " + jobForm.City + " " + jobForm.Address + "\n\n\n"

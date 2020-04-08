@@ -15,4 +15,21 @@ public class Util {
         properties.load(inputStream);
         return properties.getProperty(key);
     }
+
+    public enum Statuses {
+        ACTIVATED(1),
+        DEACTIVATED(2),
+        AVAILABLE(3),
+        NOTAVAILABLE(4),
+        WAITING(5),
+        ACCEPTED(6),
+        REJECTED(7);
+
+        public int value;
+        private Statuses(int value)
+        {
+            this.value = value;
+        }
+    }
+
 }

@@ -50,7 +50,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">لست عضو؟</string>
+    <string name="member">لست عضوًا؟</string>
     <string name="register">التسجيل</string>
     <string name="hello">مرحبا بك</string>
     <string name="but">back button</string>
@@ -89,4 +89,9 @@
     <string name="backToList">العودة للقائمة</string>
     <string name="RequestSent">تم الإرسال</string>
     <string name="newJobRequest">طلب عمل جديد</string>
+    <string name="myJobs">أعمالي</string>
+    <string name="RequestAccepted">تم قبول طلبك, سوف يتم التواصل معك باقرب وقت ممكن</string>
+    <string name="RequestRejected">تم رفض طلبك.</string>
+    <string name="EndDateRemember">"للتذكير, تاريخ انهاء العمل باتفاق مع صاحب العمل. الموعد الاخير حتى تاريخ : "</string>
+    <string name="ContactCustomer">"اذا لم يتم التواصل معك, الرجاء التواصل معه على الرقم : "</string>
 </resources>

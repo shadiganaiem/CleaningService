@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cleaningservice.cleaningservice.Services.MailService;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;

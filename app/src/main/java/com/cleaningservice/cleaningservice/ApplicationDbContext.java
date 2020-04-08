@@ -212,6 +212,52 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * Get Employee Requests List
+     * @param employeeId
+     * @return
+     */
+    public List<JobFormRequest> GetEmployeeJobRequests(int employeeId){
+        String query = "SELECT JFR.JobFormId , JFR.StatusId , JR.ID, JR.City, JR.Address, C.Firstname, C.Lastname, C.Phone, U.Rating" +
+                " FROM JobFormRequests AS JFR" +
+                " JOIN JobForms AS JF ON JF.ID=JFR.JobFormId" +
+                " JOIN Customers AS C ON C.ID = JF.CustomerId"+
+                " JOIN Users AS U ON U.CustomerId = C.ID" +
+                " WHERE JFR.EmployeeId = " + employeeId;
+        List<JobFormRequest> requests = new ArrayList<>();
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+
+            while (result.next()) {
+                JobFormRequest request = new JobFormRequest();
+                request.EmployeeId = employeeId;
+                request.JobFormId = result.getInt("JFR.JobFormId");
+                request.StatusId = result.getInt("JFR.StatusId");
+                JobForm jobForm = new JobForm();
+                jobForm.ID = result.getInt("JR.ID");
+                jobForm.CustomerId = result.getInt("JR.CustomerId");
+                jobForm.City = result.getString("JR.City");
+                jobForm.Address = result.getString("JR.Address");
+                Customer customer = new Customer();
+
+                customer.Firstname = result.getString("C.Firstname");
+                customer.Lastname = result.getString("C.Lastname");
+                customer.Phone = result.getString("C.Phone");
+                customer.Rating = result.getInt("U.Rating");
+
+                jobForm.customer = customer;
+                request.jobForm = jobForm;
+
+                requests.add(request);
+            }
+        }
+        catch (Exception ex){
+
+        }
+
+        return requests;
+    }
+
+    /**
      * get all job forms for this week.
      * @return
      */
@@ -550,6 +596,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         return isRequested;
     }
+
 
     /**
      * Get User Object By username

@@ -1,4 +1,4 @@
-package com.cleaningservice.cleaningservice;
+package com.cleaningservice.cleaningservice.Services;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,8 @@ import javax.mail.internet.MimeMessage;
 
 
 import android.util.Log;
+
+import com.cleaningservice.cleaningservice.JSSEProvider;
 
 public class MailService extends javax.mail.Authenticator {
     private String mailhost = "smtp.gmail.com";

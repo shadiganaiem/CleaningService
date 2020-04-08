@@ -8,17 +8,25 @@
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/Home" />
     </group>
+    <group android:checkableBehavior="single" android:id="@+id/g2">
+        <item
+            android:id="@+id/navigation_myjobs"
+            android:icon="@drawable/ic_work_black_24dp"
+            android:title="@string/myJobs" />
+        <item
+            android:id="@+id/navigation_myjobs2"
+            android:icon="@drawable/ic_work_black_24dp"
+            android:title="@string/myJobs" />
+        <item
+            android:id="@+id/navigation_myjobs3"
+            android:icon="@drawable/ic_work_black_24dp"
+            android:title="@string/myJobs" />
+    </group>
     <group android:checkableBehavior="single" android:id="@+id/g1">
         <item
             android:id="@+id/navigation_make_worker_card"
             android:icon="@drawable/ic_create_black_24dp"
             android:title="Set Working Details" />
-    </group>
-    <group android:checkableBehavior="single" android:id="@+id/g2">
-        <item
-            android:id="@+id/navigation_myjobs"
-            android:icon="@drawable/ic_work_black_24dp"
-            android:title="View Jobs" />
     </group>
     <group android:checkableBehavior="single" android:id="@+id/g3">
         <item
