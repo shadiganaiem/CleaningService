@@ -41,9 +41,9 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
     private DrawerLayout drawer;
     public ApplicationDbContext _context=null;
     private ArrayList<Request> requests = new ArrayList<>();
-    private static final String TAG = "Notifictions";
-    RecyclerView recyclerView;
-    RecyclerViewAdapter adapter;
+    private static final String TAG = "Notifications";
+    private  RecyclerView recyclerView;
+    private RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
         recyclerView.setLayoutManager(new LinearLayoutManager(NotificationsActivity.this));
         adapter = new RecyclerViewAdapter(NotificationsActivity.this, requests);
         recyclerView.setAdapter(adapter);
-        adapter.showShimmer = true;
+
 
 
         new Thread(){
@@ -85,7 +85,7 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
                         adapter = new RecyclerViewAdapter(NotificationsActivity.this, requests);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setVisibility(View.VISIBLE);
-                        adapter.showShimmer = false;
+                        findViewById(R.id.ReqProgressBar).setVisibility(View.INVISIBLE);
                     }
                 });
             }

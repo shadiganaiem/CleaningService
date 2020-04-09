@@ -6,24 +6,51 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Worker.FormAdapter;
 import com.google.android.material.navigation.NavigationView;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Models.JobForm;
+
+import static Authentications.Preferences.GetLoggedInUserID;
 
 public class MyJobsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private static final String TAG = "Notifications";
+    private RecyclerView recyclerView;
+    private JobRecycler adapter;
+    private ArrayList<JobForm> forms = new ArrayList<>();
+    private ArrayList<NameImage> namesImages = new ArrayList<>();
+    public ApplicationDbContext _context=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_jobs);
 
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar);
@@ -36,6 +63,37 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        recyclerView = findViewById(R.id.formsRecycle);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new JobRecycler(this, forms , namesImages);
+        recyclerView.setAdapter(adapter);
+
+
+
+        new Thread(){
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        forms = _context.GetJobByID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                        for(JobForm form :forms){
+                            try {
+                                NameImage nameImage = _context.GetNameImage(form.ID);
+                                if(nameImage!=null)
+                                    namesImages.add(nameImage);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        adapter = new JobRecycler(MyJobsActivity.this, forms,namesImages);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        findViewById(R.id.FormsProgressBar).setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        }.start();
     }
 
     @Override

@@ -111,5 +111,10 @@
     <string name="approve">אישור בקשה</string>
     <string name="dismiss">מחק בקשה</string>
     <string name="description">תיאור</string>
+    <string name="FormStatus">סטטוס הטופס</string>
+    <string name="Active">פעיל</string>
+    <string name="wait">בהמתנה</string>
+    <string name="Assosiatedworker">עובד משויך</string>
+    <string name="JobForm">טופס עבודה</string>
 
 </resources>

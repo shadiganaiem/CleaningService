@@ -375,6 +375,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                 if(_context.InsertImage(jobFormId,images)==false){
                     throw new Exception("problem aquired while attempting to upload images to the database");
                 }
+                Intent intent = new Intent(FindCleanerActivity.this, MyJobsActivity.class);
+                startActivity(intent);
             }
             else{
                 throw new Exception("Form ID is not valid");

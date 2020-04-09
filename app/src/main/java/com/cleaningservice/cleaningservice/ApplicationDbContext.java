@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cleaningservice.cleaningservice.Customer.NameImage;
+
 import Models.Request;
 
 import java.io.ByteArrayOutputStream;
@@ -393,7 +395,43 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
-     * Get JobForms By Customer ID
+     * Get JobForms by customer ID
+     * @return
+     */
+    public ArrayList<JobForm>GetJobByID(User user){
+
+        String query = "SELECT * FROM JobForms WHERE CustomerId = "+user.CustomerId;
+
+        ArrayList<JobForm> jobForms = new ArrayList<>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+                JobForm jobForm = new JobForm(
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("Rooms"),
+                        result.getString("City"),
+                        result.getString("Address"),
+                        result.getFloat("Budget"),
+                        result.getDate("StartDate"),
+                        result.getDate("EndDate"),
+                        result.getInt("StatusId"),
+                        result.getString("Description")
+                );
+                jobForm.customer = GetCustomer(jobForm.CustomerId);
+                jobForm.status = GetStatus(jobForm.StatusId);
+
+                jobForms.add(jobForm);
+            }
+
+        }catch (Exception ex){
+
+        }
+        return jobForms;
+    }
+
+    /**
+     * Get JobForms IDs
      * @return
      */
     public List<Integer> GetJobFormID(User user){
@@ -506,6 +544,38 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         }
         return new Customer();
+    }
+
+    public NameImage GetNameImage(int jobFormId) throws SQLException {
+
+        String query = "SELECT * FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
+                "WHERE JobFormRequests.JobFormId = " + jobFormId + "AND JobFormRequests.StatusId = 6";
+
+        NameImage nameimage =null;
+        ResultSet result = ExecuteSelectQuery(query);
+        if (result.next()) {
+
+            int id = result.getInt("EmployeeId");
+            int statusid = result.getInt("StatusId");
+            String fn = result.getString("Firstname");
+            String ln = result.getString("Lastname");
+            String email = result.getString("Email");
+            String phone = result.getString("Phone");
+
+            String fullname = fn + " " + ln;
+            // String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
+            //  String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
+            // ResultSet result2 = ExecuteSelectQuery(query2);
+            //ResultSet result3 = ExecuteSelectQuery(query3);
+            // if (result3.next()){
+            //  int rate = result2.getInt("Rating");
+            //   byte[] img= result3.getBytes("Image");
+            nameimage = new NameImage(
+                    fullname
+            );
+        //}
+    }
+        return nameimage;
     }
 
 

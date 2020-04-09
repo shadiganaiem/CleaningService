@@ -26,7 +26,7 @@ import Models.Request;
 
 
 
-public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<Request> requests = new ArrayList<>();
     private ApplicationDbContext con = null;
@@ -53,9 +53,9 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)  {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        if(showShimmer){
-            holder.shimmerFrameLayout.startShimmer();
-        }else{
+
+           // holder.shimmerFrameLayout.startShimmer();
+
             holder.shimmerFrameLayout.stopShimmer(); // stop shimmer animation
             holder.shimmerFrameLayout.setShimmer(null); // remove shimmer
 
@@ -78,12 +78,7 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
 
             Glide.with(context).asBitmap().load(requests.get(position).ImageBytes).into(holder.image);
 
-           /* holder.shimmerFrameLayout.setOnClickListener(new View.OnClickListener() {
-               @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,requests.get(position).FirstName,Toast.LENGTH_SHORT).show();
-                }
-            });*/
+
 
             try {
                 con = ApplicationDbContext.getInstance(context.getApplicationContext());
@@ -112,21 +107,12 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
 
                }
            });
-
-        }
-
-
-        /////////////////////////////////////////
-        /*Glide.with(context).asBitmap().load(requests.get(position).ImageBytes).into(holder.image);
-
-        String fullname = requests.get(position).FirstName+" "+ requests.get(position).LastName;
-        holder.name.setText(fullname);
-        holder.Email.setText(requests.get(position).Email);*/
+           
     }
 
     @Override
     public int getItemCount() {
-        return showShimmer ? SHIMMER_ITEM_NUM : requests.size(); // return 5 while loading , after loading return requests size
+        return requests.size(); // return 5 while loading , after loading return requests size
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

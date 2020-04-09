@@ -221,7 +221,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getParcelableExtra("path");
                 try {
-                    // You can update this bitmap to your server
+
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
                     //Update In DB

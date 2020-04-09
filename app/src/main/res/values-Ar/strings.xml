@@ -85,4 +85,9 @@
     <string name="approve">قبول الطلب</string>
     <string name="dismiss">رفض الطلب</string>
     <string name="description">وصف</string>
+    <string name="FormStatus">حالة الملف</string>
+    <string name="Active">فعال</string>
+    <string name="wait">"بقائمة الانتظار "</string>
+    <string name="Assosiatedworker">الموظف</string>
+    <string name="JobForm">ملف عمل</string>
 </resources>
