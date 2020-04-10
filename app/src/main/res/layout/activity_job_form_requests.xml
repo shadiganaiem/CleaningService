@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:context=".Worker.Home"
+    tools:context=".Worker.JobFormRequests"
     android:layoutDirection="rtl">
 
     <LinearLayout
@@ -32,7 +32,7 @@
 
 
             <ProgressBar
-                android:id="@+id/jobFormsProgressBar"
+                android:id="@+id/jobFormsRequestsProgressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_horizontal"
                     android:layout_margin="7dp"
-                    android:text="@string/FormJobsList"
+                    android:text="@string/MyRequests"
                     android:textColor="@color/darkblue"
                     android:textSize="@dimen/dimen_20dp" />
 
@@ -79,31 +79,19 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/All" />
+                            android:text="@string/Responsed" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/ThisWeek" />
+                            android:text="@string/WaitingForResponse" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ThisMonth" />
                     </com.google.android.material.tabs.TabLayout>
-
-                    <Spinner
-                        android:id="@+id/RatingSpinner"
-                        android:layout_width="@dimen/dimen_20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:entries="@array/ratingOptions"
-                        android:prompt="@string/chooseRating" />
 
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/job_form_list"
+                    android:id="@+id/job_form_requests_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="1dp"

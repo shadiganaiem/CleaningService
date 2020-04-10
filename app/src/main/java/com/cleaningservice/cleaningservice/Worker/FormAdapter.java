@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.renderscript.Allocation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,16 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
         holder.title.setText(Title);
         holder.description.setText(Description);
 
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                holder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.job));
+                holder.image.setVisibility(View.VISIBLE);
+            }
+        });
+
+        /*
         if (jobForm.ImageBytes != null) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
@@ -71,6 +82,8 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
                 }
             });
         }
+
+         */
     }
 
     @Override

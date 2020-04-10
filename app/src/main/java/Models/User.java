@@ -9,7 +9,6 @@ public class User {
     public int CustomerId;
     public int EmployeeId;
     public int StatusId;
-    public byte[] Image;
 
     public Employee employee;
     public Customer customer;

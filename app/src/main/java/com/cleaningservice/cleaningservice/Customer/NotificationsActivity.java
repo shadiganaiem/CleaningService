@@ -9,28 +9,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Worker.FormAdapter;
-import com.cleaningservice.cleaningservice.Worker.Home;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.Employee;
 import Models.JobForm;
 import Models.Request;
 

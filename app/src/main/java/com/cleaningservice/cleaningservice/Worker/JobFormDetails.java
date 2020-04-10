@@ -4,10 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -16,28 +13,30 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
+import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
+import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.sql.SQLException;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
 
+import Authentications.Preferences;
+import Models.Employee;
 import Models.JobForm;
+import Models.JobFormRequest;
 
 public class JobFormDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -96,8 +95,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 intent = new Intent(JobFormDetails.this, Home.class);
                 startActivity(intent);
                 break;
-            case R.id.navigation_make_worker_card:
-                intent = new Intent(JobFormDetails.this, SetWorkingDetailsActivity.class);
+            case R.id.navigation_myjobs:
+                intent = new Intent(JobFormDetails.this, JobFormRequests.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_profile:
@@ -109,50 +108,149 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         return false;
     }
 
-    private  void InitializeViewModel() {
-        TextView customerFullName = findViewById(R.id.CustomerFullName);
-        TextView customerRating = findViewById(R.id.CustomerRating);
-        TextView descirption = (TextView) findViewById(R.id.descriptionBox);
-        customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
-        String rating = "";
-        if (jobForm.customer.Rating != 0) {
-            rating += "\n";
-            for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
-                rating += "★";
+    private void InitializeViewModel() {
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                TextView customerFullName = findViewById(R.id.CustomerFullName);
+                TextView customerRating = findViewById(R.id.CustomerRating);
+                TextView descirption = (TextView) findViewById(R.id.descriptionBox);
+                Button sendRequestBtn = (Button) findViewById(R.id.sendRequestBtn);
+                customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
+                String rating = "";
+                if (jobForm.customer.Rating != 0) {
+                    rating += "\n";
+                    for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
+                        rating += "★";
+                    }
+                }
+
+                String details = "";
+                details += "מיקום עבודה : ";
+                details += jobForm.City + " - " + jobForm.Address + "\n";
+                details += "מספר חדרים : ";
+                details += jobForm.Rooms + " חדרים" + "\n";
+                details += "תקציב משועך : ";
+                details += jobForm.Budget + "ש\"ח" + "\n \n";
+                details += "הערות : ";
+                details += jobForm.Description;
+
+                customerRating.setText(rating);
+                descirption.setMovementMethod(new ScrollingMovementMethod());
+                descirption.setTextSize(20);
+                descirption.setText(details);
+
+                int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
+                if(_context.IfJobFormRequested(jobForm.ID,employeeId)){
+                    sendRequestBtn.setText(R.string.RequestSent);
+                    sendRequestBtn.setOnClickListener(null);
+                }
+            }
+        });
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+
+                byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
+                GlideApp.with(getApplicationContext()).load(profileImage).into((CircularImageView) findViewById(R.id.jobFormDetailsProfileImage));
+            }
+        });
+
+
+        if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.image_container);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
+                byte[] imageBytes = jobForm.AllImagesBytes.get(i);
+
+                layoutParams.setMargins(20, 20, 20, 20);
+
+                layoutParams.gravity = Gravity.CENTER;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+
+                        ImageView imageView = new ImageView(getApplicationContext());
+                        imageView.setImageDrawable(bitmap);
+                        //imageView.setOnClickListener(documentImageListener);
+                        imageView.setLayoutParams(layoutParams);
+
+                        imageView.getLayoutParams().height = 600;
+                        imageView.getLayoutParams().width = 600;
+                        imageView.setBackgroundResource(R.drawable.image_border);
+                        layout.addView(imageView);
+                    }
+                });
             }
         }
-        customerRating.setText(rating);
-        descirption.setText(jobForm.Description);
+    }
 
-        /*if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
+    public void SendRequest(View v) {
+        int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
+        Employee employee = _context.GetEmployee(employeeId);
 
-                    byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
-                    GlideApp.with(getApplicationContext()).load(profileImage).into((ImageView) findViewById(R.id.jobFormDetailsProfileImage));
-                }
-                });
-
-            LinearLayout layout = (LinearLayout) findViewById(R.id.formImagesSection);
+        JobFormRequest jobFormRequest = new JobFormRequest(employeeId, jobForm.ID);
+        if (_context.InsertJobFormRequest(jobFormRequest)) {
 
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < jobForm.AllImagesBytes.size(); i++) {
-                        ImageView imageView = new ImageView(getApplicationContext());
-                        imageView.setId(i);
-                        imageView.setPadding(2, 2, 2, 2);
-                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        layout.addView(imageView);
+                    try {
+                        String body = "Hi " + jobForm.customer.Firstname + ",\n"
+                                + "You have received a new job request From " + employee.Firstname + " " + employee.Lastname
+                                + ".\n" + "For your JobForm at " + jobForm.City + " " + jobForm.Address + "\n\n\n"
+                                + "The request will be rejected if no reply is made within 48 Hours !\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        String recipients = jobForm.customer.Email;
+                        String email = Util.GetProperty("mail.email", getApplicationContext());
+                        String password = Util.GetProperty("mail.password", getApplicationContext());
+                        MailService _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB REQUEST",
+                                body,
+                                "CleaningService",
+                                recipients);
 
 
-                        byte[] imageBytes = jobForm.AllImagesBytes.get(i);
-                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                        imageView.setImageDrawable(bitmap);
+                        body = "Hi " + employee.Firstname + ",\n"
+                                + "Your job request has been sent. The request will be rejected if no reply is made within 48 Hours !\n"
+                                + "Job Details : \n"
+                                + "Customer name : " + jobForm.customer.Firstname + " " + jobForm.customer.Lastname + ".\n"
+                                + "Address : " + jobForm.City + " " + jobForm.Address + ".\n\n\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        recipients = employee.Email;
+                        email = Util.GetProperty("mail.email", getApplicationContext());
+                        password = Util.GetProperty("mail.password", getApplicationContext());
+                        _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB REQUEST",
+                                body,
+                                "CleaningService",
+                                recipients);
+
+                    } catch (Exception ex) {
+
                     }
                 }
             });
-        }*/
+
+            Intent intent = new Intent(JobFormDetails.this, Home.class);
+            startActivity(intent);
+        } else {
+
+        }
+    }
+
+    public void BackToHome(View v) {
+        Intent intent = new Intent(JobFormDetails.this, Home.class);
+        startActivity(intent);
     }
 }

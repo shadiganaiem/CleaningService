@@ -45,7 +45,8 @@
                         android:id="@+id/linearLayout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layoutDirection="ltr">
 
 
                         <ImageView
@@ -55,11 +56,13 @@
                             android:scaleType="fitXY"
                             app:srcCompat="@mipmap/jobformcover" />
 
-                        <ImageView
+                        <com.mikhaellopez.circularimageview.CircularImageView
                             android:id="@+id/jobFormDetailsProfileImage"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_marginStart="@dimen/dimen_20dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="90dp"
                             android:layout_marginEnd="@dimen/dimen_20dp"
                             android:layout_marginBottom="@dimen/dimen_20dp" />
@@ -69,12 +72,15 @@
                             android:layout_width="300dp"
                             android:layout_height="wrap_content"
                             android:layout_alignTop="@+id/jobFormDetailsProfileImage"
+                            android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginTop="71dp"
+                            android:layout_marginStart="11dp"
+                            android:layout_marginTop="70dp"
+                            android:layout_marginEnd="9dp"
                             android:layout_toEndOf="@+id/jobFormDetailsProfileImage"
                             android:textDirection="rtl"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/CustomerRating"
@@ -83,9 +89,35 @@
                             android:layout_below="@+id/CustomerFullName"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
-                            android:layout_marginTop="9dp"
+                            android:layout_marginTop="-12dp"
                             android:layout_marginEnd="21dp"
                             android:textDirection="rtl" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/linearLayout6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/horizontalScrollView"
+                            android:layout_above="@+id/linearLayout3"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" >
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/image_container"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+
+                        </HorizontalScrollView>
+
                     </RelativeLayout>
 
                     <TextView
@@ -107,15 +139,50 @@
                         <TextView
                             android:id="@+id/descriptionBox"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="170dp"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
                             android:layout_marginStart="15dp"
                             android:layout_marginEnd="15dp"
                             android:layout_marginBottom="15dp"
-                            android:background="@drawable/text_border" />
+                            android:background="@drawable/text_border"
+                            android:padding="10dp"
+                            android:scrollbars="vertical" />
 
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/linearLayout7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/sendRequestBtn"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:background="@drawable/success_btn"
+                            android:gravity="center"
+                            android:onClick="SendRequest"
+                            android:text="@string/sendJobRequest" />
+
+                        <Button
+                            android:id="@+id/button3"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:background="@drawable/danger_btn"
+                            android:onClick="BackToHome"
+                            android:text="@string/backToList"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 

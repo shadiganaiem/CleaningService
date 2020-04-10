@@ -9,6 +9,8 @@ import android.widget.Switch;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.cleaningservice.cleaningservice.Services.MailService;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -136,8 +138,8 @@ public class RegisterActivity extends AppCompatActivity  {
             String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
                 "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
                     "','"+GetInputText(Phone)+"');"+
-                "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','1','"
-                    +activationCode+"' " +
+                "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode,Rating) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','"+Util.Statuses.DEACTIVATED.value+"','"
+                    +activationCode+"','1' " +
                 "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
 
             if(_context.ExecuteInsertData(query)){
@@ -159,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity  {
         }
     }
 
-
     private String GenerateActivationCode(){
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
@@ -167,6 +168,7 @@ public class RegisterActivity extends AppCompatActivity  {
         // this will convert any number sequence into 6 character.
         return String.format("%06d", number);
     }
+
     /**
      * get input text string
      * @param editText
@@ -175,8 +177,6 @@ public class RegisterActivity extends AppCompatActivity  {
     public String GetInputText(TextInputEditText editText){
         return editText.getText().toString();
     }
-
-
 
     public void SendConfirmationEmail(String userEmail,String activationCode ){
         try {
