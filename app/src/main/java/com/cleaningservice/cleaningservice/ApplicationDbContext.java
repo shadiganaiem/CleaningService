@@ -601,6 +601,44 @@ public class ApplicationDbContext extends AppCompatActivity {
 
 
     /**
+     * Get JobForms By Customer ID
+     * @return
+     */
+    public ArrayList<JobForm> GetJobByID(User user) throws SQLException {
+
+        String query = "SELECT * FROM JobForms WHERE CustomerId = " + user.customer.ID;
+
+        ArrayList<JobForm> jobForms = new ArrayList<>();
+
+        ResultSet result = ExecuteSelectQuery(query);
+        while (result.next()) {
+            JobForm jobForm = new JobForm(
+                    result.getInt("ID"),
+                    result.getInt("CustomerId"),
+                    result.getInt("Rooms"),
+                    result.getString("City"),
+                    result.getString("Address"),
+                    result.getFloat("Budget"),
+                    result.getDate("StartDate"),
+                    result.getDate("EndDate"),
+                    result.getInt("StatusId"),
+                    result.getString("Description")
+
+            );
+            jobForm.CreationDate = result.getDate("CreationDate");
+            jobForm.customer = GetCustomer(jobForm.CustomerId);
+            jobForm.status = GetStatus(jobForm.StatusId);
+
+
+            jobForms.add(jobForm);
+
+        }
+
+        return jobForms;
+    }
+
+
+    /**
      * Inser a new JobForm
      * @param jobForm
      * @param StartDate
@@ -630,6 +668,8 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         return jobFormId;
     }
+
+
 
     /**
      * Insert new Job Form Request
@@ -798,7 +838,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                              phone,
                              email,
                              rate,
-                             img
+                             img,
+                             jobFormId
                      );
                      requests.add(request);
                  }
@@ -991,14 +1032,32 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param employeeId
      * @return
      */
-    public boolean UpdateRequestStatus(int employeeId, int statusId){
+    public boolean UpdateRequestStatus(int employeeId,int formID, int statusId){
 
-        String query = "UPDATE JobFormRequests SET StatusId = ? WHERE EmployeeId = ?";
+        String query = "UPDATE JobFormRequests SET StatusId = ? WHERE EmployeeId = ? AND JobFormId = ?";
 
         try {
             PreparedStatement pst = _connection.prepareStatement(query);
             pst.setInt(1,statusId);
             pst.setInt(2,employeeId);
+            pst.setInt(3,formID);
+            pst.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean UpdateFormStatus(int formID, int statusId){
+
+        String query = "UPDATE JobForms SET StatusId = ? WHERE JobFormId = ?";
+        try {
+            PreparedStatement pst = _connection.prepareStatement(query);
+            pst.setInt(1,statusId);
+            pst.setInt(2,formID);
             pst.executeUpdate();
             return true;
         }
@@ -1026,8 +1085,7 @@ public class ApplicationDbContext extends AppCompatActivity {
             } catch (Exception ex) {
                 Toast.makeText(context1, "אין חיבור", Toast.LENGTH_SHORT).show();
             }
-        }
-        else if (instance.getConnection().isClosed()){
+        } else if (instance.getConnection().isClosed()) {
             try {
                 instance = new ApplicationDbContext(
                         Util.GetProperty("db.driver", context1),

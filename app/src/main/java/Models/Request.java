@@ -11,9 +11,10 @@ public class Request {
     public String Email;
     public byte[] ImageBytes;
     public int Rating;
+    public int JobFormID;
     public int Status_id;
 
-    public Request(int id, int status_id, String firstName ,String lastName, String phone, String email, int rating,byte[] image){
+    public Request(int id, int status_id, String firstName ,String lastName, String phone, String email, int rating,byte[] image,int JobFormID){
         FirstName=firstName;
         LastName=lastName;
         Phone=phone;
@@ -22,6 +23,7 @@ public class Request {
         Rating=rating;
         Status_id =status_id;
         EmployeeId =id;
+        this.JobFormID = JobFormID;
     }
 
 

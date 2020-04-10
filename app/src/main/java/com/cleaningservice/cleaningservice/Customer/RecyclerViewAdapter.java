@@ -94,7 +94,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                    requests.get(position).Status_id = 6;
                    holder.shimmerFrameLayout.setVisibility(View.GONE);
                    Toast.makeText(context, "Request Accepted", Toast.LENGTH_SHORT).show();
-                   con.UpdateRequestStatus(requests.get(position).EmployeeId, 6);
+                   con.UpdateRequestStatus(requests.get(position).EmployeeId, requests.get(position).JobFormID, 6);
+                   con.UpdateFormStatus(requests.get(position).JobFormID, 4);
                }
            });
 
@@ -104,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                    requests.get(position).Status_id= 7;
                    holder.shimmerFrameLayout.setVisibility(View.GONE);
                    Toast.makeText(context,"Request Rejected",Toast.LENGTH_SHORT).show();
-                   con.UpdateRequestStatus(requests.get(position).EmployeeId, 7);
+                   con.UpdateRequestStatus(requests.get(position).EmployeeId,requests.get(position).JobFormID, 7);
 
                }
            });

@@ -76,7 +76,11 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        forms = _context.GetJobByID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                        try {
+                            forms = _context.GetJobByID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                         for(JobForm form :forms){
                             try {
                                 NameImage nameImage = _context.GetNameImage(form.ID);
