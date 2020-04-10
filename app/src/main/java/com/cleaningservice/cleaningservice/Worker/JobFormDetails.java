@@ -95,8 +95,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 intent = new Intent(JobFormDetails.this, Home.class);
                 startActivity(intent);
                 break;
-            case R.id.navigation_make_worker_card:
-                intent = new Intent(JobFormDetails.this, SetWorkingDetailsActivity.class);
+            case R.id.navigation_myjobs:
+                intent = new Intent(JobFormDetails.this, JobFormRequests.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_profile:

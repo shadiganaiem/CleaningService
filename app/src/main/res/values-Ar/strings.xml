@@ -3,7 +3,7 @@
     <string name="app_name">CleaningService</string>
     <string name="Activation">تفعيل الحساب</string>
     <string name="ActivationCode">كود التفعيل</string>
-    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرف في البريد الاكتروني</string>
+    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرفق في البريد الاكتروني</string>
     <string name="Activation_not_sent_details">ارسل كود تفعيل جديد</string>
     <string name="Activation_not_sent_title">لم يصلني بريد الكتروني</string>
     <string name="Address">العنوان</string>
@@ -76,7 +76,7 @@
     <string name="EndDate">تاريخ النهاية</string>
     <string name="Tomorrow">غدًا</string>
     <string name="TheDayAfterTomorrow">بعد غد</string>
-    <string name="ThisWeek">هذا الاُسبوع</string>
+    <string name="ThisWeek">هذا الأسبوع</string>
     <string name="All">الكل</string>
     <string name="ThisMonth">هذا الشهر</string>
     <string name="chooseRating">اختر تقييم</string>
@@ -94,4 +94,10 @@
     <string name="RequestRejected">تم رفض طلبك.</string>
     <string name="EndDateRemember">"للتذكير, تاريخ انهاء العمل باتفاق مع صاحب العمل. الموعد الاخير حتى تاريخ : "</string>
     <string name="ContactCustomer">"اذا لم يتم التواصل معك, الرجاء التواصل معه على الرقم : "</string>
+    <string name="Responsed">طلبات تم الرد عليها</string>
+    <string name="WaitingForResponse">قيد الانتظار</string>
+    <string name="MyRequests">قائمة طلباتي</string>
+    <string name="RequestDate">تاريخ ارسال الطلب</string>
+    <string name="requestWatingForResponse">الطلب في انتظار الرد.</string>
+    <string name="WaitingCondition">في حال لم يتم الرد خلال  48 ساعة, سوف يتم رفض الطلب!</string>
 </resources>

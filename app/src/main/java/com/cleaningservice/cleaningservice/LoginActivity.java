@@ -54,23 +54,22 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (status){
-            String query = "SELECT * FROM Users WHERE Username='"+GetInputText(Username)+
+            String query = "SELECT ID ,StatusId , CustomerId , EmployeeId FROM Users WHERE Username='"+GetInputText(Username)+
                     "' and Password='"+GetInputText(Password)+"'";
            ResultSet result =  _context.ExecuteSelectQuery(query);
 
            try{
                if(result.next()){
-                   User user = _context.GetUser((result.getInt("ID")));
 
-                   if(user.StatusId == 2){
+                   if(result.getInt("StatusId") == Util.Statuses.ACTIVATED.value){
                        Intent intent = new Intent(this,HomeActivity.class);
                        Preferences sp = new Preferences();
-                       sp.SetUserID(this,user.ID,user.CustomerId!=0?true:false);
+                       sp.SetUserID(this,result.getInt("ID"),result.getInt("CustomerId")!=0?true:false);
                        startActivity(intent);
                    }
                    else{
                        Intent intent = new Intent(getBaseContext(), Activation.class);
-                       intent.putExtra("USER_ID", user.ID);
+                       intent.putExtra("USER_ID", result.getInt("ID"));
                        startActivity(intent);
                    }
                }

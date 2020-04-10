@@ -138,8 +138,8 @@ public class RegisterActivity extends AppCompatActivity  {
             String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
                 "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
                     "','"+GetInputText(Phone)+"');"+
-                "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','1','"
-                    +activationCode+"' " +
+                "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode,Rating) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','"+Util.Statuses.DEACTIVATED.value+"','"
+                    +activationCode+"','1' " +
                 "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
 
             if(_context.ExecuteInsertData(query)){

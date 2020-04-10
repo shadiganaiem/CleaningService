@@ -14,6 +14,7 @@ public class JobForm {
     public Date StartDate;
     public String Address;
     public String Description;
+    public Date CreationDate;
 
     public Customer customer;
     public Status status;

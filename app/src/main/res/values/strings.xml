@@ -118,9 +118,13 @@
     <string name="myJobs">עבודות שלי</string>
     <string name="RequestAccepted">בקשתך התקבלה , הלקוח יצור איתך קשר בהקדם האפשרי</string>
     <string name="RequestRejected">בקשתך לעבודה זו נדחתה ע\"י הלקוח.</string>
-    <string name="EndDateRemember">"להזכירך, תאריך סיום עבודה הינו בתיאום מול המעסיק. מועד אחרון בתאריך :  "</string>
     <string name="EndDateRemember">להזכירך, תאריך סיום עבודה הינו בתיאום מול המעסיק. אכן, תאריך אחרון זה עד</string>
-    <string name="EndDateRemember">דש</string>
     <string name="ContactCustomer">במידה ולא קיבלת משוב מלקוח, נא ליצור איתו קשר במספר :</string>
+    <string name="Responsed">בקשות שנענו</string>
+    <string name="WaitingForResponse">ממתינות למענה</string>
+    <string name="MyRequests">הבקשות שלי</string>
+    <string name="RequestDate">תאריך הבקשה</string>
+    <string name="requestWatingForResponse">הבקשה ממתינה למענה.</string>
+    <string name="WaitingCondition">במידה ולא התקבל מענה תוך 48 שעות, הבקשה תדחה!</string>
 
 </resources>

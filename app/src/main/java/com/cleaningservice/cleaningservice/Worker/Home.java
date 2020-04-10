@@ -159,14 +159,16 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 intent = new Intent(Home.this, Home.class);
                 startActivity(intent);
                 break;
-            case R.id.navigation_make_worker_card:
-                intent = new Intent(Home.this, SetWorkingDetailsActivity.class);
-                startActivity(intent);
-                break;
             case R.id.navigation_profile:
                 intent = new Intent(Home.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_myjobs:
+                intent = new Intent(Home.this,JobFormRequests.class);
+            startActivity(intent);
+                break;
+
+
         }
 
         return false;

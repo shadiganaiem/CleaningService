@@ -16,6 +16,7 @@ import com.cleaningservice.cleaningservice.Services.MailService;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Random;
 
 import Authentications.Preferences;
@@ -88,7 +89,7 @@ public class Activation extends AppCompatActivity {
 
     private boolean ActivateAccount(){
         try{
-            String query = "UPDATE USERS SET StatusId = 2 WHERE ID = "+user.ID+";";
+            String query = "UPDATE USERS SET StatusId = "+Util.Statuses.ACTIVATED.value+" WHERE ID = "+user.ID+";";
 
             if(_context.ExecuteInsertData(query)){
                 SendActivationEmail();
@@ -182,7 +183,7 @@ public class Activation extends AppCompatActivity {
         int number = rnd.nextInt(999999);
 
         // this will convert any number sequence into 6 character.
-        return String.format("%06d", number);
+        return String.format(Locale.US,"%06d", number);
     }
 
 }

@@ -33,14 +33,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         sp = new Preferences();
         int userId = sp.GetLoggedInUserID(this);
         if(userId != 0){
             Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
           SignUpButton= findViewById(R.id.SignUpBtn);
           SignInButton= findViewById(R.id.SignInBtn);
