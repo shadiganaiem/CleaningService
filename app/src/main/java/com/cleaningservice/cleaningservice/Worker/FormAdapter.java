@@ -17,7 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cleaningservice.cleaningservice.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import Models.JobForm;
 
@@ -47,6 +50,8 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+
         JobForm jobForm = list.get(position);
         String Title;
         String Description;
@@ -59,6 +64,9 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.ViewHolder> {
                 Description += "★";
             }
         }
+
+        Description += "\n___________________\n \uD83D\uDCC5 ";
+        Description += dateFormat.format(jobForm.EndDate)  + " - " +  dateFormat.format(jobForm.StartDate);
 
         holder.title.setText(Title);
         holder.description.setText(Description);

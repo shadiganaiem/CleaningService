@@ -330,10 +330,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         String query = "SELECT J.Id , J.CustomerId ,J.CreationDate,  J.Rooms , J.City,  J.Address,  J.Budget, J.StartDate,J.EndDate," +
                 " J.StatusId, J.Description, C.Firstname , C.Lastname , U.Rating " +
                 " FROM JobForms AS J JOIN USERS AS U ON J.CustomerId = U.CustomerId" +
-                " JOIN Customers ON C C.ID = U.CustomerId " +
+                " JOIN Customers AS C ON C.ID = U.CustomerId " +
                 " WHERE J.StartDate < '"+lastDateInThisWeek+"' AND J.EndDate>= '" +today + "'"+
                 " AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -398,7 +398,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 " JOIN Customers AS C ON C.ID = U.CustomerId"+
                 " WHERE J.EndDate >= '"+today+"' AND J.EndDate<= '" +lastDayDateThisMonth + "'"+
                 "AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -450,12 +450,13 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public List<JobForm> GetJobFormsByPublisherRating (int minRate ,int maxRate,int tabSelected ){
-        String query = "SELECT J.Id ,J.CreationDate, J.CustomerId , J.Rooms , J.City, J.Address, J.Budget, " +
+        String query = "SELECT J.ID ,J.CreationDate, J.CustomerId , J.Rooms , J.City, J.Address, J.Budget, " +
                 "J.StartDate,J.EndDate, J.StatusId, J.Description, C.Firstname , C.Lastname , U.Rating " +
-                "FROM JobForms AS J JOIN Users AS U on J.CustomerId = U.CustomerId " +
-                "JOIN Customers AS C ON C.ID = U.CustomerId " +
+                "FROM JobForms AS J " +
+                "JOIN Customers AS C ON C.ID = J.CustomerId " +
+                "JOIN Users AS U on C.ID = U.CustomerId " +
                 "Where U.Rating >= " + minRate + " and U.Rating <= " + maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
         Date date = new Date();
@@ -607,7 +608,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId,Description,CreationDate)";
         query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City.replace("'","")+"','"+jobForm.Address.replace("'","") + "',"+
-                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+3+",'"+jobForm.Description+"','"+dateFormat.format(date)+"')";
+                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+Util.Statuses.AVAILABLE.value+",'"+jobForm.Description+"','"+dateFormat.format(date)+"')";
 
         int jobFormId = 0;
         if(ExecuteInsertData(query)){
@@ -635,7 +636,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         Date date = new Date();
 
         String query = "INSERT INTO JobFormRequests(EmployeeId,JobFormId,StatusId,CreationDate)"
-                +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +",5,'"+dateFormat.format(date)+"')";
+                +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"')";
 
         boolean result = ExecuteInsertData(query);
         return result;
@@ -693,8 +694,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return new User();
     }
-
-
 
     /**
      * Get Customer By Id

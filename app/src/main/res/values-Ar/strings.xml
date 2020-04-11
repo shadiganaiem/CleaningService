@@ -100,4 +100,6 @@
     <string name="RequestDate">تاريخ ارسال الطلب</string>
     <string name="requestWatingForResponse">الطلب في انتظار الرد.</string>
     <string name="WaitingCondition">في حال لم يتم الرد خلال  48 ساعة, سوف يتم رفض الطلب!</string>
+    <string name="JobOfferLimit">عرض العمل هذا سيكون متاح حتى تاريخ الانتهاء المذكور اعلاه. اذا قمت بارسال طلب عمل يجب ان تعلم ان الطلب سوف يُرفض في حال لم يتم الرد عليه خلال 48 ساعة. حظًا موفقًا !</string>
+    <string name="support">لمزيد من المعلومات الرجاء التواصل معنا عبر البريد الاكتروني support @cleaningservice.com</string>
 </resources>

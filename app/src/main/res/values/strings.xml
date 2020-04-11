@@ -126,5 +126,7 @@
     <string name="RequestDate">תאריך הבקשה</string>
     <string name="requestWatingForResponse">הבקשה ממתינה למענה.</string>
     <string name="WaitingCondition">במידה ולא התקבל מענה תוך 48 שעות, הבקשה תדחה!</string>
+    <string name="JobOfferLimit">עבודה זו תהייה זמינה עד לתאריך הסיום שרשום לעיל. במידה והחלטת לשלוח בקשת עבודה נא לקחת חשבון שהבקשה תדחה אוטומטית לאחר 48 שעות ללא מענה.</string>
+    <string name="support">לשאלות נא לפנות אליינו במייל support@cleaningService.com</string>
 
 </resources>
