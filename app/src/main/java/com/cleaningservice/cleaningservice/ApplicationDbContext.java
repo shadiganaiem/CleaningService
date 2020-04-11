@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import net.sourceforge.jtds.jdbc.DateTime;
 
+import Models.Rating;
 import Models.Request;
 
 import java.io.ByteArrayOutputStream;
@@ -23,6 +24,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -969,6 +971,72 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     * INSERT NEW RATING
+     * @param rating
+     * @return
+     */
+    public boolean InsertRating(Rating rating){
+        String query = "INSERT INTO Ratings(From,To,Rating) VALUES('"+rating.From+"','"+rating.To+"','"+rating.Rating+"')";
+
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Get USER RATINGS
+     * @param userId
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Rating> GetUserRatings(int userId) throws SQLException {
+        ArrayList<Rating> ratings = new ArrayList<>();
+
+        String query = "SLEECT * FROM RATINGS AS R WHERE R.To = " + userId;
+
+        ResultSet result = ExecuteSelectQuery(query);
+        while (result.next()) {
+
+            int id = result.getInt("ID");
+            int from = result.getInt("From");
+            int to = result.getInt("To");
+            float Rating = result.getFloat("Rating");
+            Rating rate = new Rating(from,to,Rating);
+            rate.ID = id;
+
+            ratings.add(rate);
+        }
+
+        return ratings;
+    }
+
+    /**
+     * Get USER RATINGS
+     * @param userId
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Rating> GetUserPublishRatings(int userId) throws SQLException {
+        ArrayList<Rating> ratings = new ArrayList<>();
+
+        String query = "SLEECT * FROM RATINGS AS R WHERE R.From = " + userId;
+
+        ResultSet result = ExecuteSelectQuery(query);
+        while (result.next()) {
+
+            int id = result.getInt("ID");
+            int from = result.getInt("From");
+            int to = result.getInt("To");
+            float Rating = result.getFloat("Rating");
+            Rating rate = new Rating(from,to,Rating);
+            rate.ID = id;
+
+            ratings.add(rate);
+        }
+
+        return ratings;
+    }
+
 
     /**
      * Get ApplicationDbContext instance ( Singleton )
