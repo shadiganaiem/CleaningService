@@ -774,30 +774,28 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     public NameImage GetNameImage(int jobFormId) throws SQLException {
 
-        String query = "SELECT * FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
+        String query = "SELECT Employees.ID , Employees.Firstname , Employees.Lastname FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
                 "WHERE JobFormRequests.JobFormId = " + jobFormId + "AND JobFormRequests.StatusId = 6";
 
         NameImage nameimage =null;
         ResultSet result = ExecuteSelectQuery(query);
         if (result.next()) {
 
-            int id = result.getInt("EmployeeId");
-            int statusid = result.getInt("StatusId");
             String fn = result.getString("Firstname");
             String ln = result.getString("Lastname");
-            String email = result.getString("Email");
-            String phone = result.getString("Phone");
+            int ID = result.getInt("ID");
 
             String fullname = fn + " " + ln;
             // String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
-            //  String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
+           // String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
             // ResultSet result2 = ExecuteSelectQuery(query2);
-            //ResultSet result3 = ExecuteSelectQuery(query3);
+          //  ResultSet result3 = ExecuteSelectQuery(query3);
             // if (result3.next()){
             //  int rate = result2.getInt("Rating");
-            //   byte[] img= result3.getBytes("Image");
+           // byte[] img= result3.getBytes("Image");
             nameimage = new NameImage(
-                    fullname
+                    fullname,
+                    ID
             );
         //}
     }
@@ -1053,7 +1051,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     public boolean UpdateFormStatus(int formID, int statusId){
 
-        String query = "UPDATE JobForms SET StatusId = ? WHERE JobFormId = ?";
+        String query = "UPDATE JobForms SET StatusId = ? WHERE ID = ?";
         try {
             PreparedStatement pst = _connection.prepareStatement(query);
             pst.setInt(1,statusId);
@@ -1097,5 +1095,13 @@ public class ApplicationDbContext extends AppCompatActivity {
             }
         }
         return instance;
+    }
+
+    public boolean UpdateEmployeeRating(float rating) {
+        return false;
+    }
+
+    public boolean DeleteForm(int id) {
+        return false;
     }
 }

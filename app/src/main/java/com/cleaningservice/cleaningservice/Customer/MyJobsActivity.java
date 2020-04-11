@@ -24,8 +24,11 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 import Models.JobForm;
+import Models.Request;
 
 import static Authentications.Preferences.GetLoggedInUserID;
 
@@ -81,11 +84,17 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
+                        Collections.reverse(forms);
                         for(JobForm form :forms){
                             try {
                                 NameImage nameImage = _context.GetNameImage(form.ID);
                                 if(nameImage!=null)
                                     namesImages.add(nameImage);
+                                else{
+                                    namesImages.add(new NameImage("",0 ));
+                                }
+
+
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -98,6 +107,10 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                 });
             }
         }.start();
+
+
+
+
     }
 
     @Override

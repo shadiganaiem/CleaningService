@@ -14,6 +14,7 @@ public class Request {
     public int JobFormID;
     public int Status_id;
 
+
     public Request(int id, int status_id, String firstName ,String lastName, String phone, String email, int rating,byte[] image,int JobFormID){
         FirstName=firstName;
         LastName=lastName;

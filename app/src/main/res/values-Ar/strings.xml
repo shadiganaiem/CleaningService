@@ -105,4 +105,8 @@
     <string name="wait">"بقائمة الانتظار "</string>
     <string name="Assosiatedworker">الموظف</string>
     <string name="JobForm">ملف عمل</string>
+    <string name="RateEmployee">تقييم الموظف</string>
+    <string name="worksutisfication">تقييمك للعمل</string>
+    <string name="timeStisfication">تقييمك للالتزام بالوقت</string>
+    <string name="Deleteform">مسح الملف</string>
 </resources>

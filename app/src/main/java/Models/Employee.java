@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.ArrayList;
+
 public class Employee {
 
     public int ID;
@@ -7,6 +9,8 @@ public class Employee {
     public String Lastname;
     public String Email;
     public String Phone;
+    public ArrayList<Float> ratings = new ArrayList<>();
+    public float Rating;
 
     public Employee (int ID,String Firstname,String Lastname,String Email,String Phone){
         this.ID = ID;

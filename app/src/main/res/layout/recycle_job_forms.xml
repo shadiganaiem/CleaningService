@@ -325,6 +325,47 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/RateDel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible"
+                    >
+
+                    <Button
+                        android:id="@+id/ratebut"
+                        android:layout_width="125dp"
+                        android:layout_height="30dp"
+                        android:textColor="@color/white"
+                        android:background="@drawable/primary_btn"
+                        android:text="@string/RateEmployee"
+                        android:visibility="invisible"
+                        />
+
+
+
+                    <Button
+                        android:id="@+id/deletebut"
+                        android:layout_width="125dp"
+                        android:layout_height="30dp"
+                        android:text="@string/Deleteform"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/redbut"
+                        />
+
+                    <Button
+                        android:id="@+id/addfav"
+                        android:layout_width="125dp"
+                        android:layout_height="30dp"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:text="add favorites"
+                        android:background="@drawable/success_btn"
+                        android:visibility="gone" />
+
+                </LinearLayout>
             </LinearLayout>
         <!--</androidx.cardview.widget.CardView>-->
 
