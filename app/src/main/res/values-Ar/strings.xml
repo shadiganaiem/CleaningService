@@ -3,7 +3,7 @@
     <string name="app_name">CleaningService</string>
     <string name="Activation">تفعيل الحساب</string>
     <string name="ActivationCode">كود التفعيل</string>
-    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرف في البريد الاكتروني</string>
+    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرفق في البريد الاكتروني</string>
     <string name="Activation_not_sent_details">ارسل كود تفعيل جديد</string>
     <string name="Activation_not_sent_title">لم يصلني بريد الكتروني</string>
     <string name="Address">العنوان</string>
@@ -50,7 +50,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">لست عضو؟</string>
+    <string name="member">لست عضوًا؟</string>
     <string name="register">التسجيل</string>
     <string name="hello">مرحبا بك</string>
     <string name="but">back button</string>
@@ -76,7 +76,7 @@
     <string name="EndDate">تاريخ النهاية</string>
     <string name="Tomorrow">غدًا</string>
     <string name="TheDayAfterTomorrow">بعد غد</string>
-    <string name="ThisWeek">هذا الاُسبوع</string>
+    <string name="ThisWeek">هذا الأسبوع</string>
     <string name="All">الكل</string>
     <string name="ThisMonth">هذا الشهر</string>
     <string name="chooseRating">اختر تقييم</string>
@@ -100,6 +100,8 @@
     <string name="RequestDate">تاريخ ارسال الطلب</string>
     <string name="requestWatingForResponse">الطلب في انتظار الرد.</string>
     <string name="WaitingCondition">في حال لم يتم الرد خلال  48 ساعة, سوف يتم رفض الطلب!</string>
+    <string name="JobOfferLimit">عرض العمل هذا سيكون متاح حتى تاريخ الانتهاء المذكور اعلاه. اذا قمت بارسال طلب عمل يجب ان تعلم ان الطلب سوف يُرفض في حال لم يتم الرد عليه خلال 48 ساعة. حظًا موفقًا !</string>
+    <string name="support">لمزيد من المعلومات الرجاء التواصل معنا عبر البريد الاكتروني support @cleaningservice.com</string>
     <string name="FormStatus">حالة الملف</string>
     <string name="Active">فعال</string>
     <string name="wait">"بقائمة الانتظار "</string>

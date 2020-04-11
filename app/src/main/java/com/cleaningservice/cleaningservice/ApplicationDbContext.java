@@ -12,6 +12,7 @@ import net.sourceforge.jtds.jdbc.DateTime;
 
 import com.cleaningservice.cleaningservice.Customer.NameImage;
 
+import Models.Rating;
 import Models.Request;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +26,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -201,7 +203,6 @@ public class ApplicationDbContext extends AppCompatActivity {
                 jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.status = GetStatus(jobForm.StatusId);
 
-
                 jobForms.add(jobForm);
 
                 /*
@@ -334,10 +335,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         String query = "SELECT J.Id , J.CustomerId ,J.CreationDate,  J.Rooms , J.City,  J.Address,  J.Budget, J.StartDate,J.EndDate," +
                 " J.StatusId, J.Description, C.Firstname , C.Lastname , U.Rating " +
                 " FROM JobForms AS J JOIN USERS AS U ON J.CustomerId = U.CustomerId" +
-                " JOIN Customers ON C C.ID = U.CustomerId " +
+                " JOIN Customers AS C ON C.ID = U.CustomerId " +
                 " WHERE J.StartDate < '"+lastDateInThisWeek+"' AND J.EndDate>= '" +today + "'"+
                 " AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -402,7 +403,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 " JOIN Customers AS C ON C.ID = U.CustomerId"+
                 " WHERE J.EndDate >= '"+today+"' AND J.EndDate<= '" +lastDayDateThisMonth + "'"+
                 "AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -439,7 +440,6 @@ public class ApplicationDbContext extends AppCompatActivity {
 
                 */
             }
-
         }catch (Exception ex){
 
         }
@@ -455,12 +455,13 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public List<JobForm> GetJobFormsByPublisherRating (int minRate ,int maxRate,int tabSelected ){
-        String query = "SELECT J.Id ,J.CreationDate, J.CustomerId , J.Rooms , J.City, J.Address, J.Budget, " +
+        String query = "SELECT J.ID ,J.CreationDate, J.CustomerId , J.Rooms , J.City, J.Address, J.Budget, " +
                 "J.StartDate,J.EndDate, J.StatusId, J.Description, C.Firstname , C.Lastname , U.Rating " +
-                "FROM JobForms AS J JOIN Users AS U on J.CustomerId = U.CustomerId " +
-                "JOIN Customers AS C ON C.ID = U.CustomerId " +
+                "FROM JobForms AS J " +
+                "JOIN Customers AS C ON C.ID = J.CustomerId " +
+                "JOIN Users AS U on C.ID = U.CustomerId " +
                 "Where U.Rating >= " + minRate + " and U.Rating <= " + maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
         Date date = new Date();
@@ -651,7 +652,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         String query = "INSERT INTO JobForms(CustomerId,Rooms,City,Address,Budget,StartDate,EndDate,StatusId,Description,CreationDate)";
         query += "VALUES("+jobForm.CustomerId + ","+jobForm.Rooms + ",'"+jobForm.City.replace("'","")+"','"+jobForm.Address.replace("'","") + "',"+
-                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+3+",'"+jobForm.Description+"','"+dateFormat.format(date)+"')";
+                jobForm.Budget + ",'"+StartDate + "','"+EndDate+"',"+Util.Statuses.AVAILABLE.value+",'"+jobForm.Description+"','"+dateFormat.format(date)+"')";
 
         int jobFormId = 0;
         if(ExecuteInsertData(query)){
@@ -681,7 +682,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         Date date = new Date();
 
         String query = "INSERT INTO JobFormRequests(EmployeeId,JobFormId,StatusId,CreationDate)"
-                +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +",5,'"+dateFormat.format(date)+"')";
+                +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"')";
 
         boolean result = ExecuteInsertData(query);
         return result;
@@ -740,6 +741,8 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return new User();
     }
+
+
 
     /**
      * Get Customer By Id
@@ -1067,6 +1070,72 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * INSERT NEW RATING
+     * @param rating
+     * @return
+     */
+    public boolean InsertRating(Rating rating){
+        String query = "INSERT INTO Ratings(From,To,Rating) VALUES('"+rating.From+"','"+rating.To+"','"+rating.Rating+"')";
+
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Get USER RATINGS
+     * @param userId
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Rating> GetUserRatings(int userId) throws SQLException {
+        ArrayList<Rating> ratings = new ArrayList<>();
+
+        String query = "SLEECT * FROM RATINGS AS R WHERE R.To = " + userId;
+
+        ResultSet result = ExecuteSelectQuery(query);
+        while (result.next()) {
+
+            int id = result.getInt("ID");
+            int from = result.getInt("From");
+            int to = result.getInt("To");
+            float Rating = result.getFloat("Rating");
+            Rating rate = new Rating(from,to,Rating);
+            rate.ID = id;
+
+            ratings.add(rate);
+        }
+
+        return ratings;
+    }
+
+    /**
+     * Get USER RATINGS
+     * @param userId
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Rating> GetUserPublishRatings(int userId) throws SQLException {
+        ArrayList<Rating> ratings = new ArrayList<>();
+
+        String query = "SLEECT * FROM RATINGS AS R WHERE R.From = " + userId;
+
+        ResultSet result = ExecuteSelectQuery(query);
+        while (result.next()) {
+
+            int id = result.getInt("ID");
+            int from = result.getInt("From");
+            int to = result.getInt("To");
+            float Rating = result.getFloat("Rating");
+            Rating rate = new Rating(from,to,Rating);
+            rate.ID = id;
+
+            ratings.add(rate);
+        }
+
+        return ratings;
+    }
+
+
+    /**
      * Get ApplicationDbContext instance ( Singleton )
      * @param context1
      * @return
@@ -1083,7 +1152,8 @@ public class ApplicationDbContext extends AppCompatActivity {
             } catch (Exception ex) {
                 Toast.makeText(context1, "אין חיבור", Toast.LENGTH_SHORT).show();
             }
-        } else if (instance.getConnection().isClosed()) {
+        }
+        else if (instance.getConnection().isClosed()){
             try {
                 instance = new ApplicationDbContext(
                         Util.GetProperty("db.driver", context1),

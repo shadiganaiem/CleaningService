@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
@@ -32,6 +33,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import Authentications.Preferences;
 import Models.Employee;
@@ -43,6 +47,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     private DrawerLayout drawer;
     private JobForm jobForm = null;
     private ApplicationDbContext _context = null;
+    private ProgressBar formDetailsProgressBar;
+    private LinearLayout formComponents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,9 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        formDetailsProgressBar = findViewById(R.id.formDetailsProgressBar);
+        formComponents = findViewById(R.id.formComponents);
+
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -75,6 +84,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 if (bundle != null) {
                     jobFormId = bundle.getInt("jobFormId");
                     jobForm = _context.GetJobFormById(jobFormId);
+
                     InitializeViewModel();
                 }
 
@@ -113,6 +123,10 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                formDetailsProgressBar.setVisibility(View.VISIBLE);
+                formComponents.setVisibility(View.INVISIBLE);
+
                 TextView customerFullName = findViewById(R.id.CustomerFullName);
                 TextView customerRating = findViewById(R.id.CustomerRating);
                 TextView descirption = (TextView) findViewById(R.id.descriptionBox);
@@ -127,14 +141,22 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 }
 
                 String details = "";
-                details += "מיקום עבודה : ";
+                details += getResources().getString(R.string.Address) + " : ";
                 details += jobForm.City + " - " + jobForm.Address + "\n";
-                details += "מספר חדרים : ";
-                details += jobForm.Rooms + " חדרים" + "\n";
-                details += "תקציב משועך : ";
-                details += jobForm.Budget + "ש\"ח" + "\n \n";
-                details += "הערות : ";
-                details += jobForm.Description;
+                details += getResources().getString(R.string.RoomsNumber) + " : ";
+                details += jobForm.Rooms  + " \n";
+                details += getResources().getString(R.string.Budget) + " : ";
+                details += jobForm.Budget + " ש\"ח " + "\n \n";
+
+                details += getResources().getString(R.string.StartDate) + " : ";
+                details += dateFormat.format(jobForm.StartDate) + "\n";
+                details += getResources().getString(R.string.EndDate) + " : ";
+                details += dateFormat.format(jobForm.EndDate) + "\n";
+
+                if(jobForm.Description != null) {
+                    details += getResources().getString(R.string.description) + " : ";
+                    details += jobForm.Description;
+                }
 
                 customerRating.setText(rating);
                 descirption.setMovementMethod(new ScrollingMovementMethod());
@@ -146,6 +168,9 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                     sendRequestBtn.setText(R.string.RequestSent);
                     sendRequestBtn.setOnClickListener(null);
                 }
+
+                formDetailsProgressBar.setVisibility(View.INVISIBLE);
+                formComponents.setVisibility(View.VISIBLE);
             }
         });
 
@@ -190,6 +215,9 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     }
 
     public void SendRequest(View v) {
+        formComponents.setVisibility(View.INVISIBLE);
+        formDetailsProgressBar.setVisibility(View.VISIBLE);
+
         int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
         Employee employee = _context.GetEmployee(employeeId);
 

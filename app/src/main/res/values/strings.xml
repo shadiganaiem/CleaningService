@@ -135,5 +135,7 @@
     <string name="worksutisfication">כמה אתה מרוצה מהעבודה.</string>
     <string name="timeStisfication">כמה אתה מרוצה מהעמידה בזמן.</string>
     <string name="Deleteform">מחיקת בקשה</string>
+    <string name="JobOfferLimit">עבודה זו תהייה זמינה עד לתאריך הסיום שרשום לעיל. במידה והחלטת לשלוח בקשת עבודה נא לקחת חשבון שהבקשה תדחה אוטומטית לאחר 48 שעות ללא מענה.</string>
+    <string name="support">לשאלות נא לפנות אליינו במייל support@cleaningService.com</string>
 
 </resources>

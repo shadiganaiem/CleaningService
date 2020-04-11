@@ -62,7 +62,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
 
         if(request.CreationDate != null)
-            description += "______________ \n" + context.getResources().getString(R.string.RequestDate) + " " + dateFormat.format(request.CreationDate);
+            description += "______________ \n \uD83D\uDCC5 " + context.getResources().getString(R.string.RequestDate) + " " + dateFormat.format(request.CreationDate);
 
         holder.title.setText(Title);
         holder.description.setText(description);
