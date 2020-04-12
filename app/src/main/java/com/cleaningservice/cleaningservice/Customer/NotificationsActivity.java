@@ -19,6 +19,7 @@ import android.view.View;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 
 import java.sql.SQLException;
@@ -129,7 +130,7 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
                     try {
                         ArrayList<Request> reqs = _context.GetFormUserRequests(id);
                         for (Request request : reqs) {
-                            if(request.Status_id==5) {
+                            if(request.Status_id== Util.Statuses.WAITING.value) {
                                 requests.add(request);
                             }
                         }

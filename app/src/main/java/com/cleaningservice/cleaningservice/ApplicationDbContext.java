@@ -2,17 +2,14 @@ package com.cleaningservice.cleaningservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.StrictMode;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import net.sourceforge.jtds.jdbc.DateTime;
-
 import com.cleaningservice.cleaningservice.Customer.NameImage;
 
-import Models.Rating;
+import Models.Ratings;
 import Models.Request;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +23,6 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -151,16 +147,32 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public int GetEmployeeIdByUserID(int id){
         String query = "SELECT EmployeeId FROM USERS WHERE ID="+id;
-        try{
+        try {
             ResultSet result = ExecuteSelectQuery(query);
-            if (result.next()){
-                int employeeId = result.getInt("EmployeeId");
+            if (result.next()) {
 
-                return employeeId;
+                return result.getInt("EmployeeId");
+            }
+        } catch (SQLException ignored) {
+
+        }
+        return 0;
+    }
+
+    /**
+     * get employee id by user id
+     * @param id
+     * @return
+     */
+    public int GetUserIDByEmployeeID(int id){
+        String query = "SELECT ID FROM USERS WHERE EmployeeId ="+id;
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()) {
+                return result.getInt("ID");
             }
         }
-        catch (Exception ex){
-
+        catch (SQLException ignored) {
         }
         return 0;
     }
@@ -780,7 +792,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         String query = "SELECT Employees.ID , Employees.Firstname , Employees.Lastname FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
                 "WHERE JobFormRequests.JobFormId = " + jobFormId + "AND JobFormRequests.StatusId = 6";
 
-        NameImage nameimage =null;
+        NameImage nameimage = null;
         ResultSet result = ExecuteSelectQuery(query);
         if (result.next()) {
 
@@ -789,29 +801,26 @@ public class ApplicationDbContext extends AppCompatActivity {
             int ID = result.getInt("ID");
 
             String fullname = fn + " " + ln;
-            // String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
-           // String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
-            // ResultSet result2 = ExecuteSelectQuery(query2);
-          //  ResultSet result3 = ExecuteSelectQuery(query3);
-            // if (result3.next()){
-            //  int rate = result2.getInt("Rating");
-           // byte[] img= result3.getBytes("Image");
-            nameimage = new NameImage(
-                    fullname,
-                    ID
-            );
-        //}
-    }
-        return nameimage;
+           // String query3 = "SELECT Image From USERS WHERE EmployeeId = " + ID;
+           // ResultSet result3 = ExecuteSelectQuery(query3);
+           // if (result3.next()) {
+              //  byte[] img = result3.getBytes("Image");
+                nameimage = new NameImage(
+                        fullname,
+                        ID
+                );
+               // }
+            }
+            return nameimage;
     }
 
 
-    public ArrayList<Request> GetFormUserRequests (int jobFormId) throws SQLException {
+
+    public ArrayList<Request> GetFormUserRequests(int jobFormId) throws SQLException {
 
         String query = "SELECT * FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
                 "WHERE JobFormRequests.JobFormId = " + jobFormId;
         ArrayList<Request> requests = new ArrayList<>();
-
 
             ResultSet result = ExecuteSelectQuery(query);
             while (result.next()){
@@ -1071,13 +1080,19 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     /**
      * INSERT NEW RATING
-     * @param rating
-     * @return
+     * @param ratings
+     * @return true
      */
-    public boolean InsertRating(Rating rating){
-        String query = "INSERT INTO Ratings(From,To,Rating) VALUES('"+rating.From+"','"+rating.To+"','"+rating.Rating+"')";
+    public boolean InsertRating(Ratings ratings) throws SQLException {
 
+        String query = "INSERT INTO Ratings([From],[To],Rating) VALUES('"+ratings.From+"','"+ratings.To+"','"+ratings.Rating+"')";
         return ExecuteInsertData(query);
+        /*PreparedStatement pst = _connection.prepareStatement(query);
+        pst.setInt(1, ratings.From);
+        pst.setInt(2, ratings.To);
+        pst.setFloat(3, ratings.Rating);
+        pst.executeUpdate();
+        return true;*/
     }
 
     /**
@@ -1086,8 +1101,8 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      * @throws SQLException
      */
-    public ArrayList<Rating> GetUserRatings(int userId) throws SQLException {
-        ArrayList<Rating> ratings = new ArrayList<>();
+    public ArrayList<Ratings> GetUserRatings(int userId) throws SQLException {
+        ArrayList<Ratings> ratings = new ArrayList<>();
 
         String query = "SLEECT * FROM RATINGS AS R WHERE R.To = " + userId;
 
@@ -1098,7 +1113,7 @@ public class ApplicationDbContext extends AppCompatActivity {
             int from = result.getInt("From");
             int to = result.getInt("To");
             float Rating = result.getFloat("Rating");
-            Rating rate = new Rating(from,to,Rating);
+            Ratings rate = new Ratings(from,to,Rating);
             rate.ID = id;
 
             ratings.add(rate);
@@ -1113,8 +1128,8 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      * @throws SQLException
      */
-    public ArrayList<Rating> GetUserPublishRatings(int userId) throws SQLException {
-        ArrayList<Rating> ratings = new ArrayList<>();
+    public ArrayList<Ratings> GetUserPublishRatings(int userId) throws SQLException {
+        ArrayList<Ratings> ratings = new ArrayList<>();
 
         String query = "SLEECT * FROM RATINGS AS R WHERE R.From = " + userId;
 
@@ -1125,7 +1140,7 @@ public class ApplicationDbContext extends AppCompatActivity {
             int from = result.getInt("From");
             int to = result.getInt("To");
             float Rating = result.getFloat("Rating");
-            Rating rate = new Rating(from,to,Rating);
+            Ratings rate = new Ratings(from,to,Rating);
             rate.ID = id;
 
             ratings.add(rate);
@@ -1172,6 +1187,51 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     public boolean DeleteForm(int id) {
+        try {
+                deleteFormsAssossiations(id);
+                PreparedStatement pst = _connection.prepareStatement("DELETE FROM JobForms WHERE ID = ?");
+                pst.setInt(1, id);
+                pst.executeUpdate();
+                return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return false;
+    }
+
+    private void deleteFormsAssossiations(int id){
+        try {
+                deleteFormImages(id);
+                PreparedStatement pst = _connection.prepareStatement("DELETE FROM JobFormRequests WHERE JobFormId = ?");
+                pst.setInt(1, id);
+                pst.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteFormImages(int id) {
+        try {
+            PreparedStatement pst = _connection.prepareStatement("DELETE FROM Images WHERE JobFormId = ?");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean checkIfNotRated(int rater, int rated) throws SQLException {
+        String query ="SELECT ID From RATINGS Where [From]="+rater+" And [To]="+rated;
+        ResultSet result = ExecuteSelectQuery(query);
+        if(result.next()){
+            return false;
+        }
+        return true;
     }
 }

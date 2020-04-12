@@ -1,14 +1,12 @@
 package com.cleaningservice.cleaningservice.Customer;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -21,16 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import Models.Employee;
 import Models.JobForm;
+import Models.Ratings;
 
+import static Authentications.Preferences.GetLoggedInUserID;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
@@ -74,10 +73,10 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         holder.budget.setText(String.valueOf(jobForms.get(position).Budget));
         holder.rooms.setText(String.valueOf(jobForms.get(position).Rooms));
 
-        if(jobForms.get(position).StatusId==4) {
+        if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value) {
             holder.status.setText(R.string.Active);
             holder.name.setText(namesImages.get(position).name);
-           // Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
+            //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
         }
 
         try {
@@ -87,21 +86,29 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         }
 
         Date date = new Date();
-        if(jobForms.get(position).EndDate.compareTo(date) < 0){
+        if(jobForms.get(position).EndDate.compareTo(date) < 0 && jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value){
             holder.rate.setVisibility(View.VISIBLE);
 
             //if no employee assigned and the form end date passed delete form
-            if(namesImages.get(position).ID == 0){
-
-            }
+        //    if(namesImages.get(position).ID == 0){
+          //      con.DeleteForm(jobForms.get(position).ID);
+            //}
 
 
             holder.rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                    try {
+                        if(!con.checkIfNotRated(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
+                            Toast.makeText(context,"כבר בוצע דירוג לעובד זה",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
                     // Inflate the custom layout/view
                     View customView = inflater.inflate(R.layout.rating_pop_up,null);
 
@@ -119,6 +126,8 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                     view = customView.findViewById(R.id.fullname);
                     cancelBut = customView.findViewById(R.id.cancel);
                     rateBut = customView.findViewById(R.id.rate);
+                    ImageView image = customView.findViewById(R.id.img);
+                    //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(image);
 
                     //default ratings
                     ratings[0] =(float) 3.5;
@@ -140,6 +149,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                             ratings[1]=rating;
+
                         }
                     });
 
@@ -150,21 +160,23 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                                 }
                     });
 
-
-
                     rateBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float sum=0;
+
                             float rating = (ratings[0] + ratings[1])/2;
-                            employee.ratings.add(rating);
-                            for (Float rate : ratings){
-                                sum+=rate;
+                            Ratings rate = new Ratings(
+                                    GetLoggedInUserID(context),
+                                    con.GetUserIDByEmployeeID(employee.ID),
+                                    rating
+                            );
+                            try {
+                                con.InsertRating(rate);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
-                            employee.Rating = sum/employee.ratings.size();
-                            con.UpdateEmployeeRating(employee.Rating);
-                            con.DeleteForm(jobForms.get(position).ID);
                             popUp.dismiss();
+                            Toast.makeText(context,"דירוג בוצע בהצלחה",Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -175,8 +187,8 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                con.DeleteForm(jobForms.get(position).ID);
 
-                Toast.makeText(context,"dslkjfsdjkfnsdkjf",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -207,8 +219,6 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-
             relativeLayout =itemView.findViewById(R.id.recycle_job_forms);
             image = itemView.findViewById(R.id.workerimage);
             name = itemView.findViewById(R.id.workername);
@@ -222,10 +232,6 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             rate = itemView.findViewById(R.id.ratebut);
             delete = itemView.findViewById(R.id.deletebut);
             addtofav = itemView.findViewById(R.id.addfav);
-
-
-
-
         }
     }
 }

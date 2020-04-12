@@ -91,7 +91,7 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                                 if(nameImage!=null)
                                     namesImages.add(nameImage);
                                 else{
-                                    namesImages.add(new NameImage("",0 ));
+                                    namesImages.add(new NameImage("",0));
                                 }
 
 
