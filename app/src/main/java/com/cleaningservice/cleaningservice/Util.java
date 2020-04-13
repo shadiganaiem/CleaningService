@@ -16,6 +16,16 @@ public class Util {
         return properties.getProperty(key);
     }
 
+    public enum UserTypes{
+        CUSTOMER("Customers","CustomerId"),
+        EMPLOYEE("Employees","EmployeeId");
+
+        public String table;
+        public String relationId;
+
+        private  UserTypes(String table,String relationId){this.table = table;this.relationId = relationId;}
+    }
+
     public enum Statuses {
         ACTIVATED(1),
         DEACTIVATED(2),

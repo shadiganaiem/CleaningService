@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import net.sourceforge.jtds.jdbc.DateTime;
 
+import Models.Favorite;
 import Models.Rating;
 import Models.Request;
 
@@ -1035,6 +1036,89 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
 
         return ratings;
+    }
+
+    /**
+     * Insert new Favorite Request
+     * @param userId
+     * @param favoriteUserId
+     * @return
+     */
+    public boolean InsertFavoriteByUserId(int userId,int favoriteUserId){
+        String query = "INSERT INTO FAVORITES(UserId,FavoriteUserId) VALUES('"+userId+"','"+favoriteUserId+"')";
+
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Insert new Favorite Request
+     * @param userId
+     * @param employeeId
+     * @return
+     */
+    public boolean InsertFavoriteByEmployeeId(int userId,int employeeId){
+        String query = "INSERT INTO FAVORITES(UserId,FavoriteUserId) SELECT "+userId+", ID FROM USERS WHERE EmployeeId = "+employeeId;
+
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Insert new FavoriteRequest
+     * @param userId
+     * @param employeeId
+     * @return
+     */
+    public boolean InsertFavoriteByCustomerId(int userId,int employeeId){
+        String query = "INSERT INTO FAVORITES(UserId,FavoriteUserId) SELECT "+userId+", ID FROM USERS WHERE CustomerId = "+employeeId;
+
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * GET User Favorite Customers
+     * @param userId
+     * @return
+     */
+    public ArrayList<Favorite> GetUserFavoriteList(int userId,Util.UserTypes userType) {
+        String query = "SELECT F.UserId,F.FavoriteUserId,E.Firstname,E.Lastname,E.Email,E.Phone,E.ID,F.ID AS FID" +
+                " FROM FAVORITES AS F" +
+                " JOIN Users AS U ON U.ID = F.FavoriteUserId" +
+                " JOIN "+userType.table+" AS E ON E.ID = U."+userType.relationId +
+                " WHERE F.UserId = 2";
+
+        ArrayList<Favorite> favorites = new ArrayList<>();
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()) {
+                Favorite favorite = new Favorite();
+                favorite.ID = result.getInt("FID");
+
+                if(userType == Util.UserTypes.EMPLOYEE) {
+                    Employee employee = new Employee();
+                    employee.Firstname = result.getString("Firstname");
+                    employee.Lastname = result.getString("Lastname");
+                    employee.Email = result.getString("Email");
+                    employee.Phone = result.getString("Phone");
+                    employee.ID = result.getInt("ID");
+                    favorite.employee = employee;
+                }
+                else
+                {
+                    Customer customer = new Customer();
+                    customer.Firstname = result.getString("Firstname");
+                    customer.Lastname = result.getString("Lastname");
+                    customer.Email = result.getString("Email");
+                    customer.Phone = result.getString("Phone");
+                    customer.ID = result.getInt("ID");
+                    favorite.customer = customer;
+                }
+
+                favorites.add(favorite);
+            }
+        } catch (Exception ex) {
+
+        }
+        return favorites;
     }
 
 
