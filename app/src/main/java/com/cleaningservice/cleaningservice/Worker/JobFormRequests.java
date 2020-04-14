@@ -18,6 +18,7 @@ import android.view.View;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -122,12 +123,12 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        int userId = Preferences.GetLoggedInUserID(getApplicationContext());
-                        int employeeId = _context.GetEmployeeIdByUserID(userId);
-
                         RecyclerView view = findViewById(R.id.job_form_requests_list);
                         findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.VISIBLE);
                         findViewById(R.id.job_form_requests_list).setVisibility(View.INVISIBLE);
+
+                        int userId = Preferences.GetLoggedInUserID(getApplicationContext());
+                        int employeeId = _context.GetEmployeeIdByUserID(userId);
 
                         switch (tab.getPosition()) {
                             case 0:
@@ -136,9 +137,14 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                                 requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
                                 break;
                             case 1:
-                                requests = _context.GetEmployeeWaitingRequests(employeeId);
+                                requests = _context.GetEmployeeRequestsByStatus(employeeId, Util.Statuses.WAITING);
                                 requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
                                 requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
+                                break;
+                            case 2:
+                                requests = _context.GetEmployeeEndedJobFormsRequests(employeeId);
+                                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
+                                requestAdapter = new RequestAdapter(requests,getApplicationContext(),JobFormRequests.this);
                                 break;
                         }
 

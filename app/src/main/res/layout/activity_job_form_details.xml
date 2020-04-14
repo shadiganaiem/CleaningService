@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:context=".Worker.JobFormDetails">
+    tools:context=".Worker.JobFormDetails"
+    android:layoutDirection="rtl">
 
     <LinearLayout
         android:layout_width="match_parent"

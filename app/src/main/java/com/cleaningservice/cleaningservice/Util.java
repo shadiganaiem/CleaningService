@@ -33,7 +33,8 @@ public class Util {
         NOTAVAILABLE(4),
         WAITING(5),
         ACCEPTED(6),
-        REJECTED(7);
+        REJECTED(7),
+        CLOSED(8);
 
         public int value;
         private Statuses(int value)

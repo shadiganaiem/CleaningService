@@ -128,5 +128,11 @@
     <string name="WaitingCondition">במידה ולא התקבל מענה תוך 48 שעות, הבקשה תדחה!</string>
     <string name="JobOfferLimit">עבודה זו תהייה זמינה עד לתאריך הסיום שרשום לעיל. במידה והחלטת לשלוח בקשת עבודה נא לקחת חשבון שהבקשה תדחה אוטומטית לאחר 48 שעות ללא מענה.</string>
     <string name="support">לשאלות נא לפנות אליינו במייל support@cleaningService.com</string>
+    <string name="JobEnded">הסתיימו</string>
+    <string name="jobEndedDescription">העבודה הסתיימה בהצלחה</string>
+    <string name="RateUser">דירוג ★</string>
+    <string name="addToFavorite">הוסף משתמש למועדפים ➕</string>
+    <string name="addedToFavorite">משתמש התווסף למועדפים</string>
+    <string name="ErrorHappend">תקלה התרחשה</string>
 
 </resources>

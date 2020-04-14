@@ -102,4 +102,10 @@
     <string name="WaitingCondition">في حال لم يتم الرد خلال  48 ساعة, سوف يتم رفض الطلب!</string>
     <string name="JobOfferLimit">عرض العمل هذا سيكون متاح حتى تاريخ الانتهاء المذكور اعلاه. اذا قمت بارسال طلب عمل يجب ان تعلم ان الطلب سوف يُرفض في حال لم يتم الرد عليه خلال 48 ساعة. حظًا موفقًا !</string>
     <string name="support">لمزيد من المعلومات الرجاء التواصل معنا عبر البريد الاكتروني support @cleaningservice.com</string>
+    <string name="JobEnded">أُنجزوا</string>
+    <string name="jobEndedDescription">تم الانتهاء من العمل بنجاح</string>
+    <string name="RateUser">تقييم ★</string>
+    <string name="addToFavorite">اضافة المستخدم الى المفضلة ➕</string>
+    <string name="addedToFavorite">تمت اضافة المستخدم الى المفضلة</string>
+    <string name="ErrorHappend">حدث خطأ</string>
 </resources>
