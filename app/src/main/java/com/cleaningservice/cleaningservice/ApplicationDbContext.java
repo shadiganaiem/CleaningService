@@ -163,6 +163,25 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * get customer id by user id
+     * @param id
+     * @return
+     */
+    public int GetCustomerIdByUserID(int id){
+        String query = "SELECT CustomerId FROM USERS WHERE ID="+id;
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()) {
+
+                return result.getInt("CustomerId");
+            }
+        } catch (SQLException ignored) {
+
+        }
+        return 0;
+    }
+
+    /**
      * get employee id by user id
      * @param id
      * @return
@@ -596,9 +615,31 @@ public class ApplicationDbContext extends AppCompatActivity {
      * Get JobForms By Customer ID
      * @return
      */
-    public List<Integer> GetJobFormID(User user){
+   /* public List<Integer> GetJobFormID(User user){
 
         String query = "SELECT ID FROM JobForms WHERE CustomerId = "+user.CustomerId;
+
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            while (result.next()){
+
+                ids.add(result.getInt("ID"));
+            }
+
+        }catch (Exception ex){
+
+        }
+        return ids;
+    }*/
+
+    /**
+     * Get JobForms By Customer ID
+     * @return
+     */
+    public List<Integer> GetJobFormID(int id){
+
+        String query = "SELECT ID FROM JobForms WHERE CustomerId = "+id;
 
         ArrayList<Integer> ids = new ArrayList<Integer>();
         try{
@@ -620,9 +661,9 @@ public class ApplicationDbContext extends AppCompatActivity {
      * Get JobForms By Customer ID
      * @return
      */
-    public ArrayList<JobForm> GetJobByID(User user) throws SQLException {
+    public ArrayList<JobForm> GetJobByID(int id) throws SQLException {
 
-        String query = "SELECT * FROM JobForms WHERE CustomerId = " + user.customer.ID;
+        String query = "SELECT * FROM JobForms WHERE CustomerId = " + id;
 
         ArrayList<JobForm> jobForms = new ArrayList<>();
 

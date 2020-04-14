@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,8 +58,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
            // holder.shimmerFrameLayout.startShimmer();
 
-            holder.shimmerFrameLayout.stopShimmer(); // stop shimmer animation
-            holder.shimmerFrameLayout.setShimmer(null); // remove shimmer
+            //holder.shimmerFrameLayout.stopShimmer(); // stop shimmer animation
+            //holder.shimmerFrameLayout.setShimmer(null); // remove shimmer
 
             String Rating = "";
             if (requests.get(position).Rating != 0) {
@@ -73,7 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             String fullname = requests.get(position).FirstName+" "+ requests.get(position).LastName;
             holder.name.setBackground(null);
             holder.name.setText(fullname);
-
+            holder.formId.setText(String.valueOf(requests.get(position).JobFormID));
             holder.Email.setBackground(null);
             holder.Email.setText(requests.get(position).Email);
 
@@ -95,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                    holder.shimmerFrameLayout.setVisibility(View.GONE);
                    Toast.makeText(context, "Request Accepted", Toast.LENGTH_SHORT).show();
                    con.UpdateRequestStatus(requests.get(position).EmployeeId, requests.get(position).JobFormID, Util.Statuses.ACCEPTED.value);
-                   con.UpdateFormStatus(requests.get(position).JobFormID, Util.Statuses.ACCEPTED.value);
+                   con.UpdateFormStatus(requests.get(position).JobFormID, Util.Statuses.NOTAVAILABLE.value);
                }
            });
 
@@ -118,26 +119,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        ShimmerFrameLayout shimmerFrameLayout;
+        RelativeLayout shimmerFrameLayout;
         ImageView image;
         TextView name;
         TextView Email;
         TextView rating;
         Button confirm;
         Button reject;
+        TextView formId;
 
        // RelativeLayout relativelayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            shimmerFrameLayout =itemView.findViewById(R.id.shimmer_layout);
+            shimmerFrameLayout =itemView.findViewById(R.id.relativeLayout);
             image = itemView.findViewById(R.id.imagehu);
             name = itemView.findViewById(R.id.title2);
             Email = itemView.findViewById(R.id.title4);
             confirm = itemView.findViewById(R.id.confirm);
             reject = itemView.findViewById(R.id.reject);
             rating = itemView.findViewById(R.id.rating);
+            formId = itemView.findViewById(R.id.formid);
 
 
             //////////////////////////

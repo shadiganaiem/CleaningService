@@ -36,6 +36,14 @@
                 android:visibility="visible"
                 android:layout_gravity="center"
                 />
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="35dp"
+                android:scrollbarFadeDuration="2"
+                android:scrollbars="vertical"
+                android:fillViewport="true"
+                android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/formsRecycle"
@@ -43,7 +51,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 />
-
+            </androidx.core.widget.NestedScrollView>
         </FrameLayout>
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-<!--<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,23 +10,14 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="5dp"
     android:layout_marginStart="5dp"
-    >-->
+    >
 
 
-<com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layoutDirection="rtl"
-    android:layout_marginTop="8dp"
-    android:visibility="visible"
-    app:shimmer_auto_start="true"
-    android:layout_marginEnd="5dp"
-    android:layout_marginStart="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+
 
         <androidx.cardview.widget.CardView
                     android:id="@+id/row"
+                android:layoutDirection="rtl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -38,11 +29,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:orientation="horizontal"
+                android:layoutDirection="rtl"
                 android:background="@drawable/requests_boarder">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
 
@@ -66,6 +58,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:background="@color/darkblue">
+
 
                         <TextView
                             android:id="@+id/title2"
@@ -110,12 +103,13 @@
                         android:orientation="vertical">
 
                         <Button
+                            android:id="@+id/confirm"
                             android:layout_width="100dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/white_button"
-                            android:id="@+id/confirm"
+                            android:background="@color/white"
+                            android:gravity="center"
                             android:text="@string/approve"
                             android:textColor="@color/quantum_googgreen800" />
 
@@ -133,9 +127,45 @@
 
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="390dp"
+                    android:layout_height="130dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+
+
+                </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/regular"
+                android:layout_gravity="bottom"
+                android:text="@string/FormId"
+                android:layout_marginEnd="150dp"
+                android:layout_marginBottom="11dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/formid"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/bold"
+                android:layout_gravity="bottom"
+                android:shadowColor="@color/black"
+                android:layout_marginEnd="120dp"
+                android:layout_marginBottom="11dp"/>
+
        </androidx.cardview.widget.CardView>
-</com.facebook.shimmer.ShimmerFrameLayout>
+
+</RelativeLayout>
 
 
 

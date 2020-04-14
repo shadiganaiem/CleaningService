@@ -80,7 +80,7 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                     @Override
                     public void run() {
                         try {
-                            forms = _context.GetJobByID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                            forms = _context.GetJobByID(_context.GetCustomerIdByUserID(GetLoggedInUserID(getApplicationContext())));
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

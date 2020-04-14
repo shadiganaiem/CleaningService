@@ -141,5 +141,6 @@
     <string name="Rate">דרג</string>
     <string name="AddEmpToFav">הוסף עובד למועדפים</string>
     <string name="publish">פרסם</string>
+    <string name="FormId">מספר טופס</string>
 
 </resources>

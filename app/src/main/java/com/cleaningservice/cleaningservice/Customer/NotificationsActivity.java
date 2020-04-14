@@ -125,7 +125,7 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
 
     private void initRecycleView(){
 
-                List<Integer> formIds = _context.GetJobFormID(_context.GetUser(GetLoggedInUserID(getApplicationContext())));
+                List<Integer> formIds = _context.GetJobFormID(_context.GetCustomerIdByUserID(GetLoggedInUserID(getApplicationContext())));
                 for( Integer id : formIds) {
                     try {
                         ArrayList<Request> reqs = _context.GetFormUserRequests(id);

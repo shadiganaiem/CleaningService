@@ -115,4 +115,5 @@
     <string name="Rate">قيم</string>
     <string name="AddEmpToFav">اضافة الموظة للمفضلة</string>
     <string name="publish">نشر</string>
+    <string name="FormId">رقم الاستمارة</string>
 </resources>

@@ -66,8 +66,17 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull JobRecycler.ViewHolder holder, int position) {
 
+
+        try {
+            con = ApplicationDbContext.getInstance(context.getApplicationContext());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         holder.startdate.setText(jobForms.get(position).StartDate.toString());
         holder.enddate.setText(jobForms.get(position).EndDate.toString());
+        holder.formid.setText(String.valueOf(jobForms.get(position).ID));
         holder.city.setText(jobForms.get(position).City);
         holder.address.setText(jobForms.get(position).Address);
         holder.budget.setText(String.valueOf(jobForms.get(position).Budget));
@@ -76,49 +85,38 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value) {
             holder.status.setText(R.string.Active);
             holder.name.setText(namesImages.get(position).name);
+            try {
+                if(!con.checkIfNotRated(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
+                    holder.rate.setVisibility(View.INVISIBLE);
+                }  else{
+                    holder.rate.setVisibility(View.VISIBLE);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
             holder.addtofav.setVisibility(View.VISIBLE);
 
             holder.addtofav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-                    (GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID);
-
+                    con.InsertFavoriteByUserId(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
                     Toast.makeText(context,"נוסף למועדפים",Toast.LENGTH_SHORT).show();
+                    holder.addtofav.setVisibility(View.INVISIBLE);
                 }
             });
         }
 
-        try {
-            con = ApplicationDbContext.getInstance(context.getApplicationContext());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value){
 
-        Date date = new Date();
-        if(jobForms.get(position).EndDate.compareTo(date) < 0 && jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value){
-            holder.rate.setVisibility(View.VISIBLE);
-
-            //if no employee assigned and the form end date passed delete form
-        //    if(namesImages.get(position).ID == 0){
-          //      con.DeleteForm(jobForms.get(position).ID);
-            //}
 
 
             holder.rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    try {
-                        if(!con.checkIfNotRated(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
-                            Toast.makeText(context,"כבר בוצע דירוג לעובד זה",Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+
 
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
                     View customView = inflater.inflate(R.layout.rating_pop_up,null);
@@ -222,6 +220,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         TextView city;
         TextView address;
         TextView status;
+        TextView formid;
         Button rate;
         Button addtofav;
         Button delete;
@@ -243,6 +242,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             rate = itemView.findViewById(R.id.ratebut);
             delete = itemView.findViewById(R.id.deletebut);
             addtofav = itemView.findViewById(R.id.addfav);
+            formid = itemView.findViewById(R.id.formid);
         }
     }
 }
