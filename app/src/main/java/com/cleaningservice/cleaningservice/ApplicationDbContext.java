@@ -1441,7 +1441,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @throws SQLException
      */
     public boolean checkIfNotFavorite(int adderId, int addedId) throws SQLException {
-        String query ="SELECT ID From RATINGS Where UserId ="+adderId+" And FavoriteUserId="+addedId;
+        String query ="SELECT ID From Favorites Where UserId ="+adderId+" And FavoriteUserId="+addedId;
         ResultSet result = ExecuteSelectQuery(query);
         if(result.next()){
             return false;

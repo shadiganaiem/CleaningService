@@ -82,6 +82,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         holder.budget.setText(String.valueOf(jobForms.get(position).Budget));
         holder.rooms.setText(String.valueOf(jobForms.get(position).Rooms));
 
+
         if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value) {
             holder.status.setText(R.string.Active);
             holder.name.setText(namesImages.get(position).name);
@@ -95,8 +96,17 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                 e.printStackTrace();
             }
 
+
+            try {
+                if(!con.checkIfNotFavorite(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
+                    holder.addtofav.setVisibility(View.INVISIBLE);
+                }  else{
+                    holder.addtofav.setVisibility(View.VISIBLE);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
-            holder.addtofav.setVisibility(View.VISIBLE);
 
             holder.addtofav.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,8 +119,6 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         }
 
         if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value){
-
-
 
             holder.rate.setOnClickListener(new View.OnClickListener() {
                 @Override
