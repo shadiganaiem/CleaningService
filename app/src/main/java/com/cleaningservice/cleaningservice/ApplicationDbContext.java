@@ -1363,6 +1363,12 @@ public class ApplicationDbContext extends AppCompatActivity {
         return false;
     }
 
+
+    /**
+     * deletes form
+     * @param id
+     * @return
+     */
     public boolean DeleteForm(int id) {
         try {
                 deleteFormsAssossiations(id);
@@ -1378,6 +1384,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * deletes form relations
+     * @param id
+     */
     private void deleteFormsAssossiations(int id){
         try {
                 deleteFormImages(id);
@@ -1391,6 +1401,10 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
     }
 
+    /**
+     * deletes form images
+     * @param id
+     */
     private void deleteFormImages(int id) {
         try {
             PreparedStatement pst = _connection.prepareStatement("DELETE FROM Images WHERE JobFormId = ?");
@@ -1403,8 +1417,31 @@ public class ApplicationDbContext extends AppCompatActivity {
 
     }
 
+    /**
+     * checkes is a user is already rated
+     * @param rater
+     * @param rated
+     * @return
+     * @throws SQLException
+     */
     public boolean checkIfNotRated(int rater, int rated) throws SQLException {
         String query ="SELECT ID From RATINGS Where [From]="+rater+" And [To]="+rated;
+        ResultSet result = ExecuteSelectQuery(query);
+        if(result.next()){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * check if a user already added to favorites
+     * @param adderId
+     * @param addedId
+     * @return
+     * @throws SQLException
+     */
+    public boolean checkIfNotFavorite(int adderId, int addedId) throws SQLException {
+        String query ="SELECT ID From RATINGS Where UserId ="+adderId+" And FavoriteUserId="+addedId;
         ResultSet result = ExecuteSelectQuery(query);
         if(result.next()){
             return false;

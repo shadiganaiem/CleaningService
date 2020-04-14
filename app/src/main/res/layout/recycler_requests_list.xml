@@ -153,7 +153,7 @@
                 android:layoutDirection="rtl"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:fontFamily="@font/bold"
+                android:fontFamily="@font/regular"
                 android:layout_gravity="bottom"
                 android:shadowColor="@color/black"
                 android:layout_marginEnd="120dp"

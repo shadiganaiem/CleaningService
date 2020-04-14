@@ -115,9 +115,6 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             holder.rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
                     View customView = inflater.inflate(R.layout.rating_pop_up,null);
 
