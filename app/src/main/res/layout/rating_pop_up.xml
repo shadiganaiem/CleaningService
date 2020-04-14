@@ -126,7 +126,7 @@
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/places_cancel"
+                android:text="@string/Cancel"
                 android:background="@color/white"
                 android:fontFamily="@font/bold"
                 android:layout_marginStart="50dp"/>
@@ -135,7 +135,7 @@
                 android:id="@+id/rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rate"
+                android:text="@string/Rate"
                 android:fontFamily="@font/bold"
                 android:background="@color/white"
                 android:layout_marginStart="25dp"/>

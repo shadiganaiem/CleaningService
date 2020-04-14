@@ -111,4 +111,8 @@
     <string name="worksutisfication">تقييمك للعمل</string>
     <string name="timeStisfication">تقييمك للالتزام بالوقت</string>
     <string name="Deleteform">مسح الملف</string>
+    <string name="Cancel">الغاء</string>
+    <string name="Rate">قيم</string>
+    <string name="AddEmpToFav">اضافة الموظة للمفضلة</string>
+    <string name="publish">نشر</string>
 </resources>

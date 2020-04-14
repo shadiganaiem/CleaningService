@@ -329,7 +329,7 @@
                     android:id="@+id/RateDel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:visibility="visible"
                     >
 
@@ -337,10 +337,14 @@
                         android:id="@+id/ratebut"
                         android:layout_width="125dp"
                         android:layout_height="30dp"
-                        android:textColor="@color/white"
-                        android:background="@drawable/primary_btn"
+                        android:textColor="@color/black"
+                        android:background="@color/white"
                         android:text="@string/RateEmployee"
-                        android:visibility="invisible"
+                        android:visibility="visible"
+                        android:fontFamily="@font/bold"
+                        android:drawableStart="@drawable/icons"
+                        android:gravity="center"
+
                         />
 
 
@@ -349,21 +353,30 @@
                         android:id="@+id/deletebut"
                         android:layout_width="125dp"
                         android:layout_height="30dp"
+                        android:fontFamily="@font/bold"
+                        android:drawableStart="@drawable/delete_icon"
                         android:text="@string/Deleteform"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:layout_marginStart="5dp"
-                        android:background="@drawable/redbut"
+                        android:background="@color/white"
                         />
+                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                     <Button
                         android:id="@+id/addfav"
-                        android:layout_width="125dp"
+                        android:layout_width="170dp"
                         android:layout_height="30dp"
-                        android:textColor="@color/white"
-                        android:layout_marginStart="5dp"
-                        android:text="add favorites"
-                        android:background="@drawable/success_btn"
-                        android:visibility="gone" />
+                        android:fontFamily="@font/bold"
+                        android:textColor="@color/black"
+                        android:drawableStart="@drawable/plus_icon"
+                        android:text="@string/AddEmpToFav"
+                        android:background="@color/white"
+                        android:visibility="visible" />
+
 
                 </LinearLayout>
             </LinearLayout>

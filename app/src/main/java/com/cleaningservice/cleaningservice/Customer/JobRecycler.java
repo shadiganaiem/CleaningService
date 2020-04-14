@@ -77,6 +77,18 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             holder.status.setText(R.string.Active);
             holder.name.setText(namesImages.get(position).name);
             //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
+            holder.addtofav.setVisibility(View.VISIBLE);
+
+            holder.addtofav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    (GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID);
+
+                    Toast.makeText(context,"נוסף למועדפים",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         try {
@@ -109,7 +121,6 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                     }
 
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                    // Inflate the custom layout/view
                     View customView = inflater.inflate(R.layout.rating_pop_up,null);
 
                     popUp = new PopupWindow(
