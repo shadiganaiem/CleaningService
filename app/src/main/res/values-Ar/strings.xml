@@ -116,4 +116,10 @@
     <string name="AddEmpToFav">اضافة الموظة للمفضلة</string>
     <string name="publish">نشر</string>
     <string name="FormId">رقم الاستمارة</string>
+    <string name="JobEnded">أُنجزوا</string>
+    <string name="jobEndedDescription">تم الانتهاء من العمل بنجاح</string>
+    <string name="RateUser">تقييم ★</string>
+    <string name="addToFavorite">اضافة المستخدم الى المفضلة ➕</string>
+    <string name="addedToFavorite">تمت اضافة المستخدم الى المفضلة</string>
+    <string name="ErrorHappend">حدث خطأ</string>
 </resources>

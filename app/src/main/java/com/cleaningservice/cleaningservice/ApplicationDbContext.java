@@ -2,6 +2,7 @@ package com.cleaningservice.cleaningservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.StrictMode;
 import android.widget.Toast;
 
@@ -118,7 +119,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 user.status = GetStatus(user.StatusId);
                 user.employee = GetEmployee(user.EmployeeId);
                 user.customer = GetCustomer(user.CustomerId);
-                user.Image = result.getBytes("Image");
+
 
                 return user;
             }
@@ -200,6 +201,58 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     * Get All Employee Jobs Requests that Includes Job Ends
+     * @param employeeId
+     * @return
+     */
+    public List<JobFormRequest> GetEmployeeEndedJobFormsRequests(int employeeId){
+        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate, JF.CustomerId,JF.City, JF.Address,JF.StatusId AS JStatusId, C.Firstname, C.Lastname, C.Phone, U.Rating" +
+                " FROM JobFormRequests AS JFR" +
+                " JOIN JobForms AS JF ON JF.ID = JFR.JobFormId" +
+                " JOIN Customers AS C ON C.ID = JF.CustomerId" +
+                " JOIN Users AS U ON U.CustomerId = C.ID" +
+                " WHERE JFR.EmployeeId = " + employeeId+
+                " AND JFR.StatusId = " + Util.Statuses.ACCEPTED.value+
+                " AND JF.StatusId = " + Util.Statuses.CLOSED.value;
+
+        List<JobFormRequest> requests = new ArrayList<>();
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+
+            while (result.next()) {
+                JobFormRequest request = new JobFormRequest();
+                request.EmployeeId = employeeId;
+                request.JobFormId = result.getInt("JobFormId");
+                request.StatusId = result.getInt("StatusId");
+                request.CreationDate = result.getDate("CreationDate");
+                JobForm jobForm = new JobForm();
+                jobForm.ID = result.getInt("ID");
+                jobForm.CustomerId = result.getInt("CustomerId");
+                jobForm.City = result.getString("City");
+                jobForm.Address = result.getString("Address");
+                jobForm.EndDate = result.getDate("EndDate");
+                jobForm.StatusId = result.getInt("JStatusId");
+                Customer customer = new Customer();
+
+                customer.Firstname = result.getString("Firstname");
+                customer.Lastname = result.getString("Lastname");
+                customer.Phone = result.getString("Phone");
+                customer.Rating = result.getInt("Rating");
+
+                jobForm.customer = customer;
+                request.jobForm = jobForm;
+
+                requests.add(request);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return requests;
+    }
+
+    /**
      * Get All JobForms
      * @return
      */
@@ -213,7 +266,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 " FROM JobForms AS J JOIN Users AS U ON J.CustomerId = U.CustomerId"+
                 " JOIN Customers AS C ON C.ID = U.CustomerId "+
                 " WHERE J.EndDate>= '"+today+"' AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = 3";
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
@@ -261,13 +314,14 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public List<JobFormRequest> GetEmployeeResponsedJobRequests(int employeeId){
 
-        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate, JF.CustomerId,JF.City, JF.Address, C.Firstname, C.Lastname, C.Phone, U.Rating" +
+        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate, JF.CustomerId,JF.City, JF.Address,JF.StatusId AS JStatusId, C.Firstname, C.Lastname, C.Phone, U.Rating" +
                 " FROM JobFormRequests AS JFR" +
                 " JOIN JobForms AS JF ON JF.ID=JFR.JobFormId" +
                 " JOIN Customers AS C ON C.ID = JF.CustomerId"+
                 " JOIN Users AS U ON U.CustomerId = C.ID" +
                 " WHERE JFR.EmployeeId = " + employeeId +
-                " AND JFR.StatusId != " +Util.Statuses.WAITING.value ;
+                " AND ( JFR.StatusId = " +Util.Statuses.ACCEPTED.value+  " OR JFR.StatusId = "+Util.Statuses.REJECTED.value+")" +
+                " AND JF.StatusId != "+Util.Statuses.CLOSED.value ;
         List<JobFormRequest> requests = new ArrayList<>();
         try {
             ResultSet result = ExecuteSelectQuery(query);
@@ -284,6 +338,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 jobForm.City = result.getString("City");
                 jobForm.Address = result.getString("Address");
                 jobForm.EndDate = result.getDate("EndDate");
+                jobForm.StatusId = result.getInt("JStatusId");
                 Customer customer = new Customer();
 
                 customer.Firstname = result.getString("Firstname");
@@ -309,14 +364,15 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param employeeId
      * @return
      */
-    public List<JobFormRequest> GetEmployeeWaitingRequests(int employeeId){
-        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate, JF.CustomerId,JF.City, JF.Address, C.Firstname, C.Lastname, C.Phone, U.Rating" +
+    public List<JobFormRequest> GetEmployeeRequestsByStatus(int employeeId,Util.Statuses status){
+        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate, JF.CustomerId,JF.City, JF.Address,JF.StatusId AS JStatusId, C.Firstname, C.Lastname, C.Phone, U.Rating" +
                 " FROM JobFormRequests AS JFR" +
                 " JOIN JobForms AS JF ON JF.ID=JFR.JobFormId" +
                 " JOIN Customers AS C ON C.ID = JF.CustomerId"+
                 " JOIN Users AS U ON U.CustomerId = C.ID" +
                 " WHERE JFR.EmployeeId = " + employeeId +
-                " AND JFR.StatusId = " +Util.Statuses.WAITING.value ;
+                " AND JFR.StatusId = " +status.value+
+                " AND JF.StatusId != " +Util.Statuses.CLOSED.value;
         List<JobFormRequest> requests = new ArrayList<>();
         try {
             ResultSet result = ExecuteSelectQuery(query);
@@ -333,6 +389,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 jobForm.City = result.getString("City");
                 jobForm.Address = result.getString("Address");
                 jobForm.EndDate = result.getDate("EndDate");
+                jobForm.StatusId = result.getInt("JStatusId");
                 Customer customer = new Customer();
 
                 customer.Firstname = result.getString("Firstname");
@@ -621,6 +678,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         ArrayList<Integer> ids = new ArrayList<Integer>();
         try{
+
             ResultSet result = ExecuteSelectQuery(query);
             while (result.next()){
 
@@ -786,7 +844,6 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getInt("StatusId")
                 );
 
-                user.Image = result.getBytes("Image");
                 return user;
             }
         }
@@ -1213,11 +1270,11 @@ public class ApplicationDbContext extends AppCompatActivity {
     /**
      * Insert new FavoriteRequest
      * @param userId
-     * @param employeeId
+     * @param customerId
      * @return
      */
-    public boolean InsertFavoriteByCustomerId(int userId,int employeeId){
-        String query = "INSERT INTO FAVORITES(UserId,FavoriteUserId) SELECT "+userId+", ID FROM USERS WHERE CustomerId = "+employeeId;
+    public boolean InsertFavoriteByCustomerId(int userId,int customerId){
+        String query = "INSERT INTO FAVORITES(UserId,FavoriteUserId) SELECT "+userId+", ID FROM USERS WHERE CustomerId = "+customerId;
 
         return ExecuteInsertData(query);
     }

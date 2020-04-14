@@ -93,8 +93,6 @@
                             android:text=""
                             android:textColor="@color/white"
                              />
-
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -123,8 +121,6 @@
                             android:fontFamily="@font/regular"
                             android:text="@string/dismiss"
                             android:textColor="@color/white" />
-
-
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
