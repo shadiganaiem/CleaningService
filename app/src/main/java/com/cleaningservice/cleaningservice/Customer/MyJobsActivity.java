@@ -76,9 +76,6 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
 
         new Thread(){
             public void run() {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
                         try {
                             forms = _context.GetJobByID(_context.GetCustomerIdByUserID(GetLoggedInUserID(getApplicationContext())));
                         } catch (SQLException e) {
@@ -99,6 +96,9 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                                 e.printStackTrace();
                             }
                         }
+               new Handler(Looper.getMainLooper()).post(new Runnable() {
+                   @Override
+                   public void run() {
                         adapter = new JobRecycler(MyJobsActivity.this, forms,namesImages);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setVisibility(View.VISIBLE);

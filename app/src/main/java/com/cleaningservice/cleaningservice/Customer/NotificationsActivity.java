@@ -73,10 +73,10 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
 
         new Thread(){
             public void run() {
+                initRecycleView();
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        initRecycleView();
                         adapter = new RecyclerViewAdapter(NotificationsActivity.this, requests);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setVisibility(View.VISIBLE);

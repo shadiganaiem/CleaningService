@@ -50,6 +50,11 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     private FormAdapter jobFormAdapter;
     private ApplicationDbContext _context = null;
     private List<JobForm> jobForms;
+    private Handler mainhandler = new Handler();
+    private RecyclerView view;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +107,10 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        jobForms = _context.GetJobFormsByPublisherRating(minRateSelected, maxRateSelected, tabSelected);
+                        mainhandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                jobForms = _context.GetJobFormsByPublisherRating(minRateSelected, maxRateSelected, tabSelected);
                                 jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                 recyclerView.setAdapter(jobFormAdapter);
@@ -187,44 +192,60 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        RecyclerView view = findViewById(R.id.job_form_list);
+                        view = findViewById(R.id.job_form_list);
                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
                         findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
+                    }
+                });
                         switch (tab.getPosition()) {
                             case 0:
                                 tabSelected = 0;
                                 jobForms = _context.GetJobForms(minRateSelected, maxRateSelected);
                                 jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
-                                view.setAdapter(jobFormAdapter);
-                                view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-                                findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
-                                findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                                mainhandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                    view.setAdapter(jobFormAdapter);
+                                    view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+                                    findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                                    findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
 
+                                    }
+                                });
                                 break;
                             case 1:
                                 tabSelected = 1;
-                                        jobForms = _context.GetJobFormsForThisWeek(minRateSelected, maxRateSelected);
+                                jobForms = _context.GetJobFormsForThisWeek(minRateSelected, maxRateSelected);
+                                mainhandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
                                         jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
                                         view.setAdapter(jobFormAdapter);
                                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                         findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                                    }
+                                });
                                 break;
                             case 2:
                                 tabSelected = 2;
                                         jobForms = _context.GetJobFormsForThisMonth(minRateSelected, maxRateSelected);
+                                mainhandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
                                         jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
                                         view.setAdapter(jobFormAdapter);
                                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                         findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                                    }
+                                });
                                 break;
                         }
-                    }
-                });
+
             }
         };
 
