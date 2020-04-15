@@ -122,4 +122,7 @@
     <string name="addToFavorite">اضافة المستخدم الى المفضلة ➕</string>
     <string name="addedToFavorite">تمت اضافة المستخدم الى المفضلة</string>
     <string name="ErrorHappend">حدث خطأ</string>
+    <string name="FavoriteList">قائمة المفضلين</string>
+    <string name="removeFavorite">حذف المستخدم ❌</string>
+    <string name="deletedFromFavorites">تم ازالة المستخدم بنجاح</string>
 </resources>

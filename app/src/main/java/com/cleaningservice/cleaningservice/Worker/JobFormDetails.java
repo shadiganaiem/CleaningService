@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -49,6 +50,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     private ApplicationDbContext _context = null;
     private ProgressBar formDetailsProgressBar;
     private LinearLayout formComponents;
+    private Handler mainhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +78,27 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
         formDetailsProgressBar = findViewById(R.id.formDetailsProgressBar);
         formComponents = findViewById(R.id.formComponents);
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        Runnable runnable = new Runnable() {
+            Bundle bundle = getIntent().getExtras();
+            int jobFormId = 0;
             @Override
             public void run() {
-                Bundle bundle = getIntent().getExtras();
-                int jobFormId = 0;
-                if (bundle != null) {
-                    jobFormId = bundle.getInt("jobFormId");
-                    jobForm = _context.GetJobFormById(jobFormId);
+                mainhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bundle != null) {
+                            jobFormId = bundle.getInt("jobFormId");
+                            jobForm = _context.GetJobFormById(jobFormId);
 
-                    InitializeViewModel();
-                }
-
+                            InitializeViewModel();
+                        }
+                    }
+                });
             }
-        });
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+
     }
 
     /**
@@ -113,6 +122,10 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 intent = new Intent(JobFormDetails.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_favlist:
+                intent = new Intent(JobFormDetails.this,Favorites.class);
+                startActivity(intent);
+                break;
         }
 
         return false;
@@ -120,71 +133,60 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
 
     private void InitializeViewModel() {
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                formDetailsProgressBar.setVisibility(View.VISIBLE);
-                formComponents.setVisibility(View.INVISIBLE);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        formDetailsProgressBar.setVisibility(View.VISIBLE);
+        formComponents.setVisibility(View.INVISIBLE);
 
-                TextView customerFullName = findViewById(R.id.CustomerFullName);
-                TextView customerRating = findViewById(R.id.CustomerRating);
-                TextView descirption = (TextView) findViewById(R.id.descriptionBox);
-                Button sendRequestBtn = (Button) findViewById(R.id.sendRequestBtn);
-                customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
-                String rating = "";
-                if (jobForm.customer.Rating != 0) {
-                    rating += "\n";
-                    for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
-                        rating += "★";
-                    }
-                }
-
-                String details = "";
-                details += getResources().getString(R.string.Address) + " : ";
-                details += jobForm.City + " - " + jobForm.Address + "\n";
-                details += getResources().getString(R.string.RoomsNumber) + " : ";
-                details += jobForm.Rooms  + " \n";
-                details += getResources().getString(R.string.Budget) + " : ";
-                details += jobForm.Budget + " ש\"ח " + "\n \n";
-
-                details += getResources().getString(R.string.StartDate) + " : ";
-                details += dateFormat.format(jobForm.StartDate) + "\n";
-                details += getResources().getString(R.string.EndDate) + " : ";
-                details += dateFormat.format(jobForm.EndDate) + "\n";
-
-                if(jobForm.Description != null) {
-                    details += getResources().getString(R.string.description) + " : ";
-                    details += jobForm.Description;
-                }
-
-                customerRating.setText(rating);
-                descirption.setMovementMethod(new ScrollingMovementMethod());
-                descirption.setTextSize(20);
-                descirption.setText(details);
-
-                int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
-                if(_context.IfJobFormRequested(jobForm.ID,employeeId)){
-                    sendRequestBtn.setText(R.string.RequestSent);
-                    sendRequestBtn.setOnClickListener(null);
-                }
-
-                formDetailsProgressBar.setVisibility(View.INVISIBLE);
-                formComponents.setVisibility(View.VISIBLE);
+        TextView customerFullName = findViewById(R.id.CustomerFullName);
+        TextView customerRating = findViewById(R.id.CustomerRating);
+        TextView descirption = (TextView) findViewById(R.id.descriptionBox);
+        Button sendRequestBtn = (Button) findViewById(R.id.sendRequestBtn);
+        customerFullName.setText(jobForm.customer.Firstname + " " + jobForm.customer.Lastname);
+        String rating = "";
+        if (jobForm.customer.Rating != 0) {
+            rating += "\n";
+            for (int i = 0; i < jobForm.customer.Rating && i < 5; i++) {
+                rating += "★";
             }
-        });
+        }
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
+        String details = "";
+        details += getResources().getString(R.string.Address) + " : ";
+        details += jobForm.City + " - " + jobForm.Address + "\n";
+        details += getResources().getString(R.string.RoomsNumber) + " : ";
+        details += jobForm.Rooms + " \n";
+        details += getResources().getString(R.string.Budget) + " : ";
+        details += jobForm.Budget + " ש\"ח " + "\n \n";
 
-                byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
-                GlideApp.with(getApplicationContext()).load(profileImage).into((CircularImageView) findViewById(R.id.jobFormDetailsProfileImage));
-            }
-        });
+        details += getResources().getString(R.string.StartDate) + " : ";
+        details += dateFormat.format(jobForm.StartDate) + "\n";
+        details += getResources().getString(R.string.EndDate) + " : ";
+        details += dateFormat.format(jobForm.EndDate) + "\n";
+
+        if (jobForm.Description != null) {
+            details += getResources().getString(R.string.description) + " : ";
+            details += jobForm.Description;
+        }
+
+        customerRating.setText(rating);
+        descirption.setMovementMethod(new ScrollingMovementMethod());
+        descirption.setTextSize(20);
+        descirption.setText(details);
+
+        int employeeId = _context.GetEmployeeIdByUserID(Preferences.GetLoggedInUserID(getApplicationContext()));
+        if (_context.IfJobFormRequested(jobForm.ID, employeeId)) {
+            sendRequestBtn.setText(R.string.RequestSent);
+            sendRequestBtn.setOnClickListener(null);
+        }
+
+        formDetailsProgressBar.setVisibility(View.INVISIBLE);
+        formComponents.setVisibility(View.VISIBLE);
+
+        byte[] profileImage = _context.GetProfileImageByCustomerId(jobForm.CustomerId);
+        GlideApp.with(getApplicationContext()).load(profileImage).into((CircularImageView) findViewById(R.id.jobFormDetailsProfileImage));
 
 
-        if (jobForm.AllImagesBytes != null &&  jobForm.AllImagesBytes.size() > 0) {
+        if (jobForm.AllImagesBytes != null && jobForm.AllImagesBytes.size() > 0) {
             LinearLayout layout = (LinearLayout) findViewById(R.id.image_container);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -194,22 +196,17 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 layoutParams.setMargins(20, 20, 20, 20);
 
                 layoutParams.gravity = Gravity.CENTER;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
 
-                        ImageView imageView = new ImageView(getApplicationContext());
-                        imageView.setImageDrawable(bitmap);
-                        //imageView.setOnClickListener(documentImageListener);
-                        imageView.setLayoutParams(layoutParams);
+                ImageView imageView = new ImageView(getApplicationContext());
+                imageView.setImageDrawable(bitmap);
+                //imageView.setOnClickListener(documentImageListener);
+                imageView.setLayoutParams(layoutParams);
 
-                        imageView.getLayoutParams().height = 600;
-                        imageView.getLayoutParams().width = 600;
-                        imageView.setBackgroundResource(R.drawable.image_border);
-                        layout.addView(imageView);
-                    }
-                });
+                imageView.getLayoutParams().height = 600;
+                imageView.getLayoutParams().width = 600;
+                imageView.setBackgroundResource(R.drawable.image_border);
+                layout.addView(imageView);
             }
         }
     }

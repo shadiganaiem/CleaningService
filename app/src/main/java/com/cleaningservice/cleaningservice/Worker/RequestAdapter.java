@@ -24,11 +24,13 @@ import com.cleaningservice.cleaningservice.Util;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 import Authentications.Preferences;
+import Models.Favorite;
 import Models.JobFormRequest;
 import Models.Request;
 
@@ -39,6 +41,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private OnJobFormRequestListener onJobFormRequestListener;
     private ApplicationDbContext _context;
     private Context getAppContext;
+    private Handler mainhandler = new Handler();
+
 
     public RequestAdapter(List<JobFormRequest> list, Context context,OnJobFormRequestListener onJobFormRequestListener){
         this.list  = list;
@@ -64,26 +68,52 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
         JobFormRequest request = list.get(position);
         String Title;
         Title = request.jobForm.City + " - " + request.jobForm.Address;
         String description = "";
 
-
-
-
         if(request.jobForm.StatusId == Util.Statuses.CLOSED.value && request.StatusId == Util.Statuses.ACCEPTED.value) {
 
             description += context.getResources().getString(R.string.jobEndedDescription) + ".\n";
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    holder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.completed));
-                    holder.image.setVisibility(View.VISIBLE);
-                    holder.endButtons.setVisibility(View.VISIBLE);
+                    boolean added = false;
+                    boolean rated = false;
+                    int userId = Preferences.GetLoggedInUserID(context);
+                    ArrayList<Favorite> favorites =  _context.GetUserFavoriteList(userId,Util.UserTypes.CUSTOMER);
+                    int customerUserId = _context.GetUserIDByCustomerID(request.jobForm.CustomerId);
+
+                    if(!_context.checkIfNotRated(userId,customerUserId))
+                        rated = true;
+                    if(!_context.checkIfNotFavorite(userId,customerUserId))
+                        added = true;
+
+
+                    boolean finalAdded = added;
+                    boolean finalRated = rated;
+                    mainhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            holder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.completed));
+                            holder.image.setVisibility(View.VISIBLE);
+                            if(finalAdded)
+                                holder.addToFavoriteBtn.setVisibility(View.INVISIBLE);
+                            if(finalRated)
+                                holder.rateBtn.setVisibility(View.INVISIBLE);
+                            if(finalAdded && finalRated)
+                                holder.endButtons.setVisibility(View.INVISIBLE);
+                            else
+                                holder.endButtons.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
-            });
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
         else {
 
@@ -122,6 +152,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         public TextView title, description;
         public LinearLayout endButtons;
         public Button addToFavoriteBtn;
+        public Button rateBtn;
         public OnJobFormRequestListener onJobFormRequestListener;
         public ViewHolder(@NonNull View itemView,OnJobFormRequestListener onJobFormRequestListener) {
             super(itemView);
@@ -130,6 +161,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             description = itemView.findViewById(R.id.description);
             endButtons = itemView.findViewById(R.id.endButtons);
             addToFavoriteBtn = itemView.findViewById(R.id.addToFavoriteBtn);
+            rateBtn = itemView.findViewById(R.id.rateBtn);
 
             addToFavoriteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -139,31 +171,33 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                     JobFormRequest request = list.get(position);
                     int jobFormId = request.JobFormId;
 
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
                             boolean result = _context.InsertFavoriteByCustomerId(Preferences.GetLoggedInUserID(context),request.jobForm.CustomerId);
+                            mainhandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CharSequence text;
+                                    if (result)
+                                        text = context.getResources().getString(R.string.addedToFavorite);
+                                    else
+                                        text = context.getResources().getString(R.string.ErrorHappend);
 
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
 
-                            CharSequence text;
-                            if(result)
-                                 text= context.getResources().getString(R.string.addedToFavorite);
-                            else
-                                text = context.getResources().getString(R.string.ErrorHappend);
-
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-
-                            addToFavoriteBtn.setVisibility(View.GONE);
+                                    addToFavoriteBtn.setVisibility(View.GONE);
+                                }
+                            });
                         }
-                    });
+                    };
+                    Thread thread = new Thread(runnable);
+                    thread.start();
                 }
             });
-
-
             this.onJobFormRequestListener = onJobFormRequestListener;
-
             itemView.setOnClickListener(this);
         }
 
