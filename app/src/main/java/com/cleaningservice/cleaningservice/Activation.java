@@ -120,6 +120,7 @@ public class Activation extends AppCompatActivity {
 
     public void SendActivationEmail(){
         try {
+            //
             String userEmail ="";
             if(user.EmployeeId != 0){
                 userEmail = user.employee.Email;
