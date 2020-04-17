@@ -27,6 +27,17 @@ public class Request {
         this.JobFormID = JobFormID;
     }
 
+    public Request(int id, int status_id, String firstName ,String lastName, String phone, String email, int rating,int JobFormID){
+        FirstName=firstName;
+        LastName=lastName;
+        Phone=phone;
+        Email=email;
+        Rating=rating;
+        Status_id =status_id;
+        EmployeeId =id;
+        this.JobFormID = JobFormID;
+    }
+
 
 }
 

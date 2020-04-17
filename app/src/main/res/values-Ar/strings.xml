@@ -122,4 +122,9 @@
     <string name="addToFavorite">اضافة المستخدم الى المفضلة ➕</string>
     <string name="addedToFavorite">تمت اضافة المستخدم الى المفضلة</string>
     <string name="ErrorHappend">حدث خطأ</string>
+    <string name="Favorites">المفضلة</string>
+    <string name="menu">قائمة</string>
+    <string name="DeleteFavorite">حذف من المفضلة</string>
+    <string name="send">ارسال</string>
+    <string name="FormIds">اختر ارقام الملفات المطلوبة</string>
 </resources>

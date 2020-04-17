@@ -1,24 +1,42 @@
 package com.cleaningservice.cleaningservice.Customer;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-
+import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import Models.Favorite;
+
+import static Authentications.Preferences.GetLoggedInUserID;
 
 public class FavoritesListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-
+    private RecyclerView recyclerView;
+    private FavoritesRecycler adapter;
+    private ArrayList<Favorite> favorites = new ArrayList<>();
+    private ApplicationDbContext _context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,36 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        try {
+            _context = ApplicationDbContext.getInstance(getApplicationContext());
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+        }
+
+        recyclerView = findViewById(R.id.favoritesRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new FavoritesRecycler(this, favorites);
+        recyclerView.setAdapter(adapter);
+
+
+
+        new Thread(){
+            public void run() {
+                favorites = _context.GetUserFavoriteList(GetLoggedInUserID(getApplicationContext()),Util.UserTypes.EMPLOYEE);
+                Collections.reverse(favorites);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new FavoritesRecycler(FavoritesListActivity.this, favorites);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        findViewById(R.id.FavProgressBar).setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        }.start();
 
 
     }

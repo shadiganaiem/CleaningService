@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:id="@+id/relativeFavoritesLayout"
+    android:layoutDirection="rtl"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/robotobold"
+                        android:layoutDirection="rtl"
+                        android:textColor="@color/darkblue"
+                        android:textSize="24sp" />
+
+
+                    <LinearLayout
+                        android:layout_marginTop="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/rate" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/rate"
+                            android:layout_marginStart="2dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/rate"
+                            android:layout_marginStart="2dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/rate"
+                            android:layout_marginStart="2dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/rate"
+                            android:layout_marginStart="2dp" />
+
+                    </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/mail"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="center"
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="#DF6A90B5"
+                                android:fontFamily="@font/robotoregular"
+                                android:layout_height="wrap_content"
+                                 />
+
+
+
+
+                            <TextView
+                                android:id="@+id/phone"
+                                android:layout_marginTop="5dp"
+                                android:layout_gravity="center"
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="#EE6A90B5"
+                                android:fontFamily="@font/robotoregular"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/cleaner2" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+               android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+
+                  <Button
+                      android:id="@+id/sendRequestBtn"
+                      android:layout_width="150dp"
+                      android:layout_height="40dp"
+                      android:gravity="center"
+                      android:fontFamily="@font/robotobolditalic"
+                      android:background="@drawable/black_btn"
+                      android:textColor="@color/white"
+                      android:text="@string/sendJobRequest"
+                      />
+
+                    <Button
+                        android:id="@+id/deletebut"
+                        android:textColor="@color/danger"
+                        android:fontFamily="@font/robotobolditalic"
+                        android:layout_marginStart="70dp"
+                        android:text="@string/DeleteFavorite"
+                        android:gravity="center"
+                        android:layout_width="120dp"
+                        android:background="@drawable/white_button"
+                        android:layout_height="40dp"
+                        />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

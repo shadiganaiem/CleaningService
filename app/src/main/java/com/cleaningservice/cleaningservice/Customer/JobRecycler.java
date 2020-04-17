@@ -16,14 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import Models.Employee;
 import Models.JobForm;
@@ -201,6 +199,8 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.relativeLayout.setVisibility(View.GONE);
+                Toast.makeText(context,"נמחק בהצלחה",Toast.LENGTH_LONG).show();
                 con.DeleteForm(jobForms.get(position).ID);
 
             }

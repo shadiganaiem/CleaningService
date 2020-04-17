@@ -80,8 +80,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             Glide.with(context).asBitmap().load(requests.get(position).ImageBytes).into(holder.image);
 
-
-
             try {
                 con = ApplicationDbContext.getInstance(context.getApplicationContext());
             } catch (SQLException e) {

@@ -6,37 +6,32 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.cleaningservice.cleaningservice.Customer.FavoritesListActivity;
 import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.Customer.MyJobsActivity;
 import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -44,7 +39,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -125,14 +119,22 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 phone.setText(user.employee.Phone);
             }
 
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
-                            .into(imgProfile);
-                    imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
-                }
-            });
+             new Thread(){
+                 @Override
+                 public void run() {
+                     byte[] image = _context.GetProfileImage(user.ID);
+                     new Handler(Looper.getMainLooper()).post(new Runnable() {
+                         @Override
+                         public void run() {
+                             GlideApp.with(ProfileActivity.this).load(image)
+                                     .into(imgProfile);
+                             imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                         }
+                     });
+                 }
+             }.start();
+
+
         }
     }
 

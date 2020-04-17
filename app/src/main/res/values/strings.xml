@@ -148,5 +148,10 @@
     <string name="AddEmpToFav">הוסף עובד למועדפים</string>
     <string name="publish">פרסם</string>
     <string name="FormId">מספר טופס</string>
+    <string name="Favorites">המועדפים</string>
+    <string name="menu">רשימת</string>
+    <string name="DeleteFavorite">מחק ממועדפים</string>
+    <string name="send">שלח</string>
+    <string name="FormIds">בחר מספרי הטפסים הרצויים</string>
 
 </resources>

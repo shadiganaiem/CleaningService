@@ -15,11 +15,12 @@ public class JobForm {
     public String Address;
     public String Description;
     public Date CreationDate;
-
     public Customer customer;
     public Status status;
     public byte[] ImageBytes;
     public List<byte[]> AllImagesBytes;
+    public String EmployeeName;
+    public int EmployeeID;
 
     public JobForm (int ID,int CustomerId,int Rooms,String City,String Address,float Budget, Date StartDate,Date EndDate,int StatusId,String Description){
         this.ID = ID;

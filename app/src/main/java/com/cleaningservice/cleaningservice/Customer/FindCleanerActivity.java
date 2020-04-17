@@ -1,17 +1,6 @@
 package com.cleaningservice.cleaningservice.Customer;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -23,17 +12,24 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
@@ -68,9 +64,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import Authentications.Preferences;
 import Models.JobForm;
-import Models.User;
 import butterknife.OnClick;
 
 import static Authentications.Preferences.GetLoggedInUserID;

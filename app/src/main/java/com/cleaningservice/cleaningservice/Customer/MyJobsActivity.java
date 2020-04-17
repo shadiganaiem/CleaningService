@@ -1,5 +1,12 @@
 package com.cleaningservice.cleaningservice.Customer;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,26 +16,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Worker.FormAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import Models.JobForm;
-import Models.Request;
 
 import static Authentications.Preferences.GetLoggedInUserID;
 
@@ -90,13 +87,11 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                                 else{
                                     namesImages.add(new NameImage("",0));
                                 }
-
-
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
                         }
-               new Handler(Looper.getMainLooper()).post(new Runnable() {
+           new Handler(Looper.getMainLooper()).post(new Runnable() {
                    @Override
                    public void run() {
                         adapter = new JobRecycler(MyJobsActivity.this, forms,namesImages);

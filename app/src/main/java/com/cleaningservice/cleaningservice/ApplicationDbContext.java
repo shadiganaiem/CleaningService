@@ -2,18 +2,12 @@ package com.cleaningservice.cleaningservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.StrictMode;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cleaningservice.cleaningservice.Customer.NameImage;
-
-import Models.Ratings;
-import Models.Favorite;
-import Models.Ratings;
-import Models.Request;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +20,6 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +27,11 @@ import java.util.Locale;
 
 import Models.Customer;
 import Models.Employee;
+import Models.Favorite;
 import Models.JobForm;
 import Models.JobFormRequest;
+import Models.Ratings;
+import Models.Request;
 import Models.Status;
 import Models.User;
 
@@ -740,15 +736,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                     result.getString("Description")
 
             );
-            jobForm.CreationDate = result.getDate("CreationDate");
-            jobForm.customer = GetCustomer(jobForm.CustomerId);
-            jobForm.status = GetStatus(jobForm.StatusId);
-
-
             jobForms.add(jobForm);
-
         }
-
         return jobForms;
     }
 
@@ -795,6 +784,23 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         String query = "INSERT INTO JobFormRequests(EmployeeId,JobFormId,StatusId,CreationDate)"
                 +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"')";
+
+        boolean result = ExecuteInsertData(query);
+        return result;
+    }
+
+    /**
+     * Insert job request
+     * @param CustomerId
+     * @param FormId
+     * @return
+     */
+    public boolean InsertCustomerJobFormRequest(int CustomerId , int FormId){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+        Date date = new Date();
+
+        String query = "INSERT INTO JobFormRequests(JobFormId,StatusId,CreationDate,CustomerId)"
+                +" VALUES("+FormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"',"+CustomerId+")";
 
         boolean result = ExecuteInsertData(query);
         return result;
@@ -1418,6 +1424,20 @@ public class ApplicationDbContext extends AppCompatActivity {
     }
 
     /**
+     *
+     * @param FavoriteId
+     * @return
+     * @throws SQLException
+     */
+    public boolean DeleteFavorite(int FavoriteId) throws SQLException {
+        PreparedStatement pst = _connection.prepareStatement("DELETE FROM Favorites WHERE ID = ?");
+        pst.setInt(1, FavoriteId);
+        pst.executeUpdate();
+        return true;
+    }
+
+
+    /**
      * checkes is a user is already rated
      * @param rater
      * @param rated
@@ -1432,6 +1452,9 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return true;
     }
+
+
+
 
     /**
      * check if a user already added to favorites
