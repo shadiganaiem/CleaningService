@@ -131,7 +131,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param id
      * @return
      */
-    public User UserDetails(int id){
+    public User GetUserDetails(int id){
         String query = "SELECT Username , Password , ActivationCode, ID , CustomerId, EmployeeId,StatusId FROM USERS WHERE ID = " + id;
         try{
             ResultSet result = ExecuteSelectQuery(query);

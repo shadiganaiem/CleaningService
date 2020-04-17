@@ -6,6 +6,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,10 +32,17 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.cleaningservice.cleaningservice.Customer.FavoritesListActivity;
 import com.cleaningservice.cleaningservice.Customer.FindCleanerActivity;
 import com.cleaningservice.cleaningservice.Customer.MyJobsActivity;
 import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -39,11 +50,14 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import Authentications.Preferences;
+import Models.Customer;
+import Models.Employee;
 import Models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +71,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private  DrawerLayout drawer;
     private ApplicationDbContext _context = null;
+    private Handler mainhandler = new Handler();
+    private Handler secondhandler = new Handler();
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
@@ -97,44 +113,60 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             e.printStackTrace();
         }
 
+        TextView name = findViewById(R.id.name);
+        TextView userType = findViewById(R.id.user_type);
+        TextView mail = findViewById(R.id.emaill);
+        TextView phone =  findViewById(R.id.phonenum);
 
         if(GetLoggedInUserID(this)!=0){
-            User user =_context.GetUser(GetLoggedInUserID(this));
-            TextView name = findViewById(R.id.name);
-            TextView userType = findViewById(R.id.user_type);
-            TextView mail = findViewById(R.id.emaill);
-            TextView phone =  findViewById(R.id.phonenum);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    User user =_context.GetUserDetails(GetLoggedInUserID(ProfileActivity.this));
+                    Employee employee = null;
+                    Customer customer = null;
+                    if(isCustomer(ProfileActivity.this)) {
+                        customer = _context.GetCustomer(user.CustomerId);
+                    }
+                    else
+                    {
+                        employee = _context.GetEmployee(user.EmployeeId);
+                    }
+                    Customer finalCustomer = customer;
+                    Employee finalEmployee = employee;
+                    mainhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(finalCustomer != null) {
+                                name.setText(finalCustomer.Lastname+" "+finalCustomer.Firstname);
+                                userType.setText("Job Provider");
+                                mail.setText(finalCustomer.Email);
+                                phone.setText(finalCustomer.Phone);
+                            }
+                            else{
+                                name.setText(finalEmployee.Lastname+" "+finalEmployee.Firstname);
+                                userType.setText("Employee");
+                                mail.setText(finalEmployee.Email);
+                                phone.setText(finalEmployee.Phone);
+                            }
+                        }
+                    });
 
-
-            if(isCustomer(this)) {
-                name.setText(user.customer.Lastname+" "+user.customer.Firstname);
-                userType.setText("Job Provider");
-                mail.setText(user.customer.Email);
-                phone.setText(user.customer.Phone);
-            }
-            else{
-                name.setText(user.employee.Lastname+" "+user.employee.Firstname);
-                userType.setText("Employee");
-                mail.setText(user.employee.Email);
-                phone.setText(user.employee.Phone);
-            }
-
-             new Thread(){
-                 @Override
-                 public void run() {
-                     byte[] image = _context.GetProfileImage(user.ID);
-                     new Handler(Looper.getMainLooper()).post(new Runnable() {
-                         @Override
-                         public void run() {
-                             GlideApp.with(ProfileActivity.this).load(image)
-                                     .into(imgProfile);
-                             imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
-                         }
-                     });
-                 }
-             }.start();
-
-
+                    byte[] profileImage = _context.GetProfileImage(user.ID);
+                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
+                    //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
+                    //      .into(imgProfile);
+                    secondhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imgProfile.setImageDrawable(bitmap);
+                            imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                        }
+                    });
+                }
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
     }
 
@@ -203,7 +235,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
 
-       startActivityForResult(intent, REQUEST_IMAGE);
+        startActivityForResult(intent, REQUEST_IMAGE);
     }
 
     private void launchGalleryIntent() {
@@ -229,10 +261,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
                     //Update In DB
                     if(_context.UpdateProfileImage(Preferences.GetLoggedInUserID(getApplicationContext()),bitmap));
-                        // loading profile image from local cache
-                        loadProfile(uri.toString());
+                    // loading profile image from local cache
+                    loadProfile(uri.toString());
                 } catch (IOException e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         }
