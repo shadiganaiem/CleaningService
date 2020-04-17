@@ -50,6 +50,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import Authentications.Preferences;
+import Models.Customer;
+import Models.Employee;
 import Models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +65,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private  DrawerLayout drawer;
     private ApplicationDbContext _context = null;
+    private Handler mainhandler = new Handler();
+    private Handler secondhandler = new Handler();
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
@@ -81,8 +85,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         getSupportActionBar().setTitle(null);
         loadProfileDefault();
 
-
-
         Toolbar toolbar2 = findViewById(R.id.sidebar);
         setSupportActionBar(toolbar2);
 
@@ -90,12 +92,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar2,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
 
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
@@ -103,36 +102,60 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             e.printStackTrace();
         }
 
+        TextView name = findViewById(R.id.name);
+        TextView userType = findViewById(R.id.user_type);
+        TextView mail = findViewById(R.id.emaill);
+        TextView phone =  findViewById(R.id.phonenum);
 
         if(GetLoggedInUserID(this)!=0){
-            User user =_context.GetUser(GetLoggedInUserID(this));
-            TextView name = findViewById(R.id.name);
-            TextView userType = findViewById(R.id.user_type);
-            TextView mail = findViewById(R.id.emaill);
-            TextView phone =  findViewById(R.id.phonenum);
-
-
-            if(isCustomer(this)) {
-                name.setText(user.customer.Lastname+" "+user.customer.Firstname);
-                userType.setText("Job Provider");
-                mail.setText(user.customer.Email);
-                phone.setText(user.customer.Phone);
-            }
-            else{
-                name.setText(user.employee.Lastname+" "+user.employee.Firstname);
-                userType.setText("Employee");
-                mail.setText(user.employee.Email);
-                phone.setText(user.employee.Phone);
-            }
-
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
-                            .into(imgProfile);
-                    imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                    User user =_context.GetUserDetails(GetLoggedInUserID(ProfileActivity.this));
+                    Employee employee = null;
+                    Customer customer = null;
+                    if(isCustomer(ProfileActivity.this)) {
+                        customer = _context.GetCustomer(user.CustomerId);
+                    }
+                    else
+                    {
+                        employee = _context.GetEmployee(user.EmployeeId);
+                    }
+                    Customer finalCustomer = customer;
+                    Employee finalEmployee = employee;
+                    mainhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(finalCustomer != null) {
+                                name.setText(finalCustomer.Lastname+" "+finalCustomer.Firstname);
+                                userType.setText("Job Provider");
+                                mail.setText(finalCustomer.Email);
+                                phone.setText(finalCustomer.Phone);
+                            }
+                            else{
+                                name.setText(finalEmployee.Lastname+" "+finalEmployee.Firstname);
+                                userType.setText("Employee");
+                                mail.setText(finalEmployee.Email);
+                                phone.setText(finalEmployee.Phone);
+                            }
+                        }
+                    });
+
+                    byte[] profileImage = _context.GetProfileImage(user.ID);
+                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
+                    //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
+                    //      .into(imgProfile);
+                    secondhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imgProfile.setImageDrawable(bitmap);
+                            imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                        }
+                    });
                 }
-            });
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
     }
 
@@ -201,7 +224,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
 
-       startActivityForResult(intent, REQUEST_IMAGE);
+        startActivityForResult(intent, REQUEST_IMAGE);
     }
 
     private void launchGalleryIntent() {
@@ -227,10 +250,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
                     //Update In DB
                     if(_context.UpdateProfileImage(Preferences.GetLoggedInUserID(getApplicationContext()),bitmap));
-                        // loading profile image from local cache
-                        loadProfile(uri.toString());
+                    // loading profile image from local cache
+                    loadProfile(uri.toString());
                 } catch (IOException e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         }

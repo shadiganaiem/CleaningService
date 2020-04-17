@@ -50,7 +50,7 @@ public class Activation extends AppCompatActivity {
         }
         _smsService = new SMSService();
         int userId = getIntent().getIntExtra("USER_ID", 0);
-        user = _context.UserDetails(userId);
+        user = _context.GetUserDetails(userId);
         if(user.EmployeeId != 0){
             user.employee = _context.GetEmployee(user.EmployeeId);
         }
