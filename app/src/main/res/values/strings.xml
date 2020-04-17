@@ -31,7 +31,7 @@
     <string name="logoword">Cleaning Services</string>
     <string name="logout">יציאה</string>
 
-    <string name="Activation">הפעלת חשבון</string>
+    <string name="Activation">כניסה לחשבון</string>
     <string name="ActivationCode">קוד אימות</string>
     <string name="Activation_detail">נא להזין את קוד האימות שקיבלת במייל</string>
     <string name="Activation_not_sent_details">שלח קוד אימות חדש</string>
@@ -151,5 +151,8 @@
     <string name="FavoriteList">רשימת המועדפים</string>
     <string name="removeFavorite">מחיקה מהמועדפים ❌</string>
     <string name="deletedFromFavorites">משתמש הוסר בהצלחה</string>
+    <string name="ActivationFirstLine">לקוח יקר</string>
+    <string name="ActivationSecondLine">תודה שבחרת בנו</string>
+    <string name="ActivationThirdLine">להמשיך תהליך ההרשמה ולהפעיל את חשבונך נא להכניס את קוד האימות</string>
 
 </resources>

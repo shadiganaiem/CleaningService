@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cleaningservice.cleaningservice.Services.MailService;
+import com.cleaningservice.cleaningservice.Services.SMSService;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.SQLException;
 import java.util.Random;
 
+import Models.Customer;
 import Models.User;
 
 public class RegisterActivity extends AppCompatActivity  {
@@ -43,8 +45,9 @@ public class RegisterActivity extends AppCompatActivity  {
     //Switch
     private Switch IsEmployee;
 
-    //Google Places API Client
+    //Services
     private PlacesClient placesClient;
+    private SMSService _smsService;
 
 
     @Override
@@ -57,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity  {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        _smsService = new SMSService();
         _validator = new Validator();
 
         //layouts
@@ -142,17 +146,23 @@ public class RegisterActivity extends AppCompatActivity  {
                     +activationCode+"','1' " +
                 "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
 
-            if(_context.ExecuteInsertData(query)){
-                SendConfirmationEmail(GetInputText(Email),activationCode);
-                try{
-                    User user =  _context.GetUser(GetInputText(Username));
-                    Intent intent = new Intent(getBaseContext(), Activation.class);
-                    intent.putExtra("USER_ID", user.ID);
+            if(_context.ExecuteInsertData(query)) {
+                //SendConfirmationEmail(GetInputText(Email),activationCode);
+                User user = new User();
+                user.customer = new Customer();
+                user.customer.Phone = GetInputText(Phone);
+                user.ActivationCode = activationCode;
+                _smsService.SendActivationCode(getApplicationContext(), user);
 
-                    _context.InitializeUserImage(user.ID);
+                try {
+                    int id = _context.GetUserIdByUsername(GetInputText(Username));
+                    Intent intent = new Intent(getBaseContext(), Activation.class);
+                    intent.putExtra("USER_ID", id);
+
+                    _context.InitializeUserImage(id);
                     startActivity(intent);
-                }catch (Exception ex){
-                    Toast.makeText(getApplicationContext(),ex.toString(), Toast.LENGTH_SHORT).show();
+                } catch (Exception ex) {
+                    Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
             else{

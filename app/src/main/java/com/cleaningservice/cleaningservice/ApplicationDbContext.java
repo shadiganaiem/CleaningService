@@ -130,6 +130,35 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new User();
     }
 
+    /**
+     * Get User Details
+     * @param id
+     * @return
+     */
+    public User UserDetails(int id){
+        String query = "SELECT Username , Password , ActivationCode, ID , CustomerId, EmployeeId,StatusId FROM USERS WHERE ID = " + id;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                User user = new User(
+                        result.getString("Username"),
+                        result.getString("Password"),
+                        result.getString("ActivationCode"),
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("EmployeeId"),
+                        result.getInt("StatusId")
+                );
+                return user;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new User();
+    }
+
+
     public byte[] GetProfileImage(int userId){
         String query = "SELECT Image FROM USERS WHERE ID = "+userId;
 
@@ -142,6 +171,26 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         }
         return null;
+    }
+
+    /**
+     * GET USER ID
+     * @param username
+     * @return
+     */
+    public int GetUserIdByUsername(String username){
+        String query = "SELECT ID FROM USERS WHERE Username = " + username;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()) {
+                return result.getInt("ID");
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return 0 ;
     }
 
     /**
@@ -647,7 +696,11 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public JobForm GetJobFormById (int jobFormId){
-        String query = "SELECT * FROM JobForms WHERE ID = " + jobFormId;
+        String query = "SELECT J.ID , J.CustomerId , J.Rooms, J.City,J.Address, J.Budget, J.StartDate, J.EndDate, J.StatusId , J.Description , C.Firstname , C.Lastname, C.Email , C.Phone, U.Rating" +
+                " FROM JobForms AS J " +
+                " JOIN Customers AS C ON C.ID = J.CustomerId " +
+                " JOIN USERS AS U ON U.CustomerId = C.ID" +
+                " WHERE J.ID = " + jobFormId;
 
         JobForm jobForm = null;
         try{
@@ -666,17 +719,15 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getString("Description")
 
                 );
+                jobForm.customer = new Customer();
+                jobForm.customer.ID = result.getInt("CustomerId" );
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Email = result.getString("Email");
+                jobForm.customer.Phone = result.getString("Phone");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.CreationDate = result.getDate("CreationDate");
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
-
-                jobForm.AllImagesBytes = new ArrayList<byte[]>();
-
-                query = "SELECT ImageBytes FROM IMAGES WHERE JobFormId = "+jobFormId;
-                ResultSet imageResultSet = ExecuteSelectQuery(query);
-                while (imageResultSet.next()){
-                    jobForm.AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
-                }
             }
 
         }catch (Exception ex){
@@ -1472,6 +1523,28 @@ public class ApplicationDbContext extends AppCompatActivity {
             e.printStackTrace();
         }
         return true;
+    }
+
+    /**
+     * Get All JobForm Images
+     * @param jobFormId
+     * @return
+     */
+    public ArrayList<byte[]> GetJobFormImages(int jobFormId){
+        ArrayList<byte[]> AllImagesBytes = new ArrayList();
+        String query = "SELECT ImageBytes FROM IMAGES WHERE JobFormId = "+jobFormId;
+
+        try {
+            ResultSet imageResultSet = ExecuteSelectQuery(query);
+            while (imageResultSet.next()) {
+                AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return AllImagesBytes;
     }
 
     /**
