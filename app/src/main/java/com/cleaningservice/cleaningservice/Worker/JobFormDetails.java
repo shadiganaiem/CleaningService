@@ -1,5 +1,12 @@
 package com.cleaningservice.cleaningservice.Worker;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,17 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
+import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -35,6 +36,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import Authentications.Preferences;
@@ -49,6 +51,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     private ApplicationDbContext _context = null;
     private ProgressBar formDetailsProgressBar;
     private LinearLayout formComponents;
+    private Handler mainhandler = new Handler();
+    private Handler secondhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

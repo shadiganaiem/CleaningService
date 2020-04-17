@@ -126,6 +126,35 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new User();
     }
 
+    /**
+     * Get User Details
+     * @param id
+     * @return
+     */
+    public User UserDetails(int id){
+        String query = "SELECT Username , Password , ActivationCode, ID , CustomerId, EmployeeId,StatusId FROM USERS WHERE ID = " + id;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()){
+                User user = new User(
+                        result.getString("Username"),
+                        result.getString("Password"),
+                        result.getString("ActivationCode"),
+                        result.getInt("ID"),
+                        result.getInt("CustomerId"),
+                        result.getInt("EmployeeId"),
+                        result.getInt("StatusId")
+                );
+                return user;
+            }
+        }
+        catch (Exception ex){
+
+        }
+        return new User();
+    }
+
+
     public byte[] GetProfileImage(int userId){
         String query = "SELECT Image FROM USERS WHERE ID = "+userId;
 
@@ -138,6 +167,26 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         }
         return null;
+    }
+
+    /**
+     * GET USER ID
+     * @param username
+     * @return
+     */
+    public int GetUserIdByUsername(String username){
+        String query = "SELECT ID FROM USERS WHERE Username = " + username;
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()) {
+                return result.getInt("ID");
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return 0 ;
     }
 
     /**
@@ -185,6 +234,24 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public int GetUserIDByEmployeeID(int id){
         String query = "SELECT ID FROM USERS WHERE EmployeeId ="+id;
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next()) {
+                return result.getInt("ID");
+            }
+        }
+        catch (SQLException ignored) {
+        }
+        return 0;
+    }
+
+    /**
+     * get employee id by user id
+     * @param id
+     * @return
+     */
+    public int GetUserIDByCustomerID(int id){
+        String query = "SELECT ID FROM USERS WHERE CustomerId ="+id;
         try {
             ResultSet result = ExecuteSelectQuery(query);
             if (result.next()) {
@@ -625,7 +692,11 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public JobForm GetJobFormById (int jobFormId){
-        String query = "SELECT * FROM JobForms WHERE ID = " + jobFormId;
+        String query = "SELECT J.ID , J.CustomerId , J.Rooms, J.City,J.Address, J.Budget, J.StartDate, J.EndDate, J.StatusId , J.Description , C.Firstname , C.Lastname, C.Email , C.Phone, U.Rating" +
+                " FROM JobForms AS J " +
+                " JOIN Customers AS C ON C.ID = J.CustomerId " +
+                " JOIN USERS AS U ON U.CustomerId = C.ID" +
+                " WHERE J.ID = " + jobFormId;
 
         JobForm jobForm = null;
         try{
@@ -644,17 +715,15 @@ public class ApplicationDbContext extends AppCompatActivity {
                         result.getString("Description")
 
                 );
+                jobForm.customer = new Customer();
+                jobForm.customer.ID = result.getInt("CustomerId" );
+                jobForm.customer.Firstname = result.getString("Firstname");
+                jobForm.customer.Lastname = result.getString("Lastname");
+                jobForm.customer.Email = result.getString("Email");
+                jobForm.customer.Phone = result.getString("Phone");
+                jobForm.customer.Rating = result.getInt("Rating");
                 jobForm.CreationDate = result.getDate("CreationDate");
-                jobForm.customer = GetCustomer(jobForm.CustomerId);
                 jobForm.status = GetStatus(jobForm.StatusId);
-
-                jobForm.AllImagesBytes = new ArrayList<byte[]>();
-
-                query = "SELECT ImageBytes FROM IMAGES WHERE JobFormId = "+jobFormId;
-                ResultSet imageResultSet = ExecuteSelectQuery(query);
-                while (imageResultSet.next()){
-                    jobForm.AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
-                }
             }
 
         }catch (Exception ex){
@@ -710,7 +779,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         return ids;
     }
 
-
     /**
      * Get JobForms By Customer ID
      * @return
@@ -740,7 +808,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
         return jobForms;
     }
-
 
     /**
      * Inser a new JobForm
@@ -859,8 +926,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         return new User();
     }
 
-
-
     /**
      * Get Customer By Id
      * @param id
@@ -918,8 +983,6 @@ public class ApplicationDbContext extends AppCompatActivity {
             }
             return nameimage;
     }
-
-
 
     public ArrayList<Request> GetFormUserRequests(int jobFormId) throws SQLException {
 
@@ -1291,11 +1354,11 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public ArrayList<Favorite> GetUserFavoriteList(int userId,Util.UserTypes userType) {
-        String query = "SELECT F.UserId,F.FavoriteUserId,E.Firstname,E.Lastname,E.Email,E.Phone,E.ID,F.ID AS FID" +
+        String query = "SELECT F.UserId,F.FavoriteUserId,E.Firstname,E.Lastname,E.Email,E.Phone,E.ID,F.ID AS FID,U.Rating,F.FavoriteUserId " +
                 " FROM FAVORITES AS F" +
                 " JOIN Users AS U ON U.ID = F.FavoriteUserId" +
                 " JOIN "+userType.table+" AS E ON E.ID = U."+userType.relationId +
-                " WHERE F.UserId = 2";
+                " WHERE F.UserId = " + userId;
 
         ArrayList<Favorite> favorites = new ArrayList<>();
         try {
@@ -1303,6 +1366,7 @@ public class ApplicationDbContext extends AppCompatActivity {
             while (result.next()) {
                 Favorite favorite = new Favorite();
                 favorite.ID = result.getInt("FID");
+                favorite.FavoriteUserId = result.getInt("FavoriteUserId");
 
                 if(userType == Util.UserTypes.EMPLOYEE) {
                     Employee employee = new Employee();
@@ -1311,6 +1375,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                     employee.Email = result.getString("Email");
                     employee.Phone = result.getString("Phone");
                     employee.ID = result.getInt("ID");
+                    employee.Rating = result.getInt("Rating");
+
                     favorite.employee = employee;
                 }
                 else
@@ -1321,6 +1387,8 @@ public class ApplicationDbContext extends AppCompatActivity {
                     customer.Email = result.getString("Email");
                     customer.Phone = result.getString("Phone");
                     customer.ID = result.getInt("ID");
+                    customer.Rating = result.getInt("Rating");
+
                     favorite.customer = customer;
                 }
 
@@ -1444,11 +1512,15 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      * @throws SQLException
      */
-    public boolean checkIfNotRated(int rater, int rated) throws SQLException {
+    public boolean checkIfNotRated(int rater, int rated) {
         String query ="SELECT ID From RATINGS Where [From]="+rater+" And [To]="+rated;
         ResultSet result = ExecuteSelectQuery(query);
-        if(result.next()){
-            return false;
+        try {
+            if(result.next()){
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return true;
     }
@@ -1463,12 +1535,47 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      * @throws SQLException
      */
-    public boolean checkIfNotFavorite(int adderId, int addedId) throws SQLException {
+    public boolean checkIfNotFavorite(int adderId, int addedId) {
         String query ="SELECT ID From Favorites Where UserId ="+adderId+" And FavoriteUserId="+addedId;
         ResultSet result = ExecuteSelectQuery(query);
-        if(result.next()){
-            return false;
+        try {
+            if(result.next()){
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return true;
+    }
+
+    /**
+     * Get All JobForm Images
+     * @param jobFormId
+     * @return
+     */
+    public ArrayList<byte[]> GetJobFormImages(int jobFormId){
+        ArrayList<byte[]> AllImagesBytes = new ArrayList();
+        String query = "SELECT ImageBytes FROM IMAGES WHERE JobFormId = "+jobFormId;
+
+        try {
+            ResultSet imageResultSet = ExecuteSelectQuery(query);
+            while (imageResultSet.next()) {
+                AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return AllImagesBytes;
+    }
+
+    /**
+     * DELETE USER FROM FAVORITE LIST
+     * @return
+     */
+    public boolean DeleteUserFromFavorites(int id){
+        String query = "DELETE FROM Favorites WHERE ID = "+ id;
+        return ExecuteInsertData(query);
     }
 }

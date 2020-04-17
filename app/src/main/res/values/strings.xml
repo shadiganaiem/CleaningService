@@ -148,6 +148,12 @@
     <string name="AddEmpToFav">הוסף עובד למועדפים</string>
     <string name="publish">פרסם</string>
     <string name="FormId">מספר טופס</string>
+    <string name="FavoriteList">רשימת המועדפים</string>
+    <string name="removeFavorite">מחיקה מהמועדפים ❌</string>
+    <string name="deletedFromFavorites">משתמש הוסר בהצלחה</string>
+    <string name="ActivationFirstLine">לקוח יקר</string>
+    <string name="ActivationSecondLine">תודה שבחרת בנו</string>
+    <string name="ActivationThirdLine">להמשיך תהליך ההרשמה ולהפעיל את חשבונך נא להכניס את קוד האימות</string>
     <string name="Favorites">המועדפים</string>
     <string name="menu">רשימת</string>
     <string name="DeleteFavorite">מחק ממועדפים</string>

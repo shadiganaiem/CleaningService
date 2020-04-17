@@ -90,7 +90,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                 }  else{
                     holder.rate.setVisibility(View.VISIBLE);
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -101,7 +101,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                 }  else{
                     holder.addtofav.setVisibility(View.VISIBLE);
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);

@@ -64,7 +64,7 @@
                     <Button
                         android:id="@+id/rateBtn"
                         android:layout_width="100dp"
-                        android:layout_height="30dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/white_button"
@@ -75,7 +75,7 @@
                     <Button
                         android:id="@+id/addToFavoriteBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:layout_marginRight="5dp"
@@ -87,6 +87,43 @@
                         android:textColor="@color/quantum_googgreen800"
                         android:textSize="12sp" />
 
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/favoriteButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <Button
+                        android:id="@+id/deleteFavoriteBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/white_button"
+                        android:fontFamily="@font/regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/removeFavorite"
+                        android:textColor="@color/danger"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/favoriteRateBtn"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/white_button"
+                        android:text="@string/RateUser"
+                        android:textColor="@color/quantum_googgreen800"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 

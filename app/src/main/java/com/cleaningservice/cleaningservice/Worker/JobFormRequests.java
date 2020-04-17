@@ -37,6 +37,7 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
     private ApplicationDbContext _context = null;
     private List<JobFormRequest> requests;
     private TabLayout tabLayout;
+    private Handler mainhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,27 +66,33 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
         tabLayout = findViewById(R.id.TabLayout);
         tabLayout.setOnTabSelectedListener(this);
 
+        RecyclerView recyclerView = findViewById(R.id.job_form_requests_list);
+        findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.job_form_requests_list).setVisibility(View.INVISIBLE);
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                RecyclerView recyclerView = findViewById(R.id.job_form_requests_list);
-                findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.VISIBLE);
-                findViewById(R.id.job_form_requests_list).setVisibility(View.INVISIBLE);
-
                 int userId = Preferences.GetLoggedInUserID(getApplicationContext());
                 int employeeId = _context.GetEmployeeIdByUserID(userId);
                 requests = _context.GetEmployeeResponsedJobRequests(employeeId);
                 requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
-                requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setAdapter(requestAdapter);
+                mainhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerView.setAdapter(requestAdapter);
 
-                findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.INVISIBLE);
-                findViewById(R.id.job_form_requests_list).setVisibility(View.VISIBLE);
+                        findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.job_form_requests_list).setVisibility(View.VISIBLE);
+                    }
+                });
             }
-        });
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
 
     }
 
@@ -105,6 +112,10 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 intent = new Intent(JobFormRequests.this,JobFormRequests.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_favlist:
+                intent = new Intent(JobFormRequests.this,Favorites.class);
+                startActivity(intent);
+                break;
         }
 
         return false;
@@ -117,37 +128,33 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
 
+        RecyclerView view = findViewById(R.id.job_form_requests_list);
+        findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.job_form_requests_list).setVisibility(View.INVISIBLE);
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                int userId = Preferences.GetLoggedInUserID(getApplicationContext());
+                int employeeId = _context.GetEmployeeIdByUserID(userId);
+
+                switch (tab.getPosition()) {
+                    case 0:
+                        requests = _context.GetEmployeeResponsedJobRequests(employeeId);
+                        break;
+                    case 1:
+                        requests = _context.GetEmployeeRequestsByStatus(employeeId, Util.Statuses.WAITING);
+                        break;
+                    case 2:
+                        requests = _context.GetEmployeeEndedJobFormsRequests(employeeId);
+                        break;
+                }
+                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
+
+                mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        RecyclerView view = findViewById(R.id.job_form_requests_list);
-                        findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.VISIBLE);
-                        findViewById(R.id.job_form_requests_list).setVisibility(View.INVISIBLE);
-
-                        int userId = Preferences.GetLoggedInUserID(getApplicationContext());
-                        int employeeId = _context.GetEmployeeIdByUserID(userId);
-
-                        switch (tab.getPosition()) {
-                            case 0:
-                                requests = _context.GetEmployeeResponsedJobRequests(employeeId);
-                                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
-                                requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
-                                break;
-                            case 1:
-                                requests = _context.GetEmployeeRequestsByStatus(employeeId, Util.Statuses.WAITING);
-                                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
-                                requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
-                                break;
-                            case 2:
-                                requests = _context.GetEmployeeEndedJobFormsRequests(employeeId);
-                                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
-                                requestAdapter = new RequestAdapter(requests,getApplicationContext(),JobFormRequests.this);
-                                break;
-                        }
-
+                        requestAdapter = new RequestAdapter(requests,getApplicationContext(),JobFormRequests.this);
                         view.setAdapter(requestAdapter);
                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                         findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.INVISIBLE);
@@ -156,7 +163,6 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 });
             }
         };
-
         Thread thread = new Thread(runnable);
         thread.start();
     }

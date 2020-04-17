@@ -53,9 +53,6 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     private Handler mainhandler = new Handler();
     private RecyclerView view;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -173,10 +170,12 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 break;
             case R.id.navigation_myjobs:
                 intent = new Intent(Home.this,JobFormRequests.class);
-            startActivity(intent);
+                startActivity(intent);
                 break;
-
-
+            case R.id.navigation_favlist:
+                intent = new Intent(Home.this,Favorites.class);
+                startActivity(intent);
+                break;
         }
 
         return false;
