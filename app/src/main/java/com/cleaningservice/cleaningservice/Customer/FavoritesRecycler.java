@@ -71,6 +71,7 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                 try {
                     con.DeleteFavorite(favorites.get(position).ID);
                     holder.relativeLayout.setVisibility(View.GONE);
+                    Toast.makeText(context,"מועדף נמחק בהצלחה",Toast.LENGTH_LONG).show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -94,7 +95,6 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                 LinearLayout linearLayout = customView.findViewById(R.id.linearLayout3);
                 thisCustomer = con.GetCustomerIdByUserID(GetLoggedInUserID(context.getApplicationContext()));
                 FormIds = con.GetJobFormID(thisCustomer);
-
                 for(Integer id : FormIds) {
                     CheckBox checkBox = new CheckBox(context);
                     checkBox.setText(String.valueOf(id));

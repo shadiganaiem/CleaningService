@@ -18,14 +18,11 @@ import com.bumptech.glide.Glide;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Models.Request;
-
-import static com.cleaningservice.cleaningservice.Util.Statuses.NOTAVAILABLE;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
@@ -91,7 +88,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                @Override
                public void onClick(View v) {
                    requests.get(position).Status_id = Util.Statuses.ACCEPTED.value;
-                   holder.shimmerFrameLayout.setVisibility(View.GONE);
+                   holder.shimmerFrameLayout.setVisibility(View.INVISIBLE);
                    Toast.makeText(context, "Request Accepted", Toast.LENGTH_SHORT).show();
                    con.UpdateRequestStatus(requests.get(position).EmployeeId, requests.get(position).JobFormID, Util.Statuses.ACCEPTED.value);
                    con.UpdateFormStatus(requests.get(position).JobFormID, Util.Statuses.NOTAVAILABLE.value);
@@ -102,7 +99,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                @Override
                public void onClick(View v) {
                    requests.get(position).Status_id= Util.Statuses.REJECTED.value;
-                   holder.shimmerFrameLayout.setVisibility(View.GONE);
+                   holder.shimmerFrameLayout.setVisibility(View.INVISIBLE);
                    Toast.makeText(context,"Request Rejected",Toast.LENGTH_SHORT).show();
                    con.UpdateRequestStatus(requests.get(position).EmployeeId,requests.get(position).JobFormID, Util.Statuses.REJECTED.value);
                }
@@ -131,7 +128,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            shimmerFrameLayout =itemView.findViewById(R.id.relativeLayout);
+            shimmerFrameLayout =itemView.findViewById(R.id.Requests);
             image = itemView.findViewById(R.id.imagehu);
             name = itemView.findViewById(R.id.title2);
             Email = itemView.findViewById(R.id.title4);
