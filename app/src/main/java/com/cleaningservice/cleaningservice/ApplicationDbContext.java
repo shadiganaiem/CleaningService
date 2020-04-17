@@ -826,7 +826,7 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         int jobFormId = 0;
         if(ExecuteInsertData(query)){
-            query = "SELECT ID FROM JobForms WHERE CustomerId = " + jobForm.CustomerId;
+            query = "SELECT row FROM JobForms ORDER BY ID DESC LIMIT 1";
             try{
                 ResultSet result = ExecuteSelectQuery(query);
                 if (result.next())
@@ -1098,8 +1098,11 @@ public class ApplicationDbContext extends AppCompatActivity {
             return false;
 
         for(int i=0;i<bitmaps.size();i++){
-            Bitmap bitmap = bitmaps.get(i);
+            int width =bitmaps.get(i).getWidth()/3;
+            int height =bitmaps.get(i).getHeight()/3;
+            Bitmap bitmap = Bitmap.createScaledBitmap(bitmaps.get(i), width, height, true);
             ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+
             bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
             byte [] b=baos.toByteArray();
 
@@ -1124,7 +1127,9 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public boolean UpdateProfileImage(int userId,Bitmap bitmap){
         String query = "UPDATE USERS SET Image = ? WHERE ID = ?";
-
+        int width =bitmap.getWidth()/3;
+        int height =bitmap.getHeight()/3;
+        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
@@ -1560,7 +1565,17 @@ public class ApplicationDbContext extends AppCompatActivity {
         try {
             ResultSet imageResultSet = ExecuteSelectQuery(query);
             while (imageResultSet.next()) {
-                AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
+                //new Thread(new Runnable() {
+                    //@Override
+                  //  public void run() {
+                        try {
+                            AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    //}
+                //}).start();
+
             }
         }
         catch (Exception ex){

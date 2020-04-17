@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Html;
@@ -95,6 +96,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     private Date date2=null;
     private TextInputEditText budgt;
     private Boolean status;
+    private Handler mainHandler = new Handler();
 
 
     //Google Places API Client
@@ -355,7 +357,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             Spinner spinner = (Spinner) findViewById(R.id.spinner2);
             String text = spinner.getSelectedItem().toString();
             roomNum = Integer.parseInt(text);
-            int customerId = _context.GetUser(GetLoggedInUserID(this)).CustomerId;
+            int customerId = _context.GetCustomerIdByUserID(GetLoggedInUserID(this));
             JobForm jobForm = new JobForm(
                     customerId,
                     roomNum,
@@ -364,18 +366,32 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                     budget,
                     description
             );
-            int jobFormId = _context.InsertJobForm(jobForm, startDate, endDate);
-            if(jobFormId > 0){
-                if(_context.InsertImage(jobFormId,images)==false){
-                    throw new Exception("problem aquired while attempting to upload images to the database");
+            new Thread(){
+                public void run() {
+                    int jobFormId = _context.InsertJobForm(jobForm, startDate, endDate);
+                   // int jobFormId = 60;
+                    if (jobFormId > 0) {
+                                if (_context.InsertImage(jobFormId, images) == false) {
+                                    try {
+                                        throw new Exception("problem aquired while attempting to upload images to the database");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                    }
+                    else {
+                        try {
+                            throw new Exception("Form ID is not valid");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                Intent intent = new Intent(FindCleanerActivity.this, MyJobsActivity.class);
-                startActivity(intent);
-            }
-            else{
-                throw new Exception("Form ID is not valid");
-            }
-        }
+            }.start();
+            Intent intent = new Intent(FindCleanerActivity.this, MyJobsActivity.class);
+            startActivity(intent);
+    }
     }
 
     /**
