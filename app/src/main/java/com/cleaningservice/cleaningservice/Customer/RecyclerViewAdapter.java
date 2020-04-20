@@ -1,6 +1,7 @@
 package com.cleaningservice.cleaningservice.Customer;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Request> requests = new ArrayList<>();
     private ApplicationDbContext con = null;
     private Context context;
+    private Handler mainHandler = new Handler();
+    String Rating = "";
     boolean showShimmer = true;
     int SHIMMER_ITEM_NUM = 5; //number of items shown while loading
 
@@ -58,13 +61,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //holder.shimmerFrameLayout.stopShimmer(); // stop shimmer animation
             //holder.shimmerFrameLayout.setShimmer(null); // remove shimmer
 
-            String Rating = "";
+
+
+            new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+
+
+
+
             if (requests.get(position).Rating != 0) {
                 for (int i = 0; i < requests.get(position).Rating && i < 5; i++) {
                     Rating += "★";
                 }
             }
-
+            mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
             holder.rating.setBackground(null);
             holder.rating.setText(Rating);
 
@@ -76,15 +90,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.Email.setText(requests.get(position).Email);
 
             Glide.with(context).asBitmap().load(requests.get(position).ImageBytes).into(holder.image);
-
+                }
+            });
             try {
                 con = ApplicationDbContext.getInstance(context.getApplicationContext());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+                }
+            }.start();
 
            holder.confirm.setOnClickListener(new View.OnClickListener() {
-
                @Override
                public void onClick(View v) {
                    requests.get(position).Status_id = Util.Statuses.ACCEPTED.value;
@@ -104,6 +120,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                    con.UpdateRequestStatus(requests.get(position).EmployeeId,requests.get(position).JobFormID, Util.Statuses.REJECTED.value);
                }
            });
+
+
 
     }
 

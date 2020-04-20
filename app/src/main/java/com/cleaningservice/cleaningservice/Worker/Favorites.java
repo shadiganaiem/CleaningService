@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.Customer.ProfileActivity;
+import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -102,6 +103,11 @@ public class Favorites extends AppCompatActivity implements NavigationView.OnNav
             case R.id.navigation_favlist:
                 intent = new Intent(Favorites.this,Favorites.class);
                 startActivity(intent);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(Favorites.this, MainActivity.class);
+                startActivity(intent6);
                 break;
         }
 

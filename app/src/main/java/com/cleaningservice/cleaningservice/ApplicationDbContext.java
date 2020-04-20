@@ -1010,13 +1010,13 @@ public class ApplicationDbContext extends AppCompatActivity {
                 String phone =result.getString("Phone");
 
 
-                 String query2  = "SELECT Rating FROM Users WHERE EmployeeId = "+ id;
-                 String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
+                 String query2  = "SELECT Rating , Image FROM Users WHERE EmployeeId = "+ id;
+                // String query3 = "SELECT Image From USERS WHERE EmployeeId = "+ id;
                  ResultSet result2 = ExecuteSelectQuery(query2);
-                 ResultSet result3 = ExecuteSelectQuery(query3);
-                 if (result2.next() && result3.next()){
+                // ResultSet result3 = ExecuteSelectQuery(query3);
+                 if (result2.next()){
                      int rate = result2.getInt("Rating");
-                     byte[] img= result3.getBytes("Image");
+                     byte[] img= result2.getBytes("Image");
                      Request request = new Request(
                              id,
                              statusid,

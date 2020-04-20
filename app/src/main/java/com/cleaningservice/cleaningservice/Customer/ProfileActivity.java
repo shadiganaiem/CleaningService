@@ -289,7 +289,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     }
 
     public void Logout(View view){
-        Preferences.Logout(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -325,6 +324,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 case R.id.navigation_notifications:
                     Intent intent5 = new Intent(ProfileActivity.this, NotificationsActivity.class);
                     startActivity(intent5);
+                    break;
+                case R.id.navigation_signout:
+                    Preferences.Logout(this);
+                    Intent intent6 = new Intent(ProfileActivity.this,MainActivity.class);
+                    startActivity(intent6);
                     break;
             }
         return false;

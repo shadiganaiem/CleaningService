@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +29,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
+import Authentications.Preferences;
 import Models.JobForm;
 
 public class Home extends AppCompatActivity implements OnJobFormListiner , NavigationView.OnNavigationItemSelectedListener,
@@ -167,6 +170,11 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
             case R.id.navigation_favlist:
                 intent = new Intent(Home.this,Favorites.class);
                 startActivity(intent);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(Home.this, MainActivity.class);
+                startActivity(intent6);
                 break;
         }
 

@@ -343,68 +343,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+
                 <LinearLayout
-                    android:id="@+id/RateDel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    android:orientation="vertical"
-                    >
-
-
-                    <Button
-                        android:id="@+id/deletebut"
-                        android:layout_width="230dp"
-                        android:paddingRight="20dip"
-                        android:layout_marginTop="5dp"
-                        android:shadowDy="@android:integer/config_longAnimTime"
-                        android:shadowDx="@android:integer/config_longAnimTime"
-                        android:layout_height="50dp"
-                        android:fontFamily="@font/bold"
-                        android:drawableStart="@drawable/delete_icon"
-                        android:text="@string/Deleteform"
-                        android:textColor="@color/black"
-                        android:background="@drawable/white_button"
-                        />
-
-                    <Button
-                        android:id="@+id/ratebut"
-                        android:layout_width="230dp"
-                        android:layout_marginTop="5dp"
-                        android:paddingRight="20dip"
-                        android:layout_height="50dp"
-                        android:textColor="@color/black"
-                        android:shadowDy="@android:integer/config_shortAnimTime"
-                        android:shadowDx="@android:integer/config_longAnimTime"
-                        android:background="@drawable/white_button"
-                        android:text="@string/RateEmployee"
-                        android:visibility="invisible"
-                        android:fontFamily="@font/bold"
-                        android:drawableStart="@drawable/icons"
-                        android:gravity="center"
-
-                        />
-
-                    <Button
-                        android:id="@+id/addfav"
-                        android:paddingRight="20dip"
-                        android:shadowDy="@android:integer/config_longAnimTime"
-                        android:shadowDx="@android:integer/config_longAnimTime"
-                        android:layout_width="230dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/bold"
-                        android:textColor="@color/black"
-                        android:drawableStart="@drawable/plus_icon"
-                        android:text="@string/AddEmpToFav"
-                        android:background="@drawable/white_button"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center">
 
@@ -414,6 +355,67 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/cleaner"/>
                 </LinearLayout>
+        <LinearLayout
+            android:id="@+id/RateDel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical"
+            >
+
+
+            <Button
+                android:id="@+id/deletebut"
+                android:layout_width="230dp"
+                android:paddingRight="20dip"
+                android:layout_marginTop="5dp"
+                android:shadowDy="@android:integer/config_longAnimTime"
+                android:shadowDx="@android:integer/config_longAnimTime"
+                android:layout_height="50dp"
+                android:fontFamily="@font/bold"
+                android:drawableStart="@drawable/delete_icon"
+                android:text="@string/Deleteform"
+                android:textColor="@color/black"
+                android:background="@drawable/white_button"
+                />
+
+            <Button
+                android:id="@+id/ratebut"
+                android:layout_width="230dp"
+                android:layout_marginTop="5dp"
+                android:paddingRight="20dip"
+                android:layout_height="50dp"
+                android:textColor="@color/black"
+                android:shadowDy="@android:integer/config_shortAnimTime"
+                android:shadowDx="@android:integer/config_longAnimTime"
+                android:background="@drawable/white_button"
+                android:text="@string/RateEmployee"
+                android:visibility="invisible"
+                android:fontFamily="@font/bold"
+                android:drawableStart="@drawable/icons"
+                android:gravity="center"
+
+                />
+
+            <Button
+                android:id="@+id/addfav"
+                android:paddingRight="20dip"
+                android:shadowDy="@android:integer/config_longAnimTime"
+                android:shadowDx="@android:integer/config_longAnimTime"
+                android:layout_width="230dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/bold"
+                android:textColor="@color/black"
+                android:drawableStart="@drawable/plus_icon"
+                android:text="@string/AddEmpToFav"
+                android:background="@drawable/white_button"
+                android:visibility="invisible" />
+
+        </LinearLayout>
 
     </LinearLayout>
                 <LinearLayout

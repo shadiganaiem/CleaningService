@@ -25,8 +25,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.Customer.ProfileActivity;
+import com.cleaningservice.cleaningservice.GlideApp;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.Util;
@@ -207,6 +208,11 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
             case R.id.navigation_favlist:
                 intent = new Intent(JobFormDetails.this,Favorites.class);
                 startActivity(intent);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(JobFormDetails.this, MainActivity.class);
+                startActivity(intent6);
                 break;
         }
 

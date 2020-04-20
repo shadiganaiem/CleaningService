@@ -35,6 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.ImagePickerActivity;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.cleaningservice.cleaningservice.Validator;
@@ -64,6 +65,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import Authentications.Preferences;
 import Models.JobForm;
 import butterknife.OnClick;
 
@@ -183,6 +185,11 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             case R.id.navigation_notifications:
                 Intent intent5 = new Intent(FindCleanerActivity.this, NotificationsActivity.class);
                 startActivity(intent5);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(FindCleanerActivity.this, MainActivity.class);
+                startActivity(intent6);
                 break;
         }
         return false;

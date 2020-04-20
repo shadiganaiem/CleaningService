@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Authentications.Preferences;
 import Models.Favorite;
 
 import static Authentications.Preferences.GetLoggedInUserID;
@@ -105,6 +107,11 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
             case R.id.navigation_notifications:
                 Intent intent5 = new Intent(FavoritesListActivity.this, NotificationsActivity.class);
                 startActivity(intent5);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(FavoritesListActivity.this, MainActivity.class);
+                startActivity(intent6);
                 break;
 
         }

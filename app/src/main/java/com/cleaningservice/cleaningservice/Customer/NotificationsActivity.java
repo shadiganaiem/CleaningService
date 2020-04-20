@@ -1,5 +1,12 @@
 package com.cleaningservice.cleaningservice.Customer;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,14 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
+import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Authentications.Preferences;
 import Models.Request;
 
 import static Authentications.Preferences.GetLoggedInUserID;
@@ -114,6 +116,11 @@ public class NotificationsActivity extends AppCompatActivity implements  Navigat
             case R.id.navigation_myjobs:
                 Intent intent4 = new Intent(NotificationsActivity.this, MyJobsActivity.class);
                 startActivity(intent4);
+                break;
+            case R.id.navigation_signout:
+                Preferences.Logout(this);
+                Intent intent6 = new Intent(NotificationsActivity.this, MainActivity.class);
+                startActivity(intent6);
                 break;
             case R.id.navigation_notifications:
                 break;
