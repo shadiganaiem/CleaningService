@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundlogin"
+    android:layoutDirection="rtl"
     tools:context=".LoginActivity">
 
 
@@ -45,6 +46,7 @@
         android:layout_width="162sp"
         android:layout_height="53sp"
         android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:background="@drawable/login_btn"
         android:fontFamily="@font/bold"
         android:onClick="Login"
@@ -74,35 +76,44 @@
         app:layout_constraintVertical_bias="0.908" />
 
     <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="13dp"
+        android:onClick="ResetPassword"
+        android:text="@string/ForgetMyPassword"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginPassword" />
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="200dp"
         android:fontFamily="@font/light"
         android:text="@string/member"
         android:textColor="@color/gray"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/SignUpBtn"
         android:layout_width="69dp"
         android:layout_height="26dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="198dp"
         android:fontFamily="@font/bold"
         android:onClick="OpenRegisterActivity"
         android:text="@string/register"
         android:textColor="@color/gradient1end"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.846" />
+        app:layout_constraintStart_toStartOf="@+id/textView" />
 
     <ImageView
         android:id="@+id/imageback"
@@ -113,10 +124,10 @@
         android:onClick="OpenMainActivity"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintHorizontal_bias="0.957"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.316"
+        app:layout_constraintVertical_bias="0.102"
         app:srcCompat="@drawable/back" />
 
     <TextView
@@ -130,7 +141,7 @@
         android:textSize="27sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.057" />

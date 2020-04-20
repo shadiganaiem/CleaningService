@@ -133,4 +133,8 @@
     <string name="ActivationFirstLine">الزبون الكريم</string>
     <string name="ActivationSecondLine">شكرًا على اختيارك لنا</string>
     <string name="ActivationThirdLine">من اجل استكمال مرحلة التسجيل وتفعيل الحساب الرجاء ادخال الرمز المرفق</string>
+    <string name="RateCustomer">تقييم</string>
+    <string name="JobProposalTitle">اقتراحات عمل</string>
+    <string name="ForgetMyPassword">نسيت كلمة المرور</string>
+    <string name="ResetPassword">استعادة كلمة المرور</string>
 </resources>

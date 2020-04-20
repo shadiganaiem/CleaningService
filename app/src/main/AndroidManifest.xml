@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Worker.Favorites"></activity>
+        <activity android:name=".ResetPassword"></activity>
+        <activity android:name=".Worker.JobProposals" />
+        <activity android:name=".Worker.Favorites" />
         <activity android:name=".Worker.JobFormRequests" />
         <activity android:name=".Worker.JobFormDetails" />
         <activity android:name=".Worker.Home" />

@@ -159,5 +159,9 @@
     <string name="DeleteFavorite">מחק ממועדפים</string>
     <string name="send">שלח</string>
     <string name="FormIds">בחר מספרי הטפסים הרצויים</string>
+    <string name="RateCustomer">דירוג לקוח</string>
+    <string name="JobProposalTitle">הצעות עבודה</string>
+    <string name="ForgetMyPassword">שכחתי סיסמה !</string>
+    <string name="ResetPassword">שחזור סיסמה</string>
 
 </resources>

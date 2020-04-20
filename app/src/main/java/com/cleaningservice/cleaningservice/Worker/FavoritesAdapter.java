@@ -9,12 +9,16 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.renderscript.Allocation;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +38,14 @@ import java.util.List;
 import java.util.Locale;
 
 import Authentications.Preferences;
+import Models.Customer;
 import Models.Favorite;
 import Models.JobForm;
 import Models.JobFormRequest;
+import Models.Ratings;
+
+import static Authentications.Preferences.GetLoggedInUserID;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
@@ -45,7 +54,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private Handler mainhandler = new Handler();
     private Handler secondHandler = new Handler();
     private ApplicationDbContext _context = null;
-
+    private TextView mail;
+    private TextView view;
+    private RatingBar bar;
+    private RatingBar bar2;
+    private Button cancelBut;
+    private Button rateBut;
+    private  float[] ratings = new float[2];
+    PopupWindow popUp;
 
     public FavoritesAdapter(List<Favorite> list, Context context){
         this.list  = list;
@@ -96,12 +112,91 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     public void run() {
                         holder.favoriteButtons.setVisibility(View.VISIBLE);
                         if(finalRated)
-                            holder.deleteFavoriteBtn.setVisibility(View.GONE);
+                            holder.favoriteRateBtn.setVisibility(View.GONE);
 
                         holder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.unnamed));
                         holder.image.setVisibility(View.VISIBLE);
                     }
                 });
+
+                if (!finalRated)
+                    holder.favoriteRateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                            View customView = inflater.inflate(R.layout.rating_pop_up, null);
+
+                            popUp = new PopupWindow(
+                                    customView,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                    true
+                            );
+                            popUp.showAtLocation(holder.recylcer_view_item, Gravity.CENTER, 0, 0);
+
+                            Customer customer = list.get(position).customer;
+                            mail = customView.findViewById(R.id.mail);
+                            view = customView.findViewById(R.id.fullname);
+                            cancelBut = customView.findViewById(R.id.cancel);
+                            rateBut = customView.findViewById(R.id.rate);
+
+                            ((TextView)customView.findViewById(R.id.Title)).setText(context.getResources().getString(R.string.RateCustomer));
+
+                            //default ratings
+                            ratings[0] = (float) 3.5;
+                            ratings[1] = (float) 3.5;
+
+                            view.setText(customer.Firstname + " " + customer.Lastname);
+                            mail.setText(customer.Email);
+
+                            bar = customView.findViewById(R.id.workRating);
+                            bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                @Override
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                    ratings[0] = rating;
+                                }
+                            });
+
+                            bar2 = customView.findViewById(R.id.timeRating);
+                            bar2.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                @Override
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                    ratings[1] = rating;
+
+                                }
+                            });
+
+                            cancelBut.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    popUp.dismiss();
+                                }
+                            });
+
+                            rateBut.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    int customerUserId = _context.GetUserIDByCustomerID(customer.ID);
+                                    float rating = (ratings[0] + ratings[1]) / 2;
+                                    Ratings rate = new Ratings(
+                                            GetLoggedInUserID(context),
+                                            customerUserId,
+                                            rating
+                                    );
+                                    try {
+                                        _context.InsertRating(rate);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    popUp.dismiss();
+                                    Toast.makeText(context, "דירוג בוצע בהצלחה", Toast.LENGTH_SHORT).show();
+                                    holder.favoriteRateBtn.setVisibility(View.GONE);
+                                }
+                            });
+
+                        }
+                    });
 
                  byte[] profileImage = _context.GetProfileImage(favorite.FavoriteUserId);
                 mainhandler.post(new Runnable() {
@@ -114,6 +209,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                         }
                     }
                 });
+
+
+
             }
         };
         Thread thread = new Thread(runnable);
@@ -130,6 +228,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public TextView title, description;
         public Button deleteFavoriteBtn, favoriteRateBtn;
         public LinearLayout favoriteButtons;
+        public RelativeLayout recylcer_view_item;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +238,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             deleteFavoriteBtn = itemView.findViewById(R.id.deleteFavoriteBtn);
             favoriteRateBtn = itemView.findViewById(R.id.favoriteRateBtn);
             favoriteButtons = itemView.findViewById(R.id.favoriteButtons);
+            recylcer_view_item = itemView.findViewById(R.id.recylcer_view_item);
 
             deleteFavoriteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

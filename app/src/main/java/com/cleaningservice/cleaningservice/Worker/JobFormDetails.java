@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -98,6 +100,8 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                         formDetailsProgressBar.setVisibility(View.VISIBLE);
                         formComponents.setVisibility(View.VISIBLE);
 
+                        RelativeLayout Offer_Buttons = findViewById(R.id.Offer_Buttons);
+                        RelativeLayout main_Buttons = findViewById(R.id.linearLayout7);
                         TextView customerFullName = findViewById(R.id.CustomerFullName);
                         TextView customerRating = findViewById(R.id.CustomerRating);
                         TextView descirption = (TextView) findViewById(R.id.descriptionBox);
@@ -137,6 +141,15 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                         if (requested) {
                             sendRequestBtn.setText(R.string.RequestSent);
                             sendRequestBtn.setOnClickListener(null);
+                        }
+
+                        if (jobForm.StatusId == Util.Statuses.PRIVATE.value) {
+                            Offer_Buttons.setVisibility(View.VISIBLE);
+                            main_Buttons.setVisibility(View.GONE);
+                        }
+                        else{
+                            main_Buttons.setVisibility(View.VISIBLE);
+                            Offer_Buttons.setVisibility(View.GONE);
                         }
 
                         formComponents.setVisibility(View.VISIBLE);
@@ -208,6 +221,10 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 intent = new Intent(JobFormDetails.this,Favorites.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_jobOffers:
+                intent = new Intent(JobFormDetails.this,JobProposals.class);
+                startActivity(intent);
+                break;
         }
 
         return false;
@@ -222,7 +239,6 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
 
         JobFormRequest jobFormRequest = new JobFormRequest(employeeId, jobForm.ID);
         if (_context.InsertJobFormRequest(jobFormRequest)) {
-
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
@@ -271,9 +287,110 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
 
             Intent intent = new Intent(JobFormDetails.this, Home.class);
             startActivity(intent);
-        } else {
-
         }
+    }
+
+    public void AcceptOffer(View v) {
+        formDetailsProgressBar.setVisibility(View.VISIBLE);
+        findViewById(R.id.linearLayout7).setVisibility(View.GONE);
+
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                int employeeId = Preferences.GetLoggedInUserCustomerOREmployeeID(getApplicationContext());
+                Employee employee = _context.GetEmployee(employeeId);
+                if (_context.AcceptJobOffer(jobForm.ID, employeeId)) {
+                    try {
+                        String body = "Hi " + jobForm.customer.Firstname + ",\n"
+                                + "You have received a job offer response From " + employee.Firstname + " " + employee.Lastname
+                                + ".\n" + "For your JobForm at " + jobForm.City + " " + jobForm.Address + "\n"
+                                + "Your offer was accepted. you can call the worker at : " + employee.Phone
+                                + "to complete the next procedures."
+                                + "\n\n\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        String recipients = jobForm.customer.Email;
+                        String email = null;
+
+                        email = Util.GetProperty("mail.email", getApplicationContext());
+                        String password = Util.GetProperty("mail.password", getApplicationContext());
+                        MailService _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: JOB OFFER RESPONSE",
+                                body,
+                                "CleaningService",
+                                recipients);
+
+                        body = "Hi " + employee.Firstname + ",\n"
+                                + "Your job request has been sent. The Customer will call you as soon as he can, Thank You for your response!\n"
+                                + "Job Details : \n"
+                                + "Customer name : " + jobForm.customer.Firstname + " " + jobForm.customer.Lastname + ".\n"
+                                + "Address : " + jobForm.City + " " + jobForm.Address + ".\n\n\n"
+                                + "-------------------\n"
+                                + "Best Regards, CleaningService Team.\n"
+                                + "For more information please Contact us at \n support@cleaningService.com";
+
+                        recipients = employee.Email;
+                        email = Util.GetProperty("mail.email", getApplicationContext());
+                        password = Util.GetProperty("mail.password", getApplicationContext());
+                        _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB RESPONSE",
+                                body,
+                                "CleaningService",
+                                recipients);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent intent = new Intent(JobFormDetails.this, JobFormRequests.class);
+                    startActivity(intent);
+                }
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public void RejectOffer(View v) {
+        formDetailsProgressBar.setVisibility(View.VISIBLE);
+        findViewById(R.id.Offer_Buttons).setVisibility(View.GONE);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                int employeeId = Preferences.GetLoggedInUserCustomerOREmployeeID(getApplicationContext());
+                if (_context.RejectJobOffer(jobForm.ID, employeeId)) {
+                    Employee employee = _context.GetEmployee(employeeId);
+                    try {
+                        String body =
+                                "Your job Offer (" + jobForm.ID + ") for " + employee.Firstname + " " + employee.Lastname +
+                                        " has been rejected.!\n\n\n"
+                                        + "-------------------\n"
+                                        + "Best Regards, CleaningService Team.\n"
+                                        + "For more information please Contact us at \n support@cleaningService.com";
+
+                        String recipients = jobForm.customer.Email;
+                        String email = Util.GetProperty("mail.email", getApplicationContext());
+                        String password = Util.GetProperty("mail.password", getApplicationContext());
+                        MailService _mailService = new MailService(email, password);
+                        _mailService.sendMail("CleaningService: NEW JOB RESPONSE",
+                                body,
+                                "CleaningService",
+                                recipients);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Intent intent = new Intent(JobFormDetails.this, JobFormRequests.class);
+                startActivity(intent);
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     public void BackToHome(View v) {

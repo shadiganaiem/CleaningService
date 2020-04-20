@@ -14,6 +14,12 @@
             android:icon="@drawable/ic_work_black_24dp"
             android:title="@string/myJobs" />
     </group>
+    <group android:checkableBehavior="single" android:id="@+id/g3">
+        <item
+            android:id="@+id/navigation_jobOffers"
+            android:icon="@drawable/ic_email_black_24dp"
+            android:title="@string/JobProposalTitle" />
+    </group>
     <group android:checkableBehavior="single" android:id="@+id/g4">
         <item
             android:id="@+id/navigation_favlist"

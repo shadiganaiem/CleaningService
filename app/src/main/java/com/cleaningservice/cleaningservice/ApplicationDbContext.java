@@ -11,6 +11,7 @@ import com.cleaningservice.cleaningservice.Customer.NameImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UTFDataFormatException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -175,7 +176,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @return
      */
     public int GetUserIdByUsername(String username){
-        String query = "SELECT ID FROM USERS WHERE Username = " + username;
+        String query = "SELECT ID FROM USERS WHERE Username = '" + username+"'";
         try{
             ResultSet result = ExecuteSelectQuery(query);
             if (result.next()) {
@@ -402,6 +403,60 @@ public class ApplicationDbContext extends AppCompatActivity {
                 jobForm.Address = result.getString("Address");
                 jobForm.EndDate = result.getDate("EndDate");
                 jobForm.StatusId = result.getInt("JStatusId");
+                Customer customer = new Customer();
+
+                customer.Firstname = result.getString("Firstname");
+                customer.Lastname = result.getString("Lastname");
+                customer.Phone = result.getString("Phone");
+                customer.Rating = result.getInt("Rating");
+
+                jobForm.customer = customer;
+                request.jobForm = jobForm;
+
+                requests.add(request);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return requests;
+    }
+
+    /**
+     * Get Employee Requests List
+     * @param employeeId
+     * @return
+     */
+    public List<JobFormRequest> GetEmployeeJobProposals(int employeeId){
+
+        String query = "SELECT JFR.JobFormId , JFR.StatusId ,JFR.CreationDate, JF.ID,JF.EndDate,JF.StartDate, JF.CustomerId,JF.City, JF.Address,JF.StatusId AS JStatusId, C.Firstname, C.Lastname, C.Phone, U.Rating" +
+                " FROM JobFormRequests AS JFR" +
+                " JOIN JobForms AS JF ON JF.ID=JFR.JobFormId" +
+                " JOIN Customers AS C ON C.ID = JF.CustomerId"+
+                " JOIN Users AS U ON U.CustomerId = C.ID" +
+                " WHERE JFR.EmployeeId = " + employeeId +
+                " AND JFR.CustomerId > 0"+
+                " AND JFR.StatusId = " +Util.Statuses.WAITING.value +
+                " AND JF.StatusId = "+Util.Statuses.PRIVATE.value ;
+        List<JobFormRequest> requests = new ArrayList<>();
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+
+            while (result.next()) {
+                JobFormRequest request = new JobFormRequest();
+                request.EmployeeId = employeeId;
+                request.JobFormId = result.getInt("JobFormId");
+                request.StatusId = result.getInt("StatusId");
+                request.CreationDate = result.getDate("CreationDate");
+                JobForm jobForm = new JobForm();
+                jobForm.ID = result.getInt("ID");
+                jobForm.CustomerId = result.getInt("CustomerId");
+                jobForm.City = result.getString("City");
+                jobForm.Address = result.getString("Address");
+                jobForm.EndDate = result.getDate("EndDate");
+                jobForm.StatusId = result.getInt("JStatusId");
+                jobForm.StartDate = result.getDate("StartDate");
                 Customer customer = new Customer();
 
                 customer.Firstname = result.getString("Firstname");
@@ -731,6 +786,39 @@ public class ApplicationDbContext extends AppCompatActivity {
         }
 
         return jobForm;
+    }
+
+    /**
+     * ACCEPT JOB OFFER
+     * @param jobFormId
+     * @param employeeId
+     * @return
+     */
+    public boolean AcceptJobOffer(int jobFormId,int employeeId){
+        String query =
+                " UPDATE JobFormRequests" +
+                " SET StatusId = "+Util.Statuses.ACCEPTED.value+
+                " WHERE EmployeeId = "+employeeId+
+                " AND JobFormId = " + jobFormId+
+
+                " UPDATE JobForms" +
+                " SET StatusId = " + Util.Statuses.NOTAVAILABLE.value+
+                " WHERE ID = " + jobFormId;
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Reject ( DELETE ) REQUET ( JOB OFFER )
+     * @param jobformId
+     * @param employeeId
+     * @return
+     */
+    public boolean RejectJobOffer(int jobformId,int employeeId){
+        String query = "DELETE FROM JobFormRequests" +
+                " WHERE EmployeeId = "+employeeId+
+                " AND JobFormId = "+ jobformId;
+
+        return ExecuteInsertData(query);
     }
 
     /**
@@ -1530,9 +1618,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         return true;
     }
 
-
-
-
     /**
      * check if a user already added to favorites
      * @param adderId
@@ -1591,6 +1676,92 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public boolean DeleteUserFromFavorites(int id){
         String query = "DELETE FROM Favorites WHERE ID = "+ id;
+        return ExecuteInsertData(query);
+    }
+
+    /**
+     * Check if Email Exists
+     * @param email
+     * @return
+     */
+    public boolean CheckIfEmailExists(String email){
+        String query = "SELECT TOP(1) E.ID , C.ID" +
+                " FROM Employees AS E , Customers AS C" +
+                " WHERE C.Email = '"+email+"'" +
+                " OR E.Email = '"+email + "'";
+
+        try{
+            ResultSet result = ExecuteSelectQuery(query);
+            if(result.next())
+                return true;
+            else
+                return false;
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Check if Phone Exists
+     * @param phone
+     * @return
+     */
+    public boolean CheckIfPhoneExists(String phone) {
+        String query = "SELECT TOP(1) E.ID , C.ID" +
+                " FROM Employees AS E , Customers AS C" +
+                " WHERE C.Phone = '"+phone+"'" +
+                " OR E.Phone = '"+phone + "'";
+
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next())
+                return true;
+            else
+                return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Check if Username Exists
+     * @param
+     * @return
+     */
+    public boolean CheckIfUsernameExists(String username) {
+        String query = "SELECT ID" +
+                " FROM Users" +
+                " WHERE Username = '"+username+"'";
+
+        try {
+            ResultSet result = ExecuteSelectQuery(query);
+            if (result.next())
+                return true;
+            else
+                return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean UpdateActivationCodeByPhone(String phone,String activationCode) {
+        String query = "Update USERS SET ActivationCode = '" + activationCode + "'" +
+                " WHERE EmployeeId = (SELECT TOP(1) ID FROM Employees WHERE Phone = '" + phone + "')" +
+                " UPDATE USERS SET ActivationCode = '"+activationCode+"'"+
+                " WHERE CustomerId = (SELECT TOP(1) ID FROM Customers WHERE Phone = '" +phone +"')";
+
+        return ExecuteInsertData(query);
+    }
+
+    public boolean ChangePasswordByPhone(String phone,String password){
+        String query = "Update USERS SET Password = '" + password + "'" +
+                " WHERE EmployeeId = (SELECT TOP(1) ID FROM Employees WHERE Phone = '" + phone + "')" +
+                " UPDATE USERS SET Password = '"+password+"'"+
+                " WHERE CustomerId = (SELECT TOP(1) ID FROM Customers WHERE Phone = '" +phone +"')";
         return ExecuteInsertData(query);
     }
 }

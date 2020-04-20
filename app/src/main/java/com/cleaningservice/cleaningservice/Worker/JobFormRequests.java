@@ -116,6 +116,10 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 intent = new Intent(JobFormRequests.this,Favorites.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_jobOffers:
+                intent = new Intent(JobFormRequests.this,JobProposals.class);
+                startActivity(intent);
+                break;
         }
 
         return false;

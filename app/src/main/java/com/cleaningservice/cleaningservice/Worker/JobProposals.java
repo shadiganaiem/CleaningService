@@ -1,4 +1,5 @@
 package com.cleaningservice.cleaningservice.Worker;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -19,25 +19,29 @@ import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 
 import Authentications.Preferences;
 import Models.Favorite;
-import Models.JobForm;
+import Models.JobFormRequest;
 
-public class Favorites extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class JobProposals  extends AppCompatActivity implements JobOffersAdapter.OnJobProposalListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private ApplicationDbContext _context = null;
     private DrawerLayout drawer;
-    private List<Favorite> favoritesList;
+    private JobOffersAdapter jobOffersAdapter;
+    private ApplicationDbContext _context = null;
+    private List<JobFormRequest> requests;
+    private TabLayout tabLayout;
     private Handler mainhandler = new Handler();
-    private FavoritesAdapter favoritesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_job_proposals);
 
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
@@ -56,23 +60,28 @@ public class Favorites extends AppCompatActivity implements NavigationView.OnNav
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        RecyclerView recyclerView = findViewById(R.id.employee_job_offers_list);
+        findViewById(R.id.jobOfferProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.employee_job_offers_list).setVisibility(View.INVISIBLE);
 
-        RecyclerView recyclerView = findViewById(R.id.employee_favorite_list);
-        findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
-        findViewById(R.id.employee_favorite_list).setVisibility(View.INVISIBLE);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                favoritesList = _context.GetUserFavoriteList(Preferences.GetLoggedInUserID(Favorites.this), Util.UserTypes.CUSTOMER);
+                int userId = Preferences.GetLoggedInUserID(getApplicationContext());
+                int employeeId = _context.GetEmployeeIdByUserID(userId);
+                requests = _context.GetEmployeeJobProposals(employeeId);
+                requests.sort(Comparator.comparing(JobFormRequest::GetCreaionDate).reversed());
+
                 mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        favoritesAdapter = new FavoritesAdapter(favoritesList, getApplicationContext());
+                        jobOffersAdapter = new JobOffersAdapter(requests, getApplicationContext(),JobProposals.this);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        recyclerView.setAdapter(favoritesAdapter);
-                        findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.employee_favorite_list).setVisibility(View.VISIBLE);
-                    }
+                        recyclerView.setAdapter(jobOffersAdapter);
+
+                        findViewById(R.id.jobOfferProgressBar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.employee_job_offers_list).setVisibility(View.VISIBLE);
+                   }
                 });
             }
         };
@@ -85,23 +94,42 @@ public class Favorites extends AppCompatActivity implements NavigationView.OnNav
         Intent intent;
         switch(menuItem.getItemId()) {
             case R.id.navigation_employee_home:
-                intent = new Intent(Favorites.this, Home.class);
+                intent = new Intent(JobProposals.this, Home.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_profile:
-                intent = new Intent(Favorites.this, ProfileActivity.class);
+                intent = new Intent(JobProposals.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_myjobs:
-                intent = new Intent(Favorites.this,JobFormRequests.class);
+                intent = new Intent(JobProposals.this,JobFormRequests.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_favlist:
-                intent = new Intent(Favorites.this,Favorites.class);
+                intent = new Intent(JobProposals.this,Favorites.class);
+                startActivity(intent);
+                break;
+            case R.id.navigation_jobOffers:
+                intent = new Intent(JobProposals.this,JobProposals.class);
                 startActivity(intent);
                 break;
         }
 
         return false;
+    }
+
+    @Override
+    public void onJobProposalClick(int position)
+    {
+        int jobFormId = requests.get(position).JobFormId;
+
+        Intent intent = new Intent(this,JobFormDetails.class);
+
+        //Pass JobForm Id to JobFormDetails Activity
+        Bundle bundle = new Bundle();
+        bundle.putInt("jobFormId",jobFormId);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
     }
 }

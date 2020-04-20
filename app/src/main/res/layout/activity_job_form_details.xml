@@ -202,6 +202,39 @@
                             android:textColor="@color/white" />
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/Offer_Buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+
+                        <Button
+                            android:id="@+id/acceptOfferBtn"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:background="@drawable/success_btn"
+                            android:gravity="center"
+                            android:onClick="AcceptOffer"
+                            android:text="@string/approve" />
+
+                        <Button
+                            android:id="@+id/rejectOfferBtn"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:background="@drawable/danger_btn"
+                            android:onClick="RejectOffer"
+                            android:text="@string/dismiss"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -16,6 +16,34 @@ import Models.User;
 
 public class SMSService {
 
+
+    public boolean SendResetCode(Context context, String destinationPhone,String resetCode) {
+        try {
+            String username = Util.GetProperty("sms.username", context);
+            String password = Util.GetProperty("sms.password", context);
+
+            String xmlBody = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                    "<sms>" +
+                    "<user>" +
+                    "<username>" + username + "</username>" +
+                    "<password>" + password + "</password>" +
+                    "</user>" +
+                    "<source>CleaningSRV</source>" +
+                    "<destinations>" +
+                    "<phone>"+destinationPhone+"</phone>" +
+                    "</destinations>" +
+                    "<message>To complete your request to reset password \n please enter the following code number:\n "+resetCode+"</message>" +
+                    "<response>0</response>" +
+                    "</sms>";
+
+            return this.SendSMS(xmlBody);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean SendActivationCode(Context context, User user) {
         try {
             String username = Util.GetProperty("sms.username", context);

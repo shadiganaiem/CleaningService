@@ -176,6 +176,10 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 intent = new Intent(Home.this,Favorites.class);
                 startActivity(intent);
                 break;
+            case R.id.navigation_jobOffers:
+                intent = new Intent(Home.this,JobProposals.class);
+                startActivity(intent);
+                break;
         }
 
         return false;
