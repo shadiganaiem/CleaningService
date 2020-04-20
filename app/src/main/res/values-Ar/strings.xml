@@ -50,11 +50,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">لست عضوًا؟</string>
+    <string name="member">لست عضوًا</string>
     <string name="register">التسجيل</string>
     <string name="hello">مرحبا بك</string>
     <string name="but">back button</string>
-    <string name="join">Join Now</string>
+    <string name="join">سجل الأن</string>
     <string name="done">تقريبا انتهينا</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">تسجيل الخروج</string>
@@ -67,7 +67,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="FindCleaner">ايجاد منظف</string>
     <string name="LogoTitle">Real World Cleaning Service</string>
-    <string name="Budget">السعر يا غالي</string>
+    <string name="Budget">"السعر "</string>
     <string name="Rooms">عدد الغرف</string>
     <string name="FormJobsList">قائمة نماذج الأعمال المتاحة</string>
     <string name="RoomsNumber">عدد الغرف</string>
@@ -103,7 +103,6 @@
     <string name="JobOfferLimit">عرض العمل هذا سيكون متاح حتى تاريخ الانتهاء المذكور اعلاه. اذا قمت بارسال طلب عمل يجب ان تعلم ان الطلب سوف يُرفض في حال لم يتم الرد عليه خلال 48 ساعة. حظًا موفقًا !</string>
     <string name="support">لمزيد من المعلومات الرجاء التواصل معنا عبر البريد الاكتروني support @cleaningservice.com</string>
     <string name="FormStatus">حالة الملف</string>
-    <string name="Active">فعال</string>
     <string name="wait">"بقائمة الانتظار "</string>
     <string name="Assosiatedworker">الموظف</string>
     <string name="JobForm">ملف عمل</string>
@@ -133,4 +132,15 @@
     <string name="ActivationFirstLine">الزبون الكريم</string>
     <string name="ActivationSecondLine">شكرًا على اختيارك لنا</string>
     <string name="ActivationThirdLine">من اجل استكمال مرحلة التسجيل وتفعيل الحساب الرجاء ادخال الرمز المرفق</string>
+    <string name="Public">عام</string>
+    <string name="DoneJob">انتهى العمل</string>
+    <string name="YouSure">هل انت متأكد ؟</string>
+    <string name="yes">نعم</string>
+    <string name="No">لا</string>
+    <string name="Privat">خاص</string>
+    <string name="Pub">عام</string>
+    <string name="profile">البروفايل</string>
+    <string name="MoreDetails">معلومات اضافية</string>
+    <string name="Active">متوفر</string>
+    <string name="NotAvailable">غير متوفر</string>
 </resources>

@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/darkblue"
             android:id="@+id/sidebar"
-            app:title=" "
+            app:title="@string/Favorites"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="3dp"/>
@@ -63,6 +63,7 @@
         </LinearLayout>
          <ProgressBar
             android:id="@+id/FavProgressBar"
+             android:indeterminateDrawable="@drawable/progress_bar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -14,14 +14,7 @@
     >
 
 
-       <!-- <androidx.cardview.widget.CardView
-            android:id="@+id/yooo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="white"
-            app:cardCornerRadius="10dp"
-            >-->
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -265,7 +258,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
                         >
@@ -297,12 +290,12 @@
                                 android:fontFamily="@font/bold"
                                 android:layoutDirection="rtl"
                                 android:gravity="center"
-                                android:text="בהמתנה"
+                                android:text="@string/Active"
                                 android:textColor="@color/danger"
                                 android:textDirection="rtl" />
 
                             <TextView
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="15dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/bold"
@@ -321,12 +314,12 @@
                                 android:fontFamily="@font/bold"
                                 android:layoutDirection="rtl"
                                 android:gravity="center"
-                                android:text="בהמתנה"
+                                android:text="@string/wait"
                                 android:textColor="@color/danger"
                                 android:textDirection="rtl" />
                         </LinearLayout>
                         <LinearLayout
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:layout_width="90dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -334,8 +327,8 @@
                             >
                         <ImageView
                             android:id="@+id/workerimage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
                             app:srcCompat="@mipmap/icon"
                             />
 
@@ -421,6 +414,35 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/cleaner"/>
                 </LinearLayout>
+
+    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Switch
+                        android:id="@+id/switch1"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/Public"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:layout_width="140dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/login_btn"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/robotobolditalic"
+                        android:text="@string/DoneJob"
+                        android:id="@+id/closedjob"
+                        android:layout_marginStart="120dp"/>
+
+
+
                 </LinearLayout>
             </LinearLayout>
         <!--</androidx.cardview.widget.CardView>-->

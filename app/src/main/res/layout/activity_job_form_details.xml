@@ -104,6 +104,7 @@
                             style="?android:attr/progressBarStyle"
                             android:layout_width="94dp"
                             android:layout_height="81dp"
+                            android:indeterminateDrawable="@drawable/progress_bar"
                             android:layout_alignTop="@+id/jobFormDetailsProfileImage"
                             android:layout_alignBottom="@+id/jobFormDetailsProfileImage"
                             android:layout_alignParentEnd="true"

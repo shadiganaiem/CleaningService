@@ -6,31 +6,31 @@
         <item
             android:id="@+id/navigation_findcleaner"
             android:icon="@drawable/ic_create_black_24dp"
-            android:title="Find Cleaner" />
+            android:title="@string/FindCleaner" />
     </group>
     <group android:checkableBehavior="single" android:id="@+id/g2">
         <item
             android:id="@+id/navigation_myjobs"
             android:icon="@drawable/ic_work_black_24dp"
-            android:title="My Jobs" />
+            android:title="@string/myJobs" />
     </group>
     <group android:checkableBehavior="single" android:id="@+id/g3">
         <item
             android:id="@+id/navigation_notifications"
             android:icon="@drawable/ic_email_black_24dp"
-            android:title="Notifications" />
+            android:title="@string/MyRequests" />
     </group>
     <group android:checkableBehavior="single" android:id="@+id/g4">
         <item
             android:id="@+id/navigation_favlist"
             android:icon="@drawable/ic_list_black_24dp"
-            android:title="Favorites List" />
+            android:title="@string/Favorites" />
     </group>
     <group android:checkableBehavior="single" android:id="@+id/g5">
         <item
             android:id="@+id/navigation_profile"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="Profile" />
+            android:title="@string/profile" />
 
      </group>
 </menu>

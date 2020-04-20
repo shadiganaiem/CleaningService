@@ -1,31 +1,26 @@
 package com.cleaningservice.cleaningservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cleaningservice.cleaningservice.Services.SMSService;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Random;
 
-import Authentications.Preferences;
-import Models.Employee;
-import Models.User;
-
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText Username;
     private TextInputEditText Password;
     private Validator _validator = null;
+    private Button login;
     private SMSService _smsService = null;
     private ApplicationDbContext _context = null;
 
@@ -50,9 +45,20 @@ public class LoginActivity extends AppCompatActivity {
         if(intent.getBooleanExtra("flag", false)){
             Toast.makeText(getApplicationContext(),"חשבון נוצר בהצלחה", Toast.LENGTH_SHORT).show();
         }
+        login =findViewById(R.id.button);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.progressBar0).setVisibility(View.VISIBLE);
+                findViewById(R.id.loginlayout).setVisibility(View.INVISIBLE);
+                Login();
+
+            }
+        });
     }
 
-    public void Login(View v){
+    public void Login(){
+
         String regex = "^[\\p{L}0-9_]+$";
         boolean status = true;
 
@@ -65,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                     "' and Password='"+GetInputText(Password)+"'";
            ResultSet result =  _context.ExecuteSelectQuery(query);
            try{
+
                if(result.next()){
                    String activationCode = GenerateActivationCode();
                    int customerId = result.getInt("CustomerId");

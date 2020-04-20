@@ -1,21 +1,26 @@
 package com.cleaningservice.cleaningservice.Customer;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
@@ -36,33 +41,39 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
     boolean click = true;
     private Context context;
     private ApplicationDbContext con = null;
-    private  ArrayList<JobForm> jobForms = new ArrayList<>();
-    private  ArrayList<NameImage> namesImages = new ArrayList<>();
-    private  float[] ratings = new float[2];
+    private ArrayList<JobForm> jobForms = new ArrayList<>();
+    private ArrayList<NameImage> namesImages = new ArrayList<>();
+    private float[] ratings = new float[2];
+    Handler main = new Handler();
     private TextView view;
     private Button cancelBut;
     private RatingBar bar;
     private RatingBar bar2;
     private Button rateBut;
     private TextView mail;
+    private Handler mainHandler = new Handler();
 
 
-    public JobRecycler(Context context, ArrayList<JobForm> forms,ArrayList<NameImage> namesImages){
-        this.jobForms =  forms;
-        this.namesImages =namesImages;
+    public JobRecycler(Context context, ArrayList<JobForm> forms, ArrayList<NameImage> namesImages) {
+        this.jobForms = forms;
+        this.namesImages = namesImages;
         this.context = context;
     }
 
     @NonNull
     @Override
     public JobRecycler.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_job_forms,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_job_forms, parent, false);
         JobRecycler.ViewHolder holder = new JobRecycler.ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull JobRecycler.ViewHolder holder, int position) {
+    new Thread(){
+        @Override
+        public void run() {
+            super.run();
 
 
         try {
@@ -72,6 +83,11 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             e.printStackTrace();
         }
 
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+
+
         holder.startdate.setText(jobForms.get(position).StartDate.toString());
         holder.enddate.setText(jobForms.get(position).EndDate.toString());
         holder.formid.setText(String.valueOf(jobForms.get(position).ID));
@@ -79,50 +95,135 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         holder.address.setText(jobForms.get(position).Address);
         holder.budget.setText(String.valueOf(jobForms.get(position).Budget));
         holder.rooms.setText(String.valueOf(jobForms.get(position).Rooms));
-
-
-        if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value) {
-            holder.status.setText(R.string.Active);
-            holder.name.setText(namesImages.get(position).name);
-            try {
-                if(!con.checkIfNotRated(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
-                    holder.rate.setVisibility(View.INVISIBLE);
-                }  else{
-                    holder.rate.setVisibility(View.VISIBLE);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        });
 
 
-            try {
-                if(!con.checkIfNotFavorite(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID))) {
-                    holder.addtofav.setVisibility(View.INVISIBLE);
-                }  else{
-                    holder.addtofav.setVisibility(View.VISIBLE);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
+        if (jobForms.get(position).StatusId == Util.Statuses.NOTAVAILABLE.value || jobForms.get(position).StatusId == Util.Statuses.CLOSED.value) {
+            boolean ifNotRated = con.checkIfNotRated(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
 
-            holder.addtofav.setOnClickListener(new View.OnClickListener() {
+            mainHandler.post(new Runnable() {
                 @Override
-                public void onClick(View v) {
-                    con.InsertFavoriteByUserId(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
-                    Toast.makeText(context,"נוסף למועדפים",Toast.LENGTH_SHORT).show();
-                    holder.addtofav.setVisibility(View.INVISIBLE);
+                public void run() {
+                    holder.status.setText(R.string.NotAvailable);
+                    holder.name.setText(namesImages.get(position).name);
+                    try {
+                        if (!ifNotRated) {
+                            holder.rate.setVisibility(View.INVISIBLE);
+                        } else {
+                            holder.rate.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+
+            boolean ifNotFavorite = con.checkIfNotFavorite(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!ifNotFavorite) {
+                        holder.addtofav.setVisibility(View.INVISIBLE);
+                    } else {
+                        holder.addtofav.setVisibility(View.VISIBLE);
+                    }
+                    if (namesImages.get(position).image != null) {
+                        Glide.with(context).asBitmap().load(namesImages.get(position).image).into(holder.image);
+                    }
                 }
             });
         }
+        }
+    }.start();
 
-        if(jobForms.get(position).StatusId== Util.Statuses.NOTAVAILABLE.value){
+        holder.addtofav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                con.InsertFavoriteByUserId(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
+                Toast.makeText(context, "נוסף למועדפים", Toast.LENGTH_SHORT).show();
+                holder.addtofav.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        if(jobForms.get(position).StatusId == Util.Statuses.PRIVATE.value){
+            holder.switch1.setOnCheckedChangeListener(null);
+            holder.switch1.setText(R.string.Privat);
+            holder.switch1.setChecked(true);
+        }
+
+
+
+        holder.switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && jobForms.get(position).StatusId == Util.Statuses.AVAILABLE.value) {
+                    holder.switch1.setText(R.string.Privat);
+                    con.UpdateFormStatus(jobForms.get(position).ID, Util.Statuses.PRIVATE.value);
+                    jobForms.get(position).StatusId = Util.Statuses.PRIVATE.value;
+                } else if(!isChecked && jobForms.get(position).StatusId == Util.Statuses.PRIVATE.value) {
+                    holder.switch1.setText(R.string.Pub);
+                    con.UpdateFormStatus(jobForms.get(position).ID, Util.Statuses.AVAILABLE.value);
+                    jobForms.get(position).StatusId = Util.Statuses.AVAILABLE.value;
+                }
+            }
+        });
+
+        if (jobForms.get(position).StatusId == Util.Statuses.CLOSED.value) {
+            holder.Closed.setBackgroundColor(Color.GRAY);
+            holder.Closed.setTextColor(Color.BLACK);
+            holder.Closed.setEnabled(false);
+        }
+        else {
+            holder.Closed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (jobForms.get(position).StatusId == Util.Statuses.AVAILABLE.value || jobForms.get(position).StatusId == Util.Statuses.PRIVATE.value) {
+                        Toast.makeText(context, "עדיין אין עובד משוייך", Toast.LENGTH_LONG).show();
+                    } else {
+                        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View customView = inflater.inflate(R.layout.you_sure_popup, null);
+
+                        popUp = new PopupWindow(
+                                customView,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                true
+                        );
+                        popUp.showAtLocation(holder.relativeLayout, Gravity.CENTER, 0, 0);
+                        Button yesbt = customView.findViewById(R.id.yes);
+                        Button nobt = customView.findViewById(R.id.no);
+
+                        yesbt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                jobForms.get(position).StatusId = Util.Statuses.CLOSED.value;
+                                con.UpdateFormStatus(jobForms.get(position).ID, Util.Statuses.CLOSED.value);
+                                holder.Closed.setBackgroundColor(Color.GRAY);
+                                holder.Closed.setTextColor(Color.BLACK);
+                                holder.Closed.setEnabled(false);
+                                popUp.dismiss();
+                            }
+                        });
+
+                        nobt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popUp.dismiss();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        if (jobForms.get(position).StatusId == Util.Statuses.NOTAVAILABLE.value) {
 
             holder.rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View customView = inflater.inflate(R.layout.rating_pop_up,null);
+                    View customView = inflater.inflate(R.layout.rating_pop_up, null);
 
                     popUp = new PopupWindow(
                             customView,
@@ -130,7 +231,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             true
                     );
-                    popUp.showAtLocation(holder.relativeLayout, Gravity.CENTER,0,0);
+                    popUp.showAtLocation(holder.relativeLayout, Gravity.CENTER, 0, 0);
 
 
                     Employee employee = con.GetEmployee(namesImages.get(position).ID);
@@ -139,11 +240,12 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                     cancelBut = customView.findViewById(R.id.cancel);
                     rateBut = customView.findViewById(R.id.rate);
                     ImageView image = customView.findViewById(R.id.img);
-                    //Glide.with(context).asBitmap().load(namesImages.get(position).image).into(image);
-
+                    if(namesImages.get(position).image != null) {
+                        Glide.with(context).asBitmap().load(namesImages.get(position).image).into(image);
+                    }
                     //default ratings
-                    ratings[0] =(float) 3.5;
-                    ratings[1] =(float) 3.5;
+                    ratings[0] = (float) 3.5;
+                    ratings[1] = (float) 3.5;
 
                     view.setText(namesImages.get(position).name);
                     mail.setText(employee.Email);
@@ -152,7 +254,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                     bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                                ratings[0]=rating;
+                            ratings[0] = rating;
                         }
                     });
 
@@ -160,23 +262,23 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                     bar2.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            ratings[1]=rating;
+                            ratings[1] = rating;
 
                         }
                     });
 
                     cancelBut.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    popUp.dismiss();
-                                }
+                        @Override
+                        public void onClick(View v) {
+                            popUp.dismiss();
+                        }
                     });
 
                     rateBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            float rating = (ratings[0] + ratings[1])/2;
+                            float rating = (ratings[0] + ratings[1]) / 2;
                             Ratings rate = new Ratings(
                                     GetLoggedInUserID(context),
                                     con.GetUserIDByEmployeeID(employee.ID),
@@ -188,7 +290,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                                 e.printStackTrace();
                             }
                             popUp.dismiss();
-                            Toast.makeText(context,"דירוג בוצע בהצלחה",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "דירוג בוצע בהצלחה", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -196,13 +298,15 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             });
         }
 
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.relativeLayout.setVisibility(View.GONE);
-                Toast.makeText(context,"נמחק בהצלחה",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "נמחק בהצלחה", Toast.LENGTH_LONG).show();
                 con.DeleteForm(jobForms.get(position).ID);
-
+                jobForms.remove(position);
+                notifyItemRemoved(position);
             }
         });
     }
@@ -213,7 +317,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         return jobForms.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout relativeLayout;
         ImageView image;
@@ -229,12 +333,13 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
         Button rate;
         Button addtofav;
         Button delete;
-
+        Button Closed;
+        Switch switch1;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            relativeLayout =itemView.findViewById(R.id.recycle_job_forms);
+            relativeLayout = itemView.findViewById(R.id.recycle_job_forms);
             image = itemView.findViewById(R.id.workerimage);
             name = itemView.findViewById(R.id.workername);
             startdate = itemView.findViewById(R.id.StartDate);
@@ -248,6 +353,10 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             delete = itemView.findViewById(R.id.deletebut);
             addtofav = itemView.findViewById(R.id.addfav);
             formid = itemView.findViewById(R.id.formid);
+            Closed = itemView.findViewById(R.id.closedjob);
+            switch1 = itemView.findViewById(R.id.switch1);
+
+
         }
     }
 }

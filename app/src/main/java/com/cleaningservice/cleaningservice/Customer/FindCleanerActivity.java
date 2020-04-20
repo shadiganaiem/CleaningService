@@ -35,7 +35,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
 import com.cleaningservice.cleaningservice.ImagePickerActivity;
-import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.cleaningservice.cleaningservice.Validator;
@@ -371,7 +370,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                     int jobFormId = _context.InsertJobForm(jobForm, startDate, endDate);
                    // int jobFormId = 60;
                     if (jobFormId > 0) {
-                                if (_context.InsertImage(jobFormId, images) == false) {
+                                if (!_context.InsertImage(jobFormId, images)) {
                                     try {
                                         throw new Exception("problem aquired while attempting to upload images to the database");
                                     } catch (Exception e) {

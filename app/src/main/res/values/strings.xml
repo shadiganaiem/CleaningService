@@ -22,11 +22,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">לא רשום?</string>
+    <string name="member">לא רשום</string>
     <string name="register">הרשמה</string>
     <string name="hello">ברוך הבא</string>
     <string name="but">back button</string>
-    <string name="join">Join Now</string>
+    <string name="join">תצתרף עכשב</string>
     <string name="done">כמעט סיימנו</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">יציאה</string>
@@ -127,7 +127,7 @@
     <string name="requestWatingForResponse">הבקשה ממתינה למענה.</string>
     <string name="WaitingCondition">במידה ולא התקבל מענה תוך 48 שעות, הבקשה תדחה!</string>
     <string name="FormStatus">סטטוס הטופס</string>
-    <string name="Active">פעיל</string>
+    <string name="Active">זמין</string>
     <string name="wait">בהמתנה</string>
     <string name="Assosiatedworker">עובד משויך</string>
     <string name="JobForm">טופס עבודה</string>
@@ -155,9 +155,19 @@
     <string name="ActivationSecondLine">תודה שבחרת בנו</string>
     <string name="ActivationThirdLine">להמשיך תהליך ההרשמה ולהפעיל את חשבונך נא להכניס את קוד האימות</string>
     <string name="Favorites">המועדפים</string>
-    <string name="menu">רשימת</string>
+    <string name="menu" translatable="false">רשימת</string>
     <string name="DeleteFavorite">מחק ממועדפים</string>
     <string name="send">שלח</string>
     <string name="FormIds">בחר מספרי הטפסים הרצויים</string>
+    <string name="Public">ציבורי</string>
+    <string name="DoneJob">עבודה הסתיימה</string>
+    <string name="YouSure">\? בטוח רוצה לבציע פעולה זו</string>
+    <string name="yes">כן</string>
+    <string name="No">לא</string>
+    <string name="Privat">פרטי</string>
+    <string name="Pub">ציבורי</string>
+    <string name="profile">פרופיל</string>
+    <string name="MoreDetails">עוד פרטים</string>
+    <string name="NotAvailable">לא זמין</string>
 
 </resources>

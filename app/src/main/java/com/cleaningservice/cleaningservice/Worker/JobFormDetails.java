@@ -26,7 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.GlideApp;
-import com.cleaningservice.cleaningservice.ProfileActivity;
+import com.cleaningservice.cleaningservice.Customer.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Services.MailService;
 import com.cleaningservice.cleaningservice.Util;

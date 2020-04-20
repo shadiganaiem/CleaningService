@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -85,7 +84,7 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
                                 if(nameImage!=null)
                                     namesImages.add(nameImage);
                                 else{
-                                    namesImages.add(new NameImage("",0));
+                                    namesImages.add(new NameImage("",0, null));
                                 }
                             } catch (SQLException e) {
                                 e.printStackTrace();

@@ -34,6 +34,7 @@ android:layoutDirection="rtl">
         <ProgressBar
             android:id="@+id/jobFormsProgressBar"
             style="?android:attr/progressBarStyle"
+            android:indeterminateDrawable="@drawable/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"

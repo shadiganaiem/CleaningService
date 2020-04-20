@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -26,7 +25,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.JobForm;
 import Models.Request;
 
 import static Authentications.Preferences.GetLoggedInUserID;

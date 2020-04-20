@@ -34,7 +34,8 @@ public class Util {
         WAITING(5),
         ACCEPTED(6),
         REJECTED(7),
-        CLOSED(8);
+        CLOSED(8),
+        PRIVATE(9);
 
         public int value;
         private Statuses(int value)

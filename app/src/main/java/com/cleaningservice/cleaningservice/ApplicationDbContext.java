@@ -826,11 +826,11 @@ public class ApplicationDbContext extends AppCompatActivity {
 
         int jobFormId = 0;
         if(ExecuteInsertData(query)){
-            query = "SELECT row FROM JobForms ORDER BY ID DESC LIMIT 1";
+            query = "SELECT SCOPE_IDENTITY()";
             try{
                 ResultSet result = ExecuteSelectQuery(query);
                 if (result.next())
-                    jobFormId =  result.getInt("ID");
+                    jobFormId = result.getInt(1);
             }
             catch (Exception ex){
                 ex.printStackTrace();
@@ -852,6 +852,7 @@ public class ApplicationDbContext extends AppCompatActivity {
         String query = "INSERT INTO JobFormRequests(EmployeeId,JobFormId,StatusId,CreationDate)"
                 +" VALUES("+jobFormRequest.EmployeeId+","+jobFormRequest.JobFormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"')";
 
+
         boolean result = ExecuteInsertData(query);
         return result;
     }
@@ -862,12 +863,12 @@ public class ApplicationDbContext extends AppCompatActivity {
      * @param FormId
      * @return
      */
-    public boolean InsertCustomerJobFormRequest(int CustomerId , int FormId){
+    public boolean InsertCustomerJobFormRequest(int CustomerId , int FormId , int EmployeeId){
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
         Date date = new Date();
 
-        String query = "INSERT INTO JobFormRequests(JobFormId,StatusId,CreationDate,CustomerId)"
-                +" VALUES("+FormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"',"+CustomerId+")";
+        String query = "INSERT INTO JobFormRequests(EmployeeId,JobFormId,StatusId,CreationDate,CustomerId)"
+                +" VALUES("+EmployeeId+","+FormId +","+Util.Statuses.WAITING.value+",'"+dateFormat.format(date)+"',"+CustomerId+")";
 
         boolean result = ExecuteInsertData(query);
         return result;
@@ -893,7 +894,6 @@ public class ApplicationDbContext extends AppCompatActivity {
         catch (Exception ex){
 
         }
-
         return isRequested;
     }
 
@@ -971,15 +971,23 @@ public class ApplicationDbContext extends AppCompatActivity {
             int ID = result.getInt("ID");
 
             String fullname = fn + " " + ln;
-           // String query3 = "SELECT Image From USERS WHERE EmployeeId = " + ID;
-           // ResultSet result3 = ExecuteSelectQuery(query3);
-           // if (result3.next()) {
-              //  byte[] img = result3.getBytes("Image");
+            String query3 = "SELECT Image From USERS WHERE EmployeeId = " + ID;
+            ResultSet result3 = ExecuteSelectQuery(query3);
+            if (result3.next()) {
+                byte[] img = result3.getBytes("Image");
                 nameimage = new NameImage(
                         fullname,
-                        ID
+                        ID,
+                        img
                 );
-               // }
+            }
+            else{
+                nameimage = new NameImage(
+                        fullname,
+                        ID,
+                        null
+                );
+            }
             }
             return nameimage;
     }
@@ -987,7 +995,7 @@ public class ApplicationDbContext extends AppCompatActivity {
     public ArrayList<Request> GetFormUserRequests(int jobFormId) throws SQLException {
 
         String query = "SELECT * FROM JobFormRequests JOIN Employees on JobFormRequests.EmployeeId = Employees.ID " +
-                "WHERE JobFormRequests.JobFormId = " + jobFormId;
+                "WHERE JobFormRequests.JobFormId = " + jobFormId +"And JobFormRequests.CustomerId Is NULL";
         ArrayList<Request> requests = new ArrayList<>();
 
 
@@ -1127,9 +1135,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      */
     public boolean UpdateProfileImage(int userId,Bitmap bitmap){
         String query = "UPDATE USERS SET Image = ? WHERE ID = ?";
-        int width =bitmap.getWidth()/3;
-        int height =bitmap.getHeight()/3;
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
@@ -1565,17 +1571,11 @@ public class ApplicationDbContext extends AppCompatActivity {
         try {
             ResultSet imageResultSet = ExecuteSelectQuery(query);
             while (imageResultSet.next()) {
-                //new Thread(new Runnable() {
-                    //@Override
-                  //  public void run() {
                         try {
                             AllImagesBytes.add(imageResultSet.getBytes("ImageBytes"));
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                    //}
-                //}).start();
-
             }
         }
         catch (Exception ex){

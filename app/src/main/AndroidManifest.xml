@@ -17,14 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Worker.Favorites"></activity>
+        <activity android:name=".Worker.WorkerProfile"></activity>
+        <activity android:name=".Worker.Favorites" />
         <activity android:name=".Worker.JobFormRequests" />
         <activity android:name=".Worker.JobFormDetails" />
         <activity android:name=".Worker.Home" />
         <activity android:name=".Worker.SetWorkingDetailsActivity" />
         <activity android:name=".Customer.NotificationsActivity" />
         <activity android:name=".Customer.MyJobsActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".Customer.ProfileActivity" />
         <activity android:name=".Customer.FavoritesListActivity" />
         <activity android:name=".Activation" />
         <activity android:name=".Customer.FindCleanerActivity" />

@@ -150,11 +150,11 @@
 
     <TextView
         android:id="@+id/details"
-        android:layout_width="109dp"
+        android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/light"
-        android:text="More details"
+        android:text="@string/MoreDetails"
         android:textColor="@color/darkblue"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -198,17 +198,16 @@
         android:layout_width="108dp"
         android:layout_height="52dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/peace_btn"
         android:onClick="Logout"
         android:text="@string/logout"
+
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.468"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Type"
-        app:layout_constraintVertical_bias="0.247" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

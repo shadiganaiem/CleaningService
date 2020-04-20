@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:context=".ProfileActivity">
+    tools:context=".Customer.ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
+            app:title="@string/profile"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/darkblue"
             android:id="@+id/sidebar"
@@ -66,5 +67,7 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/side_bar"
         app:menu="@menu/bottom_nav_menu"/>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

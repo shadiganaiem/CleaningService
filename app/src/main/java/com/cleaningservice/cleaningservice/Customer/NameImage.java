@@ -6,7 +6,8 @@ public class NameImage {
     public byte[] image;
     int ID;
 
-    public NameImage(String name,int id){
+    public NameImage(String name,int id, byte[] image){
+
        this.image=image;
         this.name =name;
         this.ID =id;

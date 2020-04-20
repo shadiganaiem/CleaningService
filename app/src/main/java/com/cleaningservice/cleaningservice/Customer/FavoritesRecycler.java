@@ -72,6 +72,8 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                     con.DeleteFavorite(favorites.get(position).ID);
                     holder.relativeLayout.setVisibility(View.GONE);
                     Toast.makeText(context,"מועדף נמחק בהצלחה",Toast.LENGTH_LONG).show();
+                    favorites.remove(position);
+                    notifyItemRemoved(position);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -116,7 +118,7 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                         for(CheckBox checkBox : checkBoxes){
                             if(checkBox.isChecked()){
                                 flag = 1;
-                                con.InsertCustomerJobFormRequest(thisCustomer , checkBox.getId());
+                                con.InsertCustomerJobFormRequest(thisCustomer , checkBox.getId(), favorites.get(position).employee.ID);
                             }
                         }
                         if (flag == 0){

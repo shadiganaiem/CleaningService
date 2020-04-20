@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -66,8 +65,6 @@ public class FavoritesListActivity extends AppCompatActivity implements Navigati
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FavoritesRecycler(this, favorites);
         recyclerView.setAdapter(adapter);
-
-
 
         new Thread(){
             public void run() {
