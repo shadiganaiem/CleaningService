@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.Customer.NotificationsActivity;
 import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
 import com.cleaningservice.cleaningservice.Util;
@@ -104,6 +103,10 @@ public class Favorites extends AppCompatActivity implements NavigationView.OnNav
                 Preferences.Logout(this);
                 Intent intent6 = new Intent(Favorites.this, MainActivity.class);
                 startActivity(intent6);
+                break;
+            case R.id.navigation_jobOffers:
+                Intent intent5 = new Intent(Favorites.this,JobProposals.class);
+                startActivity(intent5);
                 break;
         }
 

@@ -1,5 +1,11 @@
 package com.cleaningservice.cleaningservice.Worker;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,16 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
-import com.cleaningservice.cleaningservice.ProfileActivity;
 import com.cleaningservice.cleaningservice.R;
-import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -26,7 +24,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import Authentications.Preferences;
-import Models.Favorite;
 import Models.JobFormRequest;
 
 public class JobProposals  extends AppCompatActivity implements JobOffersAdapter.OnJobProposalListener, NavigationView.OnNavigationItemSelectedListener {
@@ -98,7 +95,7 @@ public class JobProposals  extends AppCompatActivity implements JobOffersAdapter
                 startActivity(intent);
                 break;
             case R.id.navigation_profile:
-                intent = new Intent(JobProposals.this, ProfileActivity.class);
+                intent = new Intent(JobProposals.this, WorkerProfile.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_myjobs:

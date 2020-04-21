@@ -321,6 +321,10 @@ public class WorkerProfile  extends AppCompatActivity implements NavigationView.
                     Intent intent5 = new Intent(WorkerProfile.this, Home.class);
                     startActivity(intent5);
                     break;
+                case R.id.navigation_jobOffers:
+                    Intent intent = new Intent(WorkerProfile.this,JobProposals.class);
+                    startActivity(intent);
+                    break;
             }
         return false;
     }
