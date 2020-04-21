@@ -143,4 +143,8 @@
     <string name="MoreDetails">معلومات اضافية</string>
     <string name="Active">متوفر</string>
     <string name="NotAvailable">غير متوفر</string>
+    <string name="RateCustomer">تقييم</string>
+    <string name="JobProposalTitle">اقتراحات عمل</string>
+    <string name="ForgetMyPassword">نسيت كلمة المرور</string>
+    <string name="ResetPassword">استعادة كلمة المرور</string>
 </resources>

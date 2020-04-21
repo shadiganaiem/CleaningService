@@ -81,7 +81,7 @@ public class Activation extends AppCompatActivity {
                             if (ActivateAccount()) {
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 Preferences sp = new Preferences();
-                                sp.SetUserID(getApplicationContext(), user.ID, user.CustomerId != 0 ? true : false);
+                                sp.SetUserID(getApplicationContext(), user.ID,user.CustomerId != 0 ? user.CustomerId : user.EmployeeId, user.CustomerId != 0 ? true : false);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "שגיאה באימות", Toast.LENGTH_SHORT).show();
@@ -159,7 +159,7 @@ public class Activation extends AppCompatActivity {
 
             _smsService.SendActivationCode(getApplicationContext(),user);
 
-            Toast.makeText(getApplicationContext(), "קוד חדש נשלח אליך בהצלחה", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "קוד חדש נשלח אליך", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }else {
             Toast.makeText(getApplicationContext(), "קוד לא נשלח!", Toast.LENGTH_SHORT).show();

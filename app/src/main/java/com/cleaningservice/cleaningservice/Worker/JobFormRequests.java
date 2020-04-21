@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import Authentications.Preferences;
+import Models.JobForm;
 import Models.JobFormRequest;
 
 public class JobFormRequests extends AppCompatActivity  implements RequestAdapter.OnJobFormRequestListener, NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
@@ -112,6 +113,10 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 break;
             case R.id.navigation_favlist:
                 intent = new Intent(JobFormRequests.this,Favorites.class);
+                startActivity(intent);
+                break;
+            case R.id.navigation_jobOffers:
+                intent = new Intent(JobFormRequests.this,JobProposals.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_signout:

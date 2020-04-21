@@ -1,5 +1,6 @@
 package com.cleaningservice.cleaningservice;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
@@ -48,6 +49,9 @@ public class RegisterActivity extends AppCompatActivity  {
     //Services
     private PlacesClient placesClient;
     private SMSService _smsService;
+
+    //Handler
+    private Handler mainhandler = new Handler();
 
 
     @Override
@@ -129,45 +133,77 @@ public class RegisterActivity extends AppCompatActivity  {
         if(!_validator.InputValidate(Username,regex)){
             status = false;
         }
+        if(status && _context.CheckIfUsernameExists(GetInputText(Username))) {
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>שם משתמש קיים במערכת</font>");
+            Username.setError(errorMsg);
+            status = false;
+        }
         if(!GetInputText(Password).equals(GetInputText(RePassword)) && !GetInputText(Password).equals("")){
             android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>סיסמאות לא תואמות</font>");
             Password.setError(errorMsg);
             RePassword.setError(errorMsg);
             status = false;
         }
+        if(_context.CheckIfEmailExists(GetInputText(Email))){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>דואר אלקטרוני נמצא במערכת</font>");
+            Email.setError(errorMsg);
+            Password.setError(errorMsg);
+            RePassword.setError(errorMsg);
+            status = false;
+        }
+        if(_context.CheckIfPhoneExists(GetInputText(Phone))){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>מספר נייד נמצא במערכת</font>");
+            Phone.setError(errorMsg);
+            Password.setError(errorMsg);
+            RePassword.setError(errorMsg);
+            status = false;
+        }
         if (status){
-            String table  = IsEmployee.isChecked() ?  "Employees" : "Customers";
-            String tableId = IsEmployee.isChecked() ? "EmployeeId" : "CustomerId";
-            String activationCode = GenerateActivationCode();
-            String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
-                "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
-                    "','"+GetInputText(Phone)+"');"+
-                "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode,Rating) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','"+Util.Statuses.DEACTIVATED.value+"','"
-                    +activationCode+"','1' " +
-                "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    String table  = IsEmployee.isChecked() ?  "Employees" : "Customers";
+                    String tableId = IsEmployee.isChecked() ? "EmployeeId" : "CustomerId";
+                    String activationCode = GenerateActivationCode();
+                    String query = "INSERT INTO " + table + "(Firstname,Lastname,Email,Phone) "+
+                            "VALUES('"+ GetInputText(Firstname) +"','"+GetInputText(Lastname)+"','"+GetInputText(Email)+
+                            "','"+GetInputText(Phone)+"');"+
+                            "INSERT INTO Users(Username,"+ tableId +",Password,StatusId,ActivationCode,Rating) " + "SELECT '"+GetInputText(Username)+ "',MAX(ID),'"+GetInputText(Password)+"','"+Util.Statuses.DEACTIVATED.value+"','"
+                            +activationCode+"','1' " +
+                            "FROM "+ table +" WHERE "+table+".Phone = '"+GetInputText(Phone)+"';";
+                    if(_context.ExecuteInsertData(query)) {
+                        //SendConfirmationEmail(GetInputText(Email),activationCode);
+                        User user = new User();
+                        user.customer = new Customer();
+                        user.customer.Phone = GetInputText(Phone);
+                        user.ActivationCode = activationCode;
+                       _smsService.SendActivationCode(getApplicationContext(), user);
 
-            if(_context.ExecuteInsertData(query)) {
-                //SendConfirmationEmail(GetInputText(Email),activationCode);
-                User user = new User();
-                user.customer = new Customer();
-                user.customer.Phone = GetInputText(Phone);
-                user.ActivationCode = activationCode;
-                _smsService.SendActivationCode(getApplicationContext(), user);
+                        try {
+                            int id = _context.GetUserIdByUsername(GetInputText(Username));
+                            _context.InitializeUserImage(id);
 
-                try {
-                    int id = _context.GetUserIdByUsername(GetInputText(Username));
-                    Intent intent = new Intent(getBaseContext(), Activation.class);
-                    intent.putExtra("USER_ID", id);
-
-                    _context.InitializeUserImage(id);
-                    startActivity(intent);
-                } catch (Exception ex) {
-                    Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+                            mainhandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(getBaseContext(), Activation.class);
+                                    intent.putExtra("USER_ID", id);
+                                    startActivity(intent);
+                                }
+                            });
+                        } catch (Exception ex) {
+                            Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-            else{
-                Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
-            }
+            };
+
+            Thread thread = new Thread(runnable);
+            thread.start();
+
         }
     }
 

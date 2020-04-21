@@ -4,12 +4,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,18 +34,32 @@ import java.util.List;
 import java.util.Locale;
 
 import Authentications.Preferences;
+import Models.Customer;
+import Models.Employee;
 import Models.Favorite;
 import Models.JobFormRequest;
+import Models.Ratings;
 import Models.Request;
+
+import static Authentications.Preferences.GetLoggedInUserID;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder>  {
 
+    PopupWindow popUp;
     private Context context;
     private List<JobFormRequest> list;
     private OnJobFormRequestListener onJobFormRequestListener;
     private ApplicationDbContext _context;
     private Context getAppContext;
     private Handler mainhandler = new Handler();
+    private TextView mail;
+    private TextView view;
+    private RatingBar bar;
+    private RatingBar bar2;
+    private Button cancelBut;
+    private Button rateBut;
+    private  float[] ratings = new float[2];
 
 
     public RequestAdapter(List<JobFormRequest> list, Context context,OnJobFormRequestListener onJobFormRequestListener){
@@ -83,12 +101,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                     boolean added = false;
                     boolean rated = false;
                     int userId = Preferences.GetLoggedInUserID(context);
-                    ArrayList<Favorite> favorites =  _context.GetUserFavoriteList(userId,Util.UserTypes.CUSTOMER);
+                    ArrayList<Favorite> favorites = _context.GetUserFavoriteList(userId, Util.UserTypes.CUSTOMER);
                     int customerUserId = _context.GetUserIDByCustomerID(request.jobForm.CustomerId);
 
-                    if(!_context.checkIfNotRated(userId,customerUserId))
+                    if (!_context.checkIfNotRated(userId, customerUserId))
                         rated = true;
-                    if(!_context.checkIfNotFavorite(userId,customerUserId))
+                    if (!_context.checkIfNotFavorite(userId, customerUserId))
                         added = true;
 
 
@@ -100,16 +118,97 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
                             holder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.completed));
                             holder.image.setVisibility(View.VISIBLE);
-                            if(finalAdded)
+                            if (finalAdded)
                                 holder.addToFavoriteBtn.setVisibility(View.INVISIBLE);
-                            if(finalRated)
-                                holder.rateBtn.setVisibility(View.INVISIBLE);
-                            if(finalAdded && finalRated)
+                            if (finalRated)
+                                holder.rateBtn.setVisibility(View.GONE);
+                            if (finalAdded && finalRated)
                                 holder.endButtons.setVisibility(View.INVISIBLE);
                             else
                                 holder.endButtons.setVisibility(View.VISIBLE);
+
+
                         }
                     });
+
+                    if (!finalRated)
+                        holder.rateBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                                View customView = inflater.inflate(R.layout.rating_pop_up, null);
+
+                                popUp = new PopupWindow(
+                                        customView,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        true
+                                );
+                                popUp.showAtLocation(holder.recylcer_view_item, Gravity.CENTER, 0, 0);
+
+
+                                Customer customer = list.get(position).jobForm.customer;
+                                mail = customView.findViewById(R.id.mail);
+                                view = customView.findViewById(R.id.fullname);
+                                cancelBut = customView.findViewById(R.id.cancel);
+                                rateBut = customView.findViewById(R.id.rate);
+
+                                ((TextView)customView.findViewById(R.id.Title)).setText(context.getResources().getString(R.string.RateCustomer));
+
+                                //default ratings
+                                ratings[0] = (float) 3.5;
+                                ratings[1] = (float) 3.5;
+
+                                view.setText(customer.Firstname + " " + customer.Lastname);
+                                mail.setText(customer.Email);
+
+                                bar = customView.findViewById(R.id.workRating);
+                                bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                    @Override
+                                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                        ratings[0] = rating;
+                                    }
+                                });
+
+                                bar2 = customView.findViewById(R.id.timeRating);
+                                bar2.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                    @Override
+                                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                        ratings[1] = rating;
+
+                                    }
+                                });
+
+                                cancelBut.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        popUp.dismiss();
+                                    }
+                                });
+
+                                rateBut.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        float rating = (ratings[0] + ratings[1]) / 2;
+                                        Ratings rate = new Ratings(
+                                                GetLoggedInUserID(context),
+                                                customerUserId,
+                                                rating
+                                        );
+                                        try {
+                                            _context.InsertRating(rate);
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                        popUp.dismiss();
+                                        Toast.makeText(context, "דירוג בוצע בהצלחה", Toast.LENGTH_SHORT).show();
+                                        holder.rateBtn.setVisibility(View.GONE);
+                                    }
+                                });
+
+                            }
+                        });
                 }
             };
             Thread thread = new Thread(runnable);
@@ -153,6 +252,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         public LinearLayout endButtons;
         public Button addToFavoriteBtn;
         public Button rateBtn;
+        public RelativeLayout recylcer_view_item;
         public OnJobFormRequestListener onJobFormRequestListener;
         public ViewHolder(@NonNull View itemView,OnJobFormRequestListener onJobFormRequestListener) {
             super(itemView);
@@ -162,6 +262,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             endButtons = itemView.findViewById(R.id.endButtons);
             addToFavoriteBtn = itemView.findViewById(R.id.addToFavoriteBtn);
             rateBtn = itemView.findViewById(R.id.rateBtn);
+            recylcer_view_item = itemView.findViewById(R.id.recylcer_view_item);
 
             addToFavoriteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

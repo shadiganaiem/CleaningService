@@ -66,6 +66,10 @@ public class LoginActivity extends AppCompatActivity {
             status = false;
         }
 
+        if(GetInputText(Password).contains("'") || GetInputText(Password).contains("'OR") || GetInputText(Password).contains("'or") || GetInputText(Password).contains("' or")
+            ||GetInputText(Password).contains("' OR"))
+            return;
+
         if (status){
             String query = "SELECT ID ,StatusId , CustomerId , EmployeeId FROM Users WHERE Username='"+GetInputText(Username)+
                     "' and Password='"+GetInputText(Password)+"'";
@@ -76,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                    String activationCode = GenerateActivationCode();
                    int customerId = result.getInt("CustomerId");
                    int employeeId = result.getInt("EmployeeId");
-                   if(result.getInt("StatusId") == Util.Statuses.ACTIVATED.value){
+                   if(result.getInt("StatusId") == Util.Statuses.ACTIVATED.value || result.getInt("StatusId") == Util.Statuses.DEACTIVATED.value){
                        String Phone;
                        if(customerId != 0)
                            Phone = _context.GetCustomer(customerId).Phone;
@@ -138,5 +142,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // this will convert any number sequence into 6 character.
         return String.format(Locale.US,"%06d", number);
+    }
+
+    public void ResetPassword (View v){
+        Intent intent = new Intent(getBaseContext(), ResetPassword.class);
+        startActivity(intent);
     }
 }
