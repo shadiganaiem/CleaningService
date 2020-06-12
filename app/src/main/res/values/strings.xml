@@ -22,7 +22,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="member">לא רשום</string>
+    <string name="member">"עדיין לא רשום? "</string>
     <string name="register">הרשמה</string>
     <string name="hello">ברוך הבא</string>
     <string name="but">back button</string>
