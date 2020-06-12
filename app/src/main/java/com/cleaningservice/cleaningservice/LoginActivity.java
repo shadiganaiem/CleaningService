@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Username = findViewById(R.id.LoginUsername);
         Password = findViewById(R.id.LoginPassword);
-
+//
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
             _smsService = new SMSService();
