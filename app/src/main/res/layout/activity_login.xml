@@ -64,23 +64,23 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="162sp"
-        android:layout_height="53sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/login_btn"
-        android:fontFamily="@font/bold"
-        android:text="@string/Login"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.244"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginPassword"
-        app:layout_constraintVertical_bias="0.093"
-        tools:visibility="visible" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="162sp"
+            android:layout_height="53sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/login_btn"
+            android:fontFamily="@font/bold"
+            android:text="@string/Login"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.244"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/LoginPassword"
+            app:layout_constraintVertical_bias="0.093"
+            tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView2"
@@ -108,44 +108,52 @@
         android:text="@string/ForgetMyPassword"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/LoginPassword" /><![CDATA[
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/light"
-        android:text="@string/member"
-        android:textColor="@color/gray"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878" />
+
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/SignUpBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="292dp"
-        android:layout_marginBottom="198dp"
-        android:fontFamily="@font/bold"
-        android:onClick="OpenRegisterActivity"
-        android:text="@string/register"
-        android:textColor="@color/gradient1end"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868" />
-        app:layout_constraintStart_toStartOf="@+id/textView" />
+    app:layout_constraintStart_toStartOf="@+id/textView" />
 
-    <ImageView
+
+
+
+
+        ]]>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="200dp"
+            android:fontFamily="@font/light"
+            android:text="@string/member"
+            android:textColor="@color/gray"
+            android:textDirection="rtl"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
+
+        <TextView
+            android:id="@+id/SignUpBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="180dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="200dp"
+            android:fontFamily="@font/bold"
+            android:onClick="OpenRegisterActivity"
+            android:text="@string/register"
+            android:textColor="@color/gradient1end"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
+
+        <ImageView
         android:id="@+id/imageback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

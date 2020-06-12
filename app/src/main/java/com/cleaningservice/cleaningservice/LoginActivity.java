@@ -52,7 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                 findViewById(R.id.progressBar0).setVisibility(View.VISIBLE);
                 findViewById(R.id.loginlayout).setVisibility(View.INVISIBLE);
                 Login();
-
+                findViewById(R.id.progressBar0).setVisibility(View.INVISIBLE);
+                findViewById(R.id.loginlayout).setVisibility(View.VISIBLE);
             }
         });
     }
