@@ -3,7 +3,10 @@ package com.cleaningservice.cleaningservice.Customer;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
@@ -64,6 +67,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Authentications.Preferences;
 import Models.JobForm;
@@ -108,6 +112,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_find_cleaner);
 
         try {
@@ -191,8 +196,51 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
                 Intent intent6 = new Intent(FindCleanerActivity.this, MainActivity.class);
                 startActivity(intent6);
                 break;
+            case R.id.change_language:
+                showLanguageDialog();
+                break;
         }
         return false;
+    }
+
+    private void showLanguageDialog() {
+        final String[] languagesList = { "العربية", "עברית" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.chooseLanguage));
+        builder.setSingleChoiceItems(languagesList, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0) {
+                    setLocale("ar");
+                    recreate();
+                }
+                else if (which ==1){
+                    setLocale("he");
+                    recreate();
+                }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void setLocale(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String lang = prefs.getString("My_Lang","");
+        setLocale(lang);
     }
 
     /**

@@ -173,5 +173,7 @@
     <string name="JobProposalTitle">הצעות עבודה</string>
     <string name="ForgetMyPassword">שכחתי סיסמה !</string>
     <string name="ResetPassword">שחזור סיסמה</string>
+    <string name="Change_Language">שנוי שפה</string>
+    <string name="chooseLanguage">בחר שפה</string>
 
 </resources>

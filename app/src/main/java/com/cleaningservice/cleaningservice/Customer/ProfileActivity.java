@@ -3,7 +3,10 @@ package com.cleaningservice.cleaningservice.Customer;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -44,6 +47,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 import Authentications.Preferences;
 import Models.Customer;
@@ -74,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toollbar);
@@ -145,16 +150,19 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     });
 
                     byte[] profileImage = _context.GetProfileImage(user.ID);
-                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
-                    //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
-                    //      .into(imgProfile);
-                    secondhandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            imgProfile.setImageDrawable(bitmap);
-                            imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
-                        }
-                    });
+                    if(profileImage != null) {
+                        Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
+
+                        //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
+                        //      .into(imgProfile);
+                        secondhandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                imgProfile.setImageDrawable(bitmap);
+                                imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
+                            }
+                        });
+                    }
                 }
             };
             Thread thread = new Thread(runnable);
@@ -330,8 +338,51 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     Intent intent6 = new Intent(ProfileActivity.this,MainActivity.class);
                     startActivity(intent6);
                     break;
+                case R.id.change_language:
+                    showLanguageDialog();
+                    break;
             }
         return false;
+    }
+
+    private void showLanguageDialog() {
+        final String[] languagesList = { "العربية", "עברית" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.chooseLanguage));
+        builder.setSingleChoiceItems(languagesList, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0) {
+                    setLocale("ar");
+                    recreate();
+                }
+                else if (which ==1){
+                    setLocale("he");
+                    recreate();
+                }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void setLocale(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String lang = prefs.getString("My_Lang","");
+        setLocale(lang);
     }
 }
 
