@@ -144,16 +144,20 @@ public class WorkerProfile  extends AppCompatActivity implements NavigationView.
                     });
 
                     byte[] profileImage = _context.GetProfileImage(user.ID);
-                    Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
+                    Drawable bitmap;
+                    if(profileImage != null){
+                        bitmap= new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
+                        secondhandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                imgProfile.setImageDrawable(bitmap);
+                                imgProfile.setColorFilter(ContextCompat.getColor(WorkerProfile.this, android.R.color.transparent));
+                            }
+                        });
+                    }
                     //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
                     //      .into(imgProfile);
-                    secondhandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            imgProfile.setImageDrawable(bitmap);
-                            imgProfile.setColorFilter(ContextCompat.getColor(WorkerProfile.this, android.R.color.transparent));
-                        }
-                    });
+
                 }
             };
             Thread thread = new Thread(runnable);

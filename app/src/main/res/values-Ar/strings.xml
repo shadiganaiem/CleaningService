@@ -54,8 +54,8 @@
     <string name="register">التسجيل</string>
     <string name="hello">مرحبا بك</string>
     <string name="but">back button</string>
-    <string name="join">سجل الأن</string>
-    <string name="done">تقريبا انتهينا</string>
+    <string name="join">انضم الينا الان</string>
+    <string name="done">لقد انتهينا</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">تسجيل الخروج</string>
 
@@ -147,4 +147,17 @@
     <string name="JobProposalTitle">اقتراحات عمل</string>
     <string name="ForgetMyPassword">نسيت كلمة المرور</string>
     <string name="ResetPassword">استعادة كلمة المرور</string>
+    <string name="passwordnotmatch">كلمات المرور غير متطابقة!</string>
+    <string name="passwordValidate">كلمة المرور يجب ان تكون 8احرف على الاقل</string>
+    <string name="usernameExists">اسم المستخدم غير متاح</string>
+    <string name="phoneNumberExists">رقم الهاتف غير متاح</string>
+    <string name="EmailExists">البريد الاكتروني غير متاح</string>
+    <string name="EmailNotValid">البريد الاكتروني الذي ادخلته غير صحيح</string>
+    <string name="PhoneNumberNotValid">رقم الهاتف الذي ادخلته غير صحيح</string>
+    <string name="exception">حدث خطأ, الرجاء المحاولة لاحقًا</string>
+    <string name="accountCreated">تم انشاء الحساب بنجاح</string>
+    <string name="accountBlocked">لقد تم حظر هذا الحساب</string>
+    <string name="LoginFailed">احدى المعطيات التي قمت بادخالها غير صحيح</string>
+    <string name="ActivationCodeNotValid">رمز التأكيد غير صحيح</string>
+    <string name="newCodeSent">تم ارسال لك رمز تاكيد جديد</string>
 </resources>

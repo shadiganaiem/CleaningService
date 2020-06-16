@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         _validator = new Validator();
         Intent intent = getIntent();
         if(intent.getBooleanExtra("flag", false)){
-            Toast.makeText(getApplicationContext(),"חשבון נוצר בהצלחה", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),this.getResources().getString(R.string.accountCreated), Toast.LENGTH_SHORT).show();
         }
         login =findViewById(R.id.button);
         login.setOnClickListener(new View.OnClickListener() {
@@ -101,13 +101,13 @@ public class LoginActivity extends AppCompatActivity {
                        startActivity(intent);
                    }
                    else{
-                       Username.setError("חשבון חסום");
-                       Password.setError("חשבון חסום");
+                       Username.setError(this.getResources().getString(R.string.accountBlocked));
+                       Password.setError(this.getResources().getString(R.string.accountBlocked));
                    }
                }
                else{
-                   Username.setError("שם משתמש וסיסמה לא תואמות");
-                   Password.setError("שם משתמש וסיסמה לא תואמות");
+                   Username.setError(this.getResources().getString(R.string.LoginFailed));
+                   Password.setError(this.getResources().getString(R.string.LoginFailed));
                }
            }
            catch (Exception ex){

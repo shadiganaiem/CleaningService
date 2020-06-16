@@ -35,6 +35,7 @@ public class Activation extends AppCompatActivity {
     //SMS SERVICE
     private SMSService _smsService = null;
     private User user;
+    private String exception;
 
     //Current User
 
@@ -42,6 +43,8 @@ public class Activation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activation);
+
+        exception = this.getResources().getString(R.string.exception);
 
         try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
@@ -58,6 +61,8 @@ public class Activation extends AppCompatActivity {
             user.customer = _context.GetCustomer(user.CustomerId);
         }
 
+
+        String notValid = this.getResources().getString(R.string.ActivationCodeNotValid);
         codeInput = findViewById(R.id.code);
         codeInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -84,13 +89,13 @@ public class Activation extends AppCompatActivity {
                                 sp.SetUserID(getApplicationContext(), user.ID,user.CustomerId != 0 ? user.CustomerId : user.EmployeeId, user.CustomerId != 0 ? true : false);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(), "שגיאה באימות", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), exception, Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), "קוד אימות לא תואם", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), notValid, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception ex) {
-                        Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),exception, Toast.LENGTH_SHORT).show();
                     }
                 }
                 loader.setVisibility(View.INVISIBLE);
@@ -109,7 +114,7 @@ public class Activation extends AppCompatActivity {
                 return true;
             }
             else{
-                Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),exception, Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -159,10 +164,10 @@ public class Activation extends AppCompatActivity {
 
             _smsService.SendActivationCode(getApplicationContext(),user);
 
-            Toast.makeText(getApplicationContext(), "קוד חדש נשלח אליך", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.newCodeSent), Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }else {
-            Toast.makeText(getApplicationContext(), "קוד לא נשלח!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), exception, Toast.LENGTH_SHORT).show();
             textView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }

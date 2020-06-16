@@ -145,6 +145,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     });
 
                     byte[] profileImage = _context.GetProfileImage(user.ID);
+                    if(profileImage != null){
+
                     Drawable bitmap = new BitmapDrawable(BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length));
                     //GlideApp.with(ProfileActivity.this).load(_context.GetProfileImage(user.ID))
                     //      .into(imgProfile);
@@ -155,6 +157,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             imgProfile.setColorFilter(ContextCompat.getColor(ProfileActivity.this, android.R.color.transparent));
                         }
                     });
+                    }
                 }
             };
             Thread thread = new Thread(runnable);

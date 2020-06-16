@@ -1,5 +1,6 @@
 package com.cleaningservice.cleaningservice;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -96,17 +97,29 @@ public class RegisterActivity extends AppCompatActivity  {
             status = false;
         if(!_validator.InputValidate(Lastname,regex))
             status = false;
-        if(GetInputText(Phone).length() != 10){
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>מספר נייד לא תקין</font>");
+        if(GetInputText(Phone).length() < 10){
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.PhoneNumberNotValid)+"</font>");
             Phone.setError(errorMsg);
             status = false;
         }
         regex = "^[A-Za-z0-9_.-]+@(.+).[A-Za-z]+$";
         if(!_validator.InputValidate(Email,regex) || GetInputText(Email).equals("")){
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>דואר אלקטרוני אינו תקין</font>");
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.EmailNotValid)+"</font>");
             Email.setError(errorMsg);
             status = false;
         }
+
+        if(_context.CheckIfEmailExists(GetInputText(Email))){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.EmailExists)+"</font>");
+            Email.setError(errorMsg);
+            status = false;
+        }
+        if(_context.CheckIfPhoneExists(GetInputText(Phone))){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.phoneNumberExists)+"</font>");
+            Phone.setError(errorMsg);
+            status = false;
+        }
+
         if(status){
             FirstStep.setVisibility(View.INVISIBLE);
             SecondStep.setVisibility(View.VISIBLE);
@@ -134,31 +147,25 @@ public class RegisterActivity extends AppCompatActivity  {
             status = false;
         }
         if(status && _context.CheckIfUsernameExists(GetInputText(Username))) {
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>שם משתמש קיים במערכת</font>");
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.usernameExists)+"</font>");
             Username.setError(errorMsg);
             status = false;
         }
         if(!GetInputText(Password).equals(GetInputText(RePassword)) && !GetInputText(Password).equals("")){
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>סיסמאות לא תואמות</font>");
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.passwordnotmatch)+"</font>");
             Password.setError(errorMsg);
             RePassword.setError(errorMsg);
             status = false;
         }
-        if(_context.CheckIfEmailExists(GetInputText(Email))){
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>דואר אלקטרוני נמצא במערכת</font>");
-            Email.setError(errorMsg);
+        else if(GetInputText(Password).length() < 8){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.passwordValidate)+"</font>");
             Password.setError(errorMsg);
             RePassword.setError(errorMsg);
             status = false;
         }
-        if(_context.CheckIfPhoneExists(GetInputText(Phone))){
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>מספר נייד נמצא במערכת</font>");
-            Phone.setError(errorMsg);
-            Password.setError(errorMsg);
-            RePassword.setError(errorMsg);
-            status = false;
-        }
+
         if (status){
+            String exception = this.getResources().getString(R.string.exception);
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
@@ -196,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity  {
                         }
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"אירעה שגיאה, נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), exception, Toast.LENGTH_SHORT).show();
                     }
                 }
             };
