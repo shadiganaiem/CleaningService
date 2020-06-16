@@ -1,7 +1,11 @@
 package com.cleaningservice.cleaningservice.Worker;
 
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -35,7 +40,6 @@ import com.cleaningservice.cleaningservice.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,6 +65,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_job_form_details);
 
         try {
@@ -231,9 +236,51 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 Intent intent6 = new Intent(JobFormDetails.this, MainActivity.class);
                 startActivity(intent6);
                 break;
+            case R.id.change_language:
+                showLanguageDialog();
+                break;
         }
-
         return false;
+    }
+
+    private void showLanguageDialog() {
+        final String[] languagesList = { "العربية", "עברית" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.chooseLanguage));
+        builder.setSingleChoiceItems(languagesList, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0) {
+                    setLocale("ar");
+                    recreate();
+                }
+                else if (which ==1){
+                    setLocale("he");
+                    recreate();
+                }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void setLocale(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String lang = prefs.getString("My_Lang","");
+        setLocale(lang);
     }
 
     public void SendRequest(View v) {

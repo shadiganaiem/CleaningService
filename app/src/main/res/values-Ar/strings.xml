@@ -147,6 +147,8 @@
     <string name="JobProposalTitle">اقتراحات عمل</string>
     <string name="ForgetMyPassword">نسيت كلمة المرور</string>
     <string name="ResetPassword">استعادة كلمة المرور</string>
+    <string name="Change_Language">تغيير اللغة</string>
+    <string name="chooseLanguage">اختر اللغة</string>
     <string name="passwordnotmatch">كلمات المرور غير متطابقة!</string>
     <string name="passwordValidate">كلمة المرور يجب ان تكون 8احرف على الاقل</string>
     <string name="usernameExists">اسم المستخدم غير متاح</string>

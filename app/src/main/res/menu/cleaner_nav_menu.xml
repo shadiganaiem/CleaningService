@@ -33,11 +33,17 @@
             android:title="@string/profile" />
     </group>
 
+    <group android:checkableBehavior="single" android:id="@+id/g7">
+        <item
+            android:id="@+id/change_language"
+            android:icon="@drawable/ic_language_black_24dp"
+            android:title="@string/Change_Language" />
+    </group>
+
     <group android:checkableBehavior="single" android:id="@+id/g6">
         <item
             android:id="@+id/navigation_signout"
             android:icon="@drawable/ic_sign_out_24dp"
             android:title="@string/logout" />
-
     </group>
 </menu>

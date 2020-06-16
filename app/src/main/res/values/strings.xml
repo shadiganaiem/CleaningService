@@ -26,7 +26,7 @@
     <string name="register">הרשמה</string>
     <string name="hello">ברוך הבא</string>
     <string name="but">back button</string>
-    <string name="join">הצטרף אלינו עשכיו</string>
+    <string name="join">הצטרף אלינו עכשיו</string>
     <string name="done">כמעט סיימנו</string>
     <string name="logoword">Cleaning Services</string>
     <string name="logout">יציאה</string>
@@ -173,6 +173,8 @@
     <string name="JobProposalTitle">הצעות עבודה</string>
     <string name="ForgetMyPassword">שכחתי סיסמה !</string>
     <string name="ResetPassword">שחזור סיסמה</string>
+    <string name="Change_Language">שנוי שפה</string>
+    <string name="chooseLanguage">בחר שפה</string>
     <string name="passwordnotmatch">סיסמאות לא תואמות</string>
     <string name="passwordValidate">סיסמה חייבת להיות באוך 8 לפחות</string>
     <string name="usernameExists">שם המשתמש קיים במערכת</string>
