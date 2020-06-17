@@ -93,9 +93,9 @@ public class RegisterActivity extends AppCompatActivity  {
         String regex = "^[\\p{L} ]+$";
         boolean status = true;
 
-        if(!_validator.InputValidate(Firstname,regex))
+        if(!_validator.InputValidate(this,Firstname,regex))
             status = false;
-        if(!_validator.InputValidate(Lastname,regex))
+        if(!_validator.InputValidate(this,Lastname,regex))
             status = false;
         if(GetInputText(Phone).length() < 10){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.PhoneNumberNotValid)+"</font>");
@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity  {
             status = false;
         }
         regex = "^[A-Za-z0-9_.-]+@(.+).[A-Za-z]+$";
-        if(!_validator.InputValidate(Email,regex) || GetInputText(Email).equals("")){
+        if(!_validator.InputValidate(this,Email,regex) || GetInputText(Email).equals("")){
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.EmailNotValid)+"</font>");
             Email.setError(errorMsg);
             status = false;
@@ -143,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity  {
         String regex = "^[\\p{L}0-9_]+$";
         boolean status = true;
 
-        if(!_validator.InputValidate(Username,regex)){
+        if(!_validator.InputValidate(this,Username,regex)){
             status = false;
         }
         if(status && _context.CheckIfUsernameExists(GetInputText(Username))) {

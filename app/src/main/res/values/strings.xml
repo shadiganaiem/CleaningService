@@ -188,6 +188,10 @@
     <string name="LoginFailed">אחד הנתונים שהזנת לא נכון</string>
     <string name="ActivationCodeNotValid">קוד אימות לא נכון</string>
     <string name="newCodeSent">קוד אימות חדש נשח אליך</string>
+    <string name="passwordUpdated">הסיסמה עודכנה בהצלחה</string>
+    <string name="phoneNumberNotExist">מספר נייד לא קיים במערכת</string>
+    <string name="required">שדה חובה</string>
+    <string name="noSymbols">אין להכיל סימנים</string>
     <string name="deletedSuccessfuly">מועדף נמחק בהצלחה</string>
     <string name="chooseAtLeastOne">נא לבחור לפחות טופס אחד</string>
     <string name="RequestsentSuccefully">הבקשה נשלחה בהצלחה</string>

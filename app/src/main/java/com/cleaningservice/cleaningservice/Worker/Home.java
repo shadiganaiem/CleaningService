@@ -109,7 +109,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                         mainhandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
+                                jobFormAdapter = new FormAdapter(jobForms, Home.this, Home.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                 recyclerView.setAdapter(jobFormAdapter);
                                 findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
@@ -255,7 +255,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                             case 0:
                                 tabSelected = 0;
                                 jobForms = _context.GetJobForms(minRateSelected, maxRateSelected);
-                                jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
+                                jobFormAdapter = new FormAdapter(jobForms,Home.this, Home.this);
                                 mainhandler.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -273,7 +273,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                                 mainhandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
+                                        jobFormAdapter = new FormAdapter(jobForms, Home.this, Home.this);
                                         view.setAdapter(jobFormAdapter);
                                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
@@ -287,7 +287,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                                 mainhandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        jobFormAdapter = new FormAdapter(jobForms, getApplicationContext(), Home.this);
+                                        jobFormAdapter = new FormAdapter(jobForms, Home.this, Home.this);
                                         view.setAdapter(jobFormAdapter);
                                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                                         findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);

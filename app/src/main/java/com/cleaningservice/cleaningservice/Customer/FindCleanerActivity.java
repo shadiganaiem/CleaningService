@@ -385,8 +385,8 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         status = true;
 
 
-        if(!_validator.InputValidate(budgt,regex)) {
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.notValid)+"</font>");
+        if(!_validator.InputValidate(this,budgt,regex)) {
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'> ערך לא חוקי</font>");
             budgt.setError(errorMsg);
             status = false;
         }
@@ -395,7 +395,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             if (address==null || city==null){
                 TextView ci = findViewById(R.id.city);
                 TextView st = findViewById(R.id.street);
-                android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.addressAndCity)+"</font>");
+                android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>כתובת ועיר הם שדות חובה</font>");
                 ci.setError(errorMsg);
                 st.setError(errorMsg);
                 status = false;

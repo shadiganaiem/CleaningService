@@ -65,7 +65,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="FindCleaner">ابحث عن عامل نظافة</string>
+    <string name="FindCleaner">ايجاد منظف</string>
     <string name="LogoTitle">Real World Cleaning Service</string>
     <string name="Budget">"السعر "</string>
     <string name="Rooms">عدد الغرف</string>
@@ -139,7 +139,7 @@
     <string name="No">لا</string>
     <string name="Privat">خاص</string>
     <string name="Pub">عام</string>
-    <string name="profile">الصفحة الشخصية</string>
+    <string name="profile">البروفايل</string>
     <string name="MoreDetails">معلومات اضافية</string>
     <string name="Active">متوفر</string>
     <string name="NotAvailable">غير متوفر</string>
@@ -160,6 +160,12 @@
     <string name="accountCreated">تم انشاء الحساب بنجاح</string>
     <string name="accountBlocked">لقد تم حظر هذا الحساب</string>
     <string name="LoginFailed">احدى المعطيات التي قمت بادخالها غير صحيح</string>
+    <string name="ActivationCodeNotValid">رمز التفعيل غير صحيح</string>
+    <string name="newCodeSent">تم ارسال لك رمز تفعيل جديد</string>
+    <string name="passwordUpdated">تم تحديث كلمة المرور</string>
+    <string name="phoneNumberNotExist">لم يتم العثور على الرقم المطلوب</string>
+    <string name="required">حقل مطلوب</string>
+    <string name="noSymbols">ممنوع ادخال رموز</string>
     <string name="ActivationCodeNotValid">رمز التأكيد غير صحيح</string>
     <string name="newCodeSent">تم ارسال لك رمز تاكيد جديد</string>
     <string name="deletedSuccessfuly">تمت ازالة المفضل</string>

@@ -1,5 +1,6 @@
 package com.cleaningservice.cleaningservice;
 
+import android.content.Context;
 import android.text.Html;
 import android.widget.EditText;
 
@@ -13,8 +14,9 @@ public class Validator {
      * Validate text and get a relevant error message
      * @param editText : input EditText to validate
      */
-    public boolean InputValidate(TextInputEditText editText, String regularExpression){
-        android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>שדה חובה</font>");
+    public boolean InputValidate(Context context,TextInputEditText editText, String regularExpression){
+
+        android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+context.getResources().getString(R.string.required)+"</font>");
         Pattern pattern = Pattern.compile(regularExpression);
 
         String text =GetInputText(editText);
@@ -25,7 +27,7 @@ public class Validator {
             return false;
         }
         else if(!pattern.matcher(text).matches()){
-            errorMsg = Html.fromHtml("<font color='white'>אין להכיל סימנים</font>");
+            errorMsg = Html.fromHtml("<font color='white'>"+context.getResources().getString(R.string.noSymbols)+"</font>");
             editText.setError(errorMsg);
             return false;
         }
