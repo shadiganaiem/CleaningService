@@ -143,6 +143,8 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
 
 
 
+
+
        /* RecyclerView view = findViewById(R.id.job_form_list);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -155,6 +157,11 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
             }});*/
     }
+
+    private void searchPlace(){
+        //write code here
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -181,8 +188,18 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         Geocoder geocoder;
         geocoder = new Geocoder(this);
-
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.LAT_LNG,Place.Field.NAME));
+
+        // on clearing the search
+        autocompleteSupportFragment.getView().findViewById(R.id.places_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        autocompleteSupportFragment.setText("");
+                        view.setVisibility(View.GONE);
+                        searchPlace();
+                    }
+                });
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
@@ -208,6 +225,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                                     recyclerView.setAdapter(jobFormAdapter);
                                     findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
                                     findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+
                                 }
                             });
                         }
@@ -218,6 +236,8 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                         } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
             }
 
             @Override
@@ -227,6 +247,9 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
 
 
     }
+
+
+
 
     /**
      * Move From Home Activity to another Activity Using NavigationBar
