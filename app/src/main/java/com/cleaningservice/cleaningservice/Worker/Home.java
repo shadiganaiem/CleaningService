@@ -141,10 +141,6 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
-
-
-
-
        /* RecyclerView view = findViewById(R.id.job_form_list);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -159,7 +155,28 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     }
 
     private void searchPlace(){
-        //write code here
+        RecyclerView recyclerView = findViewById(R.id.job_form_list);
+        findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                jobForms = _context.GetJobForms("",minRateSelected, maxRateSelected);
+                mainhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        jobFormAdapter = new FormAdapter(jobForms, Home.this, Home.this);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerView.setAdapter(jobFormAdapter);
+                        findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+
+                    }
+                });
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 
@@ -247,9 +264,6 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
 
 
     }
-
-
-
 
     /**
      * Move From Home Activity to another Activity Using NavigationBar

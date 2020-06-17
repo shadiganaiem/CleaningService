@@ -220,7 +220,7 @@ public class JobFormDetails extends AppCompatActivity implements NavigationView.
                 startActivity(intent);
                 break;
             case R.id.navigation_profile:
-                intent = new Intent(JobFormDetails.this, ProfileActivity.class);
+                intent = new Intent(JobFormDetails.this, WorkerProfile.class);
                 startActivity(intent);
                 break;
             case R.id.navigation_favlist:
