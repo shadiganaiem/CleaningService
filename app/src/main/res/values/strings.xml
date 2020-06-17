@@ -188,5 +188,18 @@
     <string name="LoginFailed">אחד הנתונים שהזנת לא נכון</string>
     <string name="ActivationCodeNotValid">קוד אימות לא נכון</string>
     <string name="newCodeSent">קוד אימות חדש נשח אליך</string>
+    <string name="deletedSuccessfuly">מועדף נמחק בהצלחה</string>
+    <string name="chooseAtLeastOne">נא לבחור לפחות טופס אחד</string>
+    <string name="RequestsentSuccefully">הבקשה נשלחה בהצלחה</string>
+    <string name="notValid">ערך לא חוקי</string>
+    <string name="addressAndCity">כתובת ועיר הם שדות חובה</string>
+    <string name="passedDate">תאריך כבר עבר או לא קיים</string>
+    <string name="datesError">תאריך סיום לא יכול להיות לפני תאריך התחלה</string>
+    <string name="addedToFavorites">נוסף למועדפים</string>
+    <string name="noworkerexist">עדיין אין עובד משוייך</string>
+    <string name="ratingDone">דירוג בוצע בהצלחה</string>
+    <string name="deletedSuccefully">נמחק בהצלחה</string>
+    <string name="requestAccepted">בקשה התקבלה</string>
+    <string name="requestRejected">בקשה נדחתה</string>
 
 </resources>

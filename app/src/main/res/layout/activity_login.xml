@@ -114,33 +114,32 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="200dp"
             android:fontFamily="@font/light"
             android:text="@string/member"
             android:textColor="@color/gray"
             android:textDirection="rtl"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/SignUpBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/SignUpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="180dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="200dp"
+            android:layout_marginBottom="92dp"
             android:fontFamily="@font/bold"
             android:onClick="OpenRegisterActivity"
             android:text="@string/register"
             android:textColor="@color/gradient1end"
+
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.828"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
         android:id="@+id/imageback"

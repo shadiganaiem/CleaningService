@@ -143,7 +143,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             @Override
             public void onClick(View v) {
                 con.InsertFavoriteByUserId(GetLoggedInUserID(context), con.GetUserIDByEmployeeID(namesImages.get(position).ID));
-                Toast.makeText(context, "נוסף למועדפים", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getResources().getString(R.string.addedToFavorites), Toast.LENGTH_SHORT).show();
                 holder.addtofav.setVisibility(View.INVISIBLE);
             }
         });
@@ -180,7 +180,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (jobForms.get(position).StatusId == Util.Statuses.AVAILABLE.value || jobForms.get(position).StatusId == Util.Statuses.PRIVATE.value) {
-                        Toast.makeText(context, "עדיין אין עובד משוייך", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.noworkerexist), Toast.LENGTH_LONG).show();
                     } else {
                         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
                         View customView = inflater.inflate(R.layout.you_sure_popup, null);
@@ -290,7 +290,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
                                 e.printStackTrace();
                             }
                             popUp.dismiss();
-                            Toast.makeText(context, "דירוג בוצע בהצלחה", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.ratingDone), Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -303,7 +303,7 @@ public class JobRecycler extends RecyclerView.Adapter<JobRecycler.ViewHolder> {
             @Override
             public void onClick(View v) {
                 holder.relativeLayout.setVisibility(View.GONE);
-                Toast.makeText(context, "נמחק בהצלחה", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.deletedSuccefully), Toast.LENGTH_LONG).show();
                 con.DeleteForm(jobForms.get(position).ID);
                 jobForms.remove(position);
                 notifyItemRemoved(position);

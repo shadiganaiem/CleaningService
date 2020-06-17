@@ -139,7 +139,7 @@
     <string name="No">لا</string>
     <string name="Privat">خاص</string>
     <string name="Pub">عام</string>
-    <string name="profile">البروفايل</string>
+    <string name="profile">الصفحة الشخصية</string>
     <string name="MoreDetails">معلومات اضافية</string>
     <string name="Active">متوفر</string>
     <string name="NotAvailable">غير متوفر</string>
@@ -162,4 +162,17 @@
     <string name="LoginFailed">احدى المعطيات التي قمت بادخالها غير صحيح</string>
     <string name="ActivationCodeNotValid">رمز التأكيد غير صحيح</string>
     <string name="newCodeSent">تم ارسال لك رمز تاكيد جديد</string>
+    <string name="deletedSuccessfuly">تمت ازالة المفضل</string>
+    <string name="chooseAtLeastOne">الرجاء اختيار ملف واحد على الأقل</string>
+    <string name="RequestsentSuccefully">تم بعث الطلب بنجاح</string>
+    <string name="notValid">القيمة غير صحيحة</string>
+    <string name="addressAndCity">يجب تسجيل المدينة والعنوان</string>
+    <string name="passedDate">التاريخ قديم او غير موجود</string>
+    <string name="datesError">تاريخ الانتهاء لا يمكن ان يكون قبل تاريخ البداية</string>
+    <string name="addedToFavorites">تم الاضافة للمفضلة</string>
+    <string name="noworkerexist">لا يوجد موظف بعد</string>
+    <string name="ratingDone">التقييم تم بنجاح</string>
+    <string name="deletedSuccefully">تم المسح بنجاح</string>
+    <string name="requestAccepted">تمت موافقة الطلب</string>
+    <string name="requestRejected">تم رفض الطلب</string>
 </resources>

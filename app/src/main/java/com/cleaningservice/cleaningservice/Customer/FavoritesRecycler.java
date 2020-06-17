@@ -71,7 +71,7 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                 try {
                     con.DeleteFavorite(favorites.get(position).ID);
                     holder.relativeLayout.setVisibility(View.GONE);
-                    Toast.makeText(context,"מועדף נמחק בהצלחה",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,context.getResources().getString(R.string.deletedSuccessfuly),Toast.LENGTH_LONG).show();
                     favorites.remove(position);
                     notifyItemRemoved(position);
                 } catch (SQLException e) {
@@ -122,9 +122,9 @@ public class FavoritesRecycler extends RecyclerView.Adapter<FavoritesRecycler.Vi
                             }
                         }
                         if (flag == 0){
-                            Toast.makeText(context,"נא לבחור לפחות טופס אחד",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,context.getResources().getString(R.string.chooseAtLeastOne),Toast.LENGTH_LONG).show();
                         }else{
-                            Toast.makeText(context,"הבקשה נשלחה בהצלחה",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,context.getResources().getString(R.string.RequestsentSuccefully),Toast.LENGTH_SHORT).show();
                             popUp.dismiss();
                         }
                     }

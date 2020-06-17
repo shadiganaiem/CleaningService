@@ -105,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                public void onClick(View v) {
                    requests.get(position).Status_id = Util.Statuses.ACCEPTED.value;
                    holder.shimmerFrameLayout.setVisibility(View.INVISIBLE);
-                   Toast.makeText(context, "Request Accepted", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(context,  context.getResources().getString(R.string.requestAccepted), Toast.LENGTH_SHORT).show();
                    con.UpdateRequestStatus(requests.get(position).EmployeeId, requests.get(position).JobFormID, Util.Statuses.ACCEPTED.value);
                    con.UpdateFormStatus(requests.get(position).JobFormID, Util.Statuses.NOTAVAILABLE.value);
                }
@@ -116,7 +116,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                public void onClick(View v) {
                    requests.get(position).Status_id= Util.Statuses.REJECTED.value;
                    holder.shimmerFrameLayout.setVisibility(View.INVISIBLE);
-                   Toast.makeText(context,"Request Rejected",Toast.LENGTH_SHORT).show();
+                   Toast.makeText(context,context.getResources().getString(R.string.requestRejected),Toast.LENGTH_SHORT).show();
                    con.UpdateRequestStatus(requests.get(position).EmployeeId,requests.get(position).JobFormID, Util.Statuses.REJECTED.value);
                }
            });

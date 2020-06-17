@@ -176,7 +176,6 @@ public class MyJobsActivity extends AppCompatActivity implements NavigationView.
             }
         });
         AlertDialog dialog = builder.create();
-
         dialog.show();
     }
 

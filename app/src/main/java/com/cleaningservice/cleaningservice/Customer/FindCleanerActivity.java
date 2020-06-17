@@ -386,7 +386,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
 
 
         if(!_validator.InputValidate(budgt,regex)) {
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'> ערך לא חוקי</font>");
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.notValid)+"</font>");
             budgt.setError(errorMsg);
             status = false;
         }
@@ -395,7 +395,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
             if (address==null || city==null){
                 TextView ci = findViewById(R.id.city);
                 TextView st = findViewById(R.id.street);
-                android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>כתובת ועיר הם שדות חובה</font>");
+                android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.addressAndCity)+"</font>");
                 ci.setError(errorMsg);
                 st.setError(errorMsg);
                 status = false;
@@ -464,17 +464,17 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         TextView second = findViewById(R.id.date_text2);
 
         if(date1==null || todayDate.after(date1)){
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך כבר עבר או לא קיים</font>");
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.passedDate)+"</font>");
             first.setError(errorMsg);
             status= false;
         }
         if (date2==null || todayDate.after(date2) ){
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך כבר עבר או לא קיים</font>");
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.passedDate)+"</font>");
             second.setError(errorMsg);
             status= false;
         }
         if(date1==null || date2==null || date2.before(date1)) {
-            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>תאריך סיום לא יכול להיות לפני תאריך התחלה</font>");
+            android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.datesError)+"</font>");
             first.setError(errorMsg);
             second.setError(errorMsg);
             status= false;
