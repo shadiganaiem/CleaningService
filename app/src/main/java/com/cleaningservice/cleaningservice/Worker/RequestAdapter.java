@@ -202,7 +202,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                             e.printStackTrace();
                                         }
                                         popUp.dismiss();
-                                        Toast.makeText(context, "דירוג בוצע בהצלחה", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, context.getResources().getString(R.string.ratingSuccess), Toast.LENGTH_SHORT).show();
                                         holder.rateBtn.setVisibility(View.GONE);
                                     }
                                 });

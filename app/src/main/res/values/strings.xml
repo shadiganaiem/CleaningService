@@ -205,5 +205,6 @@
     <string name="deletedSuccefully">נמחק בהצלחה</string>
     <string name="requestAccepted">בקשה התקבלה</string>
     <string name="requestRejected">בקשה נדחתה</string>
+    <string name="ratingSuccess">דירוג בוצע בהצלחה</string>
 
 </resources>

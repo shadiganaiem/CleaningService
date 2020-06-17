@@ -179,4 +179,5 @@
     <string name="deletedSuccefully">تم المسح بنجاح</string>
     <string name="requestAccepted">تمت موافقة الطلب</string>
     <string name="requestRejected">تم رفض الطلب</string>
+    <string name="ratingSuccess">تم التقييم بنجاح</string>
 </resources>

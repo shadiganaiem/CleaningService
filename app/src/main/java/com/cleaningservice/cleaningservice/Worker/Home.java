@@ -54,6 +54,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     private int tabSelected = 0;
     private int minRateSelected = 0;
     private int maxRateSelected = 5;
+    private String city = "";
     private DrawerLayout drawer;
     private TabLayout tabLayout;
     private Dictionary ratingDict;
@@ -63,7 +64,6 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     private List<JobForm> jobForms;
     private Handler mainhandler = new Handler();
     private RecyclerView view;
-    private String city = null;
     //Google Places API Client
     private PlacesClient placesClient;
     @Override
@@ -187,32 +187,41 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 final LatLng latLng= place.getLatLng();
-
-                //   Log.i("placesAPI","onPlaceSelected: "+latLng.latitude+"\n"+latLng.longitude);
-
                 List<Address> addresses;
                 try {
                     addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                    String saddress = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                     String scity = addresses.get(0).getLocality();
-                    //String state = addresses.get(0).getAdminArea();
-                    //String country = addresses.get(0).getCountryName();
-                    //String postalCode = addresses.get(0).getPostalCode();
-                    //String knownName = addresses.get(0).getFeatureName();
-                    String[] add = saddress.split(",");
                     city=scity;
-                } catch (IOException e) {
+
+                    RecyclerView recyclerView = findViewById(R.id.job_form_list);
+                    findViewById(R.id.jobFormsProgressBar).setVisibility(View.VISIBLE);
+                    findViewById(R.id.job_form_list).setVisibility(View.INVISIBLE);
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            jobForms = _context.GetJobForms(city,minRateSelected, maxRateSelected);
+                            mainhandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    jobFormAdapter = new FormAdapter(jobForms, Home.this, Home.this);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                    recyclerView.setAdapter(jobFormAdapter);
+                                    findViewById(R.id.jobFormsProgressBar).setVisibility(View.INVISIBLE);
+                                    findViewById(R.id.job_form_list).setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    };
+                    Thread thread = new Thread(runnable);
+                    thread.start();
+
+                        } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
-
             }
 
             @Override
             public void onError(@NonNull Status status) {
-
             }
         });
 
@@ -321,7 +330,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                         switch (tab.getPosition()) {
                             case 0:
                                 tabSelected = 0;
-                                jobForms = _context.GetJobForms(minRateSelected, maxRateSelected);
+                                jobForms = _context.GetJobForms(city,minRateSelected, maxRateSelected);
                                 jobFormAdapter = new FormAdapter(jobForms,Home.this, Home.this);
                                 mainhandler.post(new Runnable() {
                                     @Override

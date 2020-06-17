@@ -320,7 +320,7 @@ public class ApplicationDbContext extends AppCompatActivity {
      * Get All JobForms
      * @return
      */
-    public List<JobForm> GetJobForms(int minRate,int maxRate){
+    public List<JobForm> GetJobForms(String city,int minRate,int maxRate){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -330,7 +330,7 @@ public class ApplicationDbContext extends AppCompatActivity {
                 " FROM JobForms AS J JOIN Users AS U ON J.CustomerId = U.CustomerId"+
                 " JOIN Customers AS C ON C.ID = U.CustomerId "+
                 " WHERE J.EndDate>= '"+today+"' AND U.Rating >= "+minRate + " AND U.Rating <= "+maxRate+
-                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value;
+                " AND J.StatusId = " + Util.Statuses.AVAILABLE.value + " AND J.City LIKE '%" +city +"%'";
         List<JobForm> jobForms = new ArrayList<>();
         try{
             ResultSet result = ExecuteSelectQuery(query);
