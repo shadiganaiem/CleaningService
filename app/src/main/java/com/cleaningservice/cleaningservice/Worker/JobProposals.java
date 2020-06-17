@@ -80,7 +80,7 @@ public class JobProposals  extends AppCompatActivity implements JobOffersAdapter
                 mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        jobOffersAdapter = new JobOffersAdapter(requests, getApplicationContext(),JobProposals.this);
+                        jobOffersAdapter = new JobOffersAdapter(requests, JobProposals.this,JobProposals.this);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         recyclerView.setAdapter(jobOffersAdapter);
 

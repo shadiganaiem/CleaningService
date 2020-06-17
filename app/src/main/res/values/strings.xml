@@ -33,7 +33,7 @@
 
     <string name="Activation">הפעלת חשבון</string>
     <string name="ActivationCode">קוד אימות</string>
-    <string name="Activation_detail">נא להזין את קוד האימות שקיבלת במייל</string>
+    <string name="Activation_detail">נא להזין את קוד האימות שקיבלת בהודעה</string>
     <string name="Activation_not_sent_details">שלח קוד אימות חדש</string>
     <string name="Activation_not_sent_title">\? לא קיבלת מייל</string>
 
@@ -188,5 +188,9 @@
     <string name="LoginFailed">אחד הנתונים שהזנת לא נכון</string>
     <string name="ActivationCodeNotValid">קוד אימות לא נכון</string>
     <string name="newCodeSent">קוד אימות חדש נשח אליך</string>
+    <string name="passwordUpdated">הסיסמה עודכנה בהצלחה</string>
+    <string name="phoneNumberNotExist">מספר נייד לא קיים במערכת</string>
+    <string name="required">שדה חובה</string>
+    <string name="noSymbols">אין להכיל סימנים</string>
 
 </resources>

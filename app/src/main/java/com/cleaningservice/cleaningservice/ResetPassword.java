@@ -54,7 +54,6 @@ public class ResetPassword extends AppCompatActivity {
         }
 
         _validator = new Validator();
-        Intent intent = getIntent();
 
         phone = findViewById(R.id.Phone);
         password = findViewById(R.id.newPassword);
@@ -86,7 +85,7 @@ public class ResetPassword extends AppCompatActivity {
                             rePassword.setVisibility(View.VISIBLE);
                             ResetLoginButton.setVisibility(View.VISIBLE);
                         } else {
-                            Toast.makeText(getApplicationContext(), "קוד אימות לא תואם", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.ActivationCodeNotValid), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception ex) {
                         Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
@@ -100,13 +99,13 @@ public class ResetPassword extends AppCompatActivity {
 
         String test = GetInputText(phone);
         if (GetInputText(phone).length() != 10) {
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>מספר נייד לא תקין</font>");
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.PhoneNumberNotValid)+"</font>");
             phone.setError(errorMsg);
             return;
         }
 
         if (!_context.CheckIfPhoneExists(GetInputText(phone))) {
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>מספר נייד לא קיים</font>");
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+getResources().getString(R.string.phoneNumberNotExist)+"</font>");
             phone.setError(errorMsg);
             return;
         }
@@ -118,12 +117,12 @@ public class ResetPassword extends AppCompatActivity {
         ActivationCode = GenerateActivationCode();
         if (_context.UpdateActivationCodeByPhone(GetInputText(phone), ActivationCode)) {
             if (!_smsService.SendResetCode(getApplicationContext(), GetInputText(phone), ActivationCode)) {
-                Toast.makeText(getApplicationContext(), "קוד חדש נשלח אליך", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.newCodeSent), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(), "קוד לא נשלח!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.exception), Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "שגיאה התרחשה בעדכון נא לנסות מאוחר יותר", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.exception), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -139,16 +138,25 @@ public class ResetPassword extends AppCompatActivity {
 
     public void ChangePassword(View v) {
         if (!GetInputText(password).equals(GetInputText(rePassword)) && !GetInputText(password).equals("") && !GetInputText(password).equals("")) {
-            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>סיסמאות לא תואמות</font>");
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.passwordnotmatch)+"</font>");
+            password.setError(errorMsg);
+            rePassword.setError(errorMsg);
+            return;
+        }
+        else if(GetInputText(password).length() < 8){
+            android.text.Spanned errorMsg = Html.fromHtml("<font color='white'>"+this.getResources().getString(R.string.passwordValidate)+"</font>");
             password.setError(errorMsg);
             rePassword.setError(errorMsg);
             return;
         }
 
         if (_context.ChangePasswordByPhone(GetInputText(phone), GetInputText(password))) {
-            Toast.makeText(getApplicationContext(), "סיסמתך התעדכנה בהצלחה", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.passwordUpdated), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.exception), Toast.LENGTH_SHORT).show();
         }
     }
 

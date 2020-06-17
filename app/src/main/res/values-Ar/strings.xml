@@ -3,7 +3,7 @@
     <string name="app_name">CleaningService</string>
     <string name="Activation">الدخول للحساب</string>
     <string name="ActivationCode">كود التفعيل</string>
-    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرفق في البريد الاكتروني</string>
+    <string name="Activation_detail">الرجاء ادخال كود التفعيل المرفق في رسالة نصية</string>
     <string name="Activation_not_sent_details">ارسل كود تفعيل جديد</string>
     <string name="Activation_not_sent_title">لم يصلني بريد الكتروني</string>
     <string name="Address">العنوان</string>
@@ -160,6 +160,10 @@
     <string name="accountCreated">تم انشاء الحساب بنجاح</string>
     <string name="accountBlocked">لقد تم حظر هذا الحساب</string>
     <string name="LoginFailed">احدى المعطيات التي قمت بادخالها غير صحيح</string>
-    <string name="ActivationCodeNotValid">رمز التأكيد غير صحيح</string>
-    <string name="newCodeSent">تم ارسال لك رمز تاكيد جديد</string>
+    <string name="ActivationCodeNotValid">رمز التفعيل غير صحيح</string>
+    <string name="newCodeSent">تم ارسال لك رمز تفعيل جديد</string>
+    <string name="passwordUpdated">تم تحديث كلمة المرور</string>
+    <string name="phoneNumberNotExist">لم يتم العثور على الرقم المطلوب</string>
+    <string name="required">حقل مطلوب</string>
+    <string name="noSymbols">ممنوع ادخال رموز</string>
 </resources>

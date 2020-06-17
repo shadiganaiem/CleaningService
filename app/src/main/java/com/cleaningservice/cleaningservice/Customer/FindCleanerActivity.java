@@ -385,7 +385,7 @@ public class FindCleanerActivity extends AppCompatActivity implements Navigation
         status = true;
 
 
-        if(!_validator.InputValidate(budgt,regex)) {
+        if(!_validator.InputValidate(this,budgt,regex)) {
             android.text.Spanned errorMsg  = Html.fromHtml("<font color='white'> ערך לא חוקי</font>");
             budgt.setError(errorMsg);
             status = false;

@@ -85,7 +85,7 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        requestAdapter = new RequestAdapter(requests, getApplicationContext(),JobFormRequests.this);
+                        requestAdapter = new RequestAdapter(requests, JobFormRequests.this,JobFormRequests.this);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         recyclerView.setAdapter(requestAdapter);
 
@@ -209,7 +209,7 @@ public class JobFormRequests extends AppCompatActivity  implements RequestAdapte
                 mainhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        requestAdapter = new RequestAdapter(requests,getApplicationContext(),JobFormRequests.this);
+                        requestAdapter = new RequestAdapter(requests,JobFormRequests.this,JobFormRequests.this);
                         view.setAdapter(requestAdapter);
                         view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                         findViewById(R.id.jobFormsRequestsProgressBar).setVisibility(View.INVISIBLE);
