@@ -65,7 +65,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="FindCleaner">ايجاد منظف</string>
+    <string name="FindCleaner">ابحث عن عامل نظافة</string>
     <string name="LogoTitle">Real World Cleaning Service</string>
     <string name="Budget">"السعر "</string>
     <string name="Rooms">عدد الغرف</string>
