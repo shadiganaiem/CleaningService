@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -24,11 +26,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cleaningservice.cleaningservice.ApplicationDbContext;
 import com.cleaningservice.cleaningservice.MainActivity;
 import com.cleaningservice.cleaningservice.R;
+import com.cleaningservice.cleaningservice.Util;
 import com.cleaningservice.cleaningservice.Worker.FormAdapter.OnJobFormListiner;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-import java.sql.SQLException;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -52,7 +63,9 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
     private List<JobForm> jobForms;
     private Handler mainhandler = new Handler();
     private RecyclerView view;
-
+    private String city = null;
+    //Google Places API Client
+    private PlacesClient placesClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -62,7 +75,8 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
 
        try {
             _context = ApplicationDbContext.getInstance(getApplicationContext());
-        } catch (SQLException e) {
+           GooglePlacesApiConnect();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -150,6 +164,59 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
         else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Google Places API connect and initialize
+     */
+    public void GooglePlacesApiConnect() throws IOException {
+        String ApiKey = Util.GetProperty("api.googleplaces",getApplicationContext());
+
+        if(!Places.isInitialized()){
+            Places.initialize(getApplicationContext(),ApiKey);
+        }
+        placesClient = Places.createClient(this);
+
+        final AutocompleteSupportFragment autocompleteSupportFragment=
+                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        Geocoder geocoder;
+        geocoder = new Geocoder(this);
+
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.LAT_LNG,Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng= place.getLatLng();
+
+                //   Log.i("placesAPI","onPlaceSelected: "+latLng.latitude+"\n"+latLng.longitude);
+
+                List<Address> addresses;
+                try {
+                    addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    String saddress = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    String scity = addresses.get(0).getLocality();
+                    //String state = addresses.get(0).getAdminArea();
+                    //String country = addresses.get(0).getCountryName();
+                    //String postalCode = addresses.get(0).getPostalCode();
+                    //String knownName = addresses.get(0).getFeatureName();
+                    String[] add = saddress.split(",");
+                    city=scity;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
+
+
     }
 
     /**

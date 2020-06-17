@@ -46,60 +46,85 @@
             <LinearLayout
                 android:id="@+id/Linear_Job_Forms_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_horizontal"
-                    android:layout_margin="7dp"
-                    android:text="@string/FormJobsList"
-                    android:textColor="@color/darkblue"
-                    android:textSize="@dimen/dimen_20dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="7dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/TabLayout"
-                        android:layout_width="@dimen/dimen_20dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:layoutDirection="rtl">
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_horizontal"
+                        android:layout_margin="7dp"
+                        android:text="@string/FormJobsList"
+                        android:textColor="@color/darkblue"
+                        android:textSize="@dimen/dimen_20dp" />
 
-                        <com.google.android.material.tabs.TabItem
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="7dp">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/TabLayout"
+                            android:layout_width="@dimen/dimen_20dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:layoutDirection="rtl">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/All" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ThisWeek" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ThisMonth" />
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <Spinner
+                            android:id="@+id/RatingSpinner"
+                            android:layout_width="@dimen/dimen_20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:entries="@array/ratingOptions"
+                            android:prompt="@string/chooseRating" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="7dp">
+
+                        <fragment
+                            android:id="@+id/autocomplete_fragment"
+                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/All" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ThisWeek" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ThisMonth" />
-                    </com.google.android.material.tabs.TabLayout>
-
-                    <Spinner
-                        android:id="@+id/RatingSpinner"
-                        android:layout_width="@dimen/dimen_20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:entries="@array/ratingOptions"
-                        android:prompt="@string/chooseRating" />
+                            />
+                    </LinearLayout>
 
                 </LinearLayout>
 
