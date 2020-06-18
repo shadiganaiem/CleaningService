@@ -199,7 +199,7 @@ public class Home extends AppCompatActivity implements OnJobFormListiner , Navig
                         view.setVisibility(View.GONE);
                         searchPlace();
                     }
-                });
+        });
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
