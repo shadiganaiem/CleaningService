@@ -142,13 +142,13 @@ public class LoginActivity extends AppCompatActivity {
                        else
                            Phone = _context.GetEmployee(employeeId).Phone;
 
-                       query = "UPDATE Users SET ActivationCode = '" + activationCode + "' WHERE ID=" + result.getInt("ID");
-                      if (_context.ExecuteInsertData(query)) {
-                           _smsService.SendLoginActication(getApplicationContext(),Phone,activationCode);
-                           Toast.makeText(getApplicationContext(), "קוד כניסה נשלח אליך", Toast.LENGTH_SHORT).show();
-                       }else {
-                           Toast.makeText(getApplicationContext(), "קוד לא נשלח!", Toast.LENGTH_SHORT).show();
-                       }
+                     //  query = "UPDATE Users SET ActivationCode = '" + activationCode + "' WHERE ID=" + result.getInt("ID");
+                    //  if (_context.ExecuteInsertData(query)) {
+                        //   _smsService.SendLoginActication(getApplicationContext(),Phone,activationCode);
+                       //    Toast.makeText(getApplicationContext(), "קוד כניסה נשלח אליך", Toast.LENGTH_SHORT).show();
+                     //  }else {
+                     //      Toast.makeText(getApplicationContext(), "קוד לא נשלח!", Toast.LENGTH_SHORT).show();
+                     //  }
 
                        Intent intent = new Intent(getBaseContext(), Activation.class);
                        intent.putExtra("USER_ID", result.getInt("ID"));

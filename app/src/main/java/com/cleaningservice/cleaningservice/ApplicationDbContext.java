@@ -11,7 +11,6 @@ import com.cleaningservice.cleaningservice.Customer.NameImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UTFDataFormatException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
